@@ -6,4 +6,15 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="wwwroot\css\images\Nowy folder\**" />
+    <Content Remove="wwwroot\css\images\Nowy folder\**" />
+    <EmbeddedResource Remove="wwwroot\css\images\Nowy folder\**" />
+    <None Remove="wwwroot\css\images\Nowy folder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\css\images\" />
+  </ItemGroup>
+
 </Project>
