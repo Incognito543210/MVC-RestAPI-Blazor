@@ -1,8 +1,12 @@
-﻿using System.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace API.Models
+namespace Model.MODEL
 {
-    public class Recipe
+    internal class Recipe
     {
         public int RecipeID { get; set; }
         public string Title { get; set; }

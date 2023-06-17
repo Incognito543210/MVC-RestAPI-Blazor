@@ -1,6 +1,12 @@
-﻿namespace API.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Model.MODEL
 {
-    public class HasIngridient
+    internal class HasIngridient
     {
         public int HasIngridientID { get; set; }
         public string Amonut { get; set; }

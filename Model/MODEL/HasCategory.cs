@@ -1,6 +1,12 @@
-﻿namespace API.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Model.MODEL
 {
-    public class HasCategory
+    internal class HasCategory
     {
         public int HasCategoryID { get; set; }
         public int RecipeID { get; set; }
