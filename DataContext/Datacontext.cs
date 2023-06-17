@@ -46,7 +46,7 @@ namespace DataContext
             modelBuilder.Entity<HasIngridient>()
                .HasOne(i => i.Ingridient)
                .WithMany(hc => hc.HasIngridients)
-               .HasForeignKey(t => t.IngridientID);
+               .HasForeignKey(i => i.IngridientID);
         }
 
     }
