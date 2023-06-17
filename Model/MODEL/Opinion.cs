@@ -13,6 +13,8 @@ namespace Model.MODEL
         public string Content { get; set; }
         public int Rate { get; set; }
         public Recipe Recipe { get; set; }
+        public int RecipeID { get; set; }
         public User User { get; set; }
+        public int UserID { get; set; }
     }
 }

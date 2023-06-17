@@ -16,8 +16,11 @@ namespace Model.MODEL
         public int Portions { get; set; }
         public int Difficulty { get; set; }
         public User User { get; set; }
+        public int UserID { get; set; }
         public ICollection<Opinion> Opinions { get; set; }
         public ICollection<HasIngridient> HasIngridients { get; set; }
+        public ICollection<Ingridient> Ingridients { get; set; }
         public ICollection<HasCategory> HasCategories { get; set; }
+        public ICollection<Tag> tags { get; set; }
     }
 }

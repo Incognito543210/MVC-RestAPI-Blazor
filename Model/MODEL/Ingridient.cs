@@ -11,5 +11,6 @@ namespace Model.MODEL
         public int IngridientID { get; set; }
         public string name { get; set; }
         public ICollection<HasIngridient> HasIngridients { get; set; }
+        public ICollection<Recipe> Recipes { get; set; }
     }
 }
