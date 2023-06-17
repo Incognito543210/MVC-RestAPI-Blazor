@@ -37,6 +37,16 @@ namespace DataContext
                .HasOne(t => t.Tag)
                .WithMany(hc => hc.HasCategories)
                .HasForeignKey(t => t.TagID);
+            modelBuilder.Entity<HasIngridient>()
+                .HasKey(hi => new { hi.RecipeID, hi.IngridientID });
+            modelBuilder.Entity<HasIngridient>()
+               .HasOne(r => r.Recipe)
+               .WithMany(hc => hc.HasIngridients)
+               .HasForeignKey(r => r.RecipeID);
+            modelBuilder.Entity<HasIngridient>()
+               .HasOne(i => i.Ingridient)
+               .WithMany(hc => hc.HasIngridients)
+               .HasForeignKey(t => t.IngridientID);
         }
 
     }
