@@ -17,4 +17,8 @@
     <Folder Include="wwwroot\css\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Model\Model.csproj" />
+  </ItemGroup>
+
 </Project>
