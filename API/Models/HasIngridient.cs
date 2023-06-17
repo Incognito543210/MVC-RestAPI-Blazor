@@ -8,5 +8,7 @@
         public int IngridientID { get; set; }
         public Recipe Recipe { get; set; }
         public Ingridient Ingridient { get; set; }
+
+        
     }
 }
