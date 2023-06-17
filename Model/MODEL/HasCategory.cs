@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.MODEL
 {
-    internal class HasCategory
+    public class HasCategory
     {
         public int HasCategoryID { get; set; }
         public int RecipeID { get; set; }
