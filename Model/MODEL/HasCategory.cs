@@ -10,8 +10,8 @@ namespace Model.MODEL
     {
         public int HasCategoryID { get; set; }
         public int RecipeID { get; set; }
-        public int IngridientID { get; set; }
+        public int TagID { get; set; }
         public Recipe Recipe { get; set; }
-        public Ingridient Ingridient { get; set; }
+        public Tag Tag { get; set; }
     }
 }
