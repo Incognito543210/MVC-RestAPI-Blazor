@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.MODEL
 {
-    internal class HasIngridient
+    public class HasIngridient
     {
         public int HasIngridientID { get; set; }
         public string Amonut { get; set; }

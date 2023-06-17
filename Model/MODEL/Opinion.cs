@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Model.MODEL
 {
-    internal class Opinion
+    public class Opinion
     {
         public int OpinionID { get; set; }
         public DateTime PostData { get; set; }
