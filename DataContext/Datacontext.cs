@@ -25,7 +25,19 @@ namespace DataContext
         public DbSet<Tag> Tags { get; set; }
         public DbSet<User> Users { get; set; }
 
-        public DbSet<RecipeTag> RecipeTags { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<HasCategory>()
+                 .HasKey(hc => new { hc.RecipeID, hc.TagID });
+            modelBuilder.Entity<HasCategory>()
+                .HasOne(r => r.Recipe)
+                .WithMany(hc => hc.HasCategories)
+                .HasForeignKey(r => r.RecipeID);
+            modelBuilder.Entity<HasCategory>()
+               .HasOne(t => t.Tag)
+               .WithMany(hc => hc.HasCategories)
+               .HasForeignKey(t => t.TagID);
+        }
 
     }
 }
