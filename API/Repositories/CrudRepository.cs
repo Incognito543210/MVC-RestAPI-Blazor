@@ -29,15 +29,15 @@ namespace API.Repositories
         {
 
         }
-        public Task<T> deleteById(int id)
+        public async Task<T> deleteById(int id)
+        {
+            
+        }
+        public async Task<T> add(T entity)
         {
 
         }
-        public Task<T> add(T entity)
-        {
-
-        }
-        public Task<T> deleteAll()
+        public async Task<T> deleteAll()
         {
 
         }
