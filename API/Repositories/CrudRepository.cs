@@ -1,6 +1,8 @@
-﻿namespace API.Repositories
+﻿using API.Interfaces;
+
+namespace API.Repositories
 {
-    public interface ICrudRepository<T>
+    public class CrudRepository<T> :ICrudRepository<T> where T : class
     {
         public Task<T> deleteById(int id);
 
