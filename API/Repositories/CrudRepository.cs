@@ -34,15 +34,25 @@ namespace API.Repositories
         }
         public async Task<T> deleteById(int id)
         {
-            
+            var entity = await table.FindAsync(id);
+            table.Remove(entity);
+            return null;
         }
         public async Task<T> add(T entity)
         {
-
+            table.AddAsync(entity);
+            await _dataContext.SaveChangesAsync();
+            return entity;
         }
         public async Task<T> deleteAll()
         {
-
+            var list = table.ToList();
+            foreach (var item in list)
+            {
+                table.Remove(item);
+            }
+            await _dataContext.SaveChangesAsync();
+            return null;
         }
     }
 }
