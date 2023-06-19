@@ -17,27 +17,30 @@ namespace API.Repositories
             table = _dataContext.Set<T>();
         }
 
-        public Task<T> getById(int id)
+        public async Task<T> getById(int id)
+        {
+            return await table.FindAsync(id);
+        }
+        public async Task<List<T>> getAll(int page)
+        {
+            return await table.Skip(page*10).Take(10).ToListAsync();
+        }
+        public async Task<T> updateById(int id, T entity)
+        {
+            var _entity = table.Find(id);
+            _entity = entity;
+            await _dataContext.SaveChangesAsync();
+            return _entity;
+        }
+        public async Task<T> deleteById(int id)
         {
 
         }
-        public Task<T> getAll(int page)
+        public async Task<T> add(T entity)
         {
 
         }
-        public Task<T> updateById(int id, T entity)
-        {
-
-        }
-        public Task<T> deleteById(int id)
-        {
-
-        }
-        public Task<T> add(T entity)
-        {
-
-        }
-        public Task<T> deleteAll()
+        public async Task<T> deleteAll()
         {
 
         }
