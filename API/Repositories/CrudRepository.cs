@@ -1,9 +1,22 @@
 ﻿using API.Interfaces;
+using DataContext;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace API.Repositories
 {
     public class CrudRepository<T> : ICrudRepository<T> where T : class
     {
+
+        private Datacontext _dataContext = null;
+        private DbSet<T> table = null;
+
+        public CrudRepository()
+        {
+            _dataContext = new Datacontext();
+            table = _dataContext.Set<T>();
+        }
+
         public Task<T> getById(int id)
         {
 
