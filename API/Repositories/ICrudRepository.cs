@@ -1,6 +1,7 @@
 ﻿namespace API.Repositories
 {
-    public interface ICrudRepository
+    public interface ICrudRepository<T>
     {
+        
     }
 }
