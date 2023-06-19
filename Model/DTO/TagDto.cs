@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Model.DTO
 {
-    internal class TagDto
+    public class TagDto
     {
+        public string Name { get; set; }
     }
 }
