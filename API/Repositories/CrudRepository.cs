@@ -11,9 +11,9 @@ namespace API.Repositories
         private Datacontext _dataContext = null;
         private DbSet<T> table = null;
 
-        public CrudRepository()
+        public CrudRepository(Datacontext datacontext)
         {
-            _dataContext = new Datacontext();
+            _dataContext = datacontext;
             table = _dataContext.Set<T>();
         }
 
