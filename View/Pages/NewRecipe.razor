@@ -1,5 +1,5 @@
 ﻿@page "/newrecipe"
-@inject RecipeService RecServ
+@inject IRecipeService RecServ
 
 <style>
     body{
@@ -28,9 +28,9 @@
 @code {
     Recipe recipe = new();
 
-    void AddRecipe()
+    async Task AddRecipe()
     {
-        RecServ.AddRecipe(recipe);
+        await RecServ.AddRecipeAsync(recipe);
         recipe = new();
     }
 }

@@ -4,10 +4,11 @@ using Model.MODEL;
 
 namespace API.Interfaces
 {
-    public class IRecipeRepository 
+    public interface IRecipeRepository 
     {
-    
 
-   
+        ICollection<Recipe> GetRecipes();
+
+
     }
 }

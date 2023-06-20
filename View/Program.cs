@@ -10,8 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<RecipeService>();
-//builder.Services.AddScoped<ICrudRepository<Recipe>,CrudRepository<Recipe>>(); - przyk³adowe wstrzykniecie zaleznosci
+builder.Services.AddSingleton<IRecipeService,RecipeService>();
+builder.Services.AddSingleton<WeatherService>();
+builder.Services.AddHttpClient<WeatherService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5227/");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

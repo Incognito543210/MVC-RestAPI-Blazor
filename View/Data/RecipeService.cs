@@ -3,14 +3,19 @@ using Model.MODEL;
 
 namespace View.Data
 {
-    public class RecipeService
+    public class RecipeService : IRecipeService
     {
         private List<Recipe> recipes = new();
 
-        public void AddRecipe(Recipe recipe)
+        public Task AddRecipeAsync(Recipe recipe)
         {
             recipes.Add(recipe);
+            return Task.CompletedTask;
         }
-        public List<Recipe> GetRecipes() {  return recipes; }
+
+        public async Task<List<Recipe>> GetRecipesAsync()
+        {
+            return await Task.FromResult(recipes);
+        }
     }
 }
