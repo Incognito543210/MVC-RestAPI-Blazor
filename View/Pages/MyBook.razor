@@ -1,6 +1,6 @@
 ﻿@page "/mybook"
 @inject NavigationManager NavMan
-@inject RecipeService RecServ
+@inject IRecipeService RecServ
 
 <h3>Moje przepisy</h3>
 @foreach (var recipe in recipes)
@@ -20,8 +20,8 @@
 
     void onClick() => NavMan.NavigateTo("/newrecipe");
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        recipes = RecServ.GetRecipes();
+        recipes = await RecServ.GetRecipesAsync();
     }
 }
