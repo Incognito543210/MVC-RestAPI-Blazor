@@ -62,3 +62,7 @@ a, .btn-link {
     .blazor-error-boundary::after {
         content: "An error has occurred."
     }
+
+.page-background-class {
+    background-image: url(C:\Users\Zosia\Source\Repos\Incognito543210\MVC-RestAPI-Blazor\View\wwwroot\css\images\img1.png)
+}

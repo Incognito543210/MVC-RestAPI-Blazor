@@ -1,9 +1,14 @@
 ﻿@page "/newrecipe"
 @inject RecipeService RecServ
 
-<h3>Nowy przepis</h3>
+<style>
+    body{
+    background-image: url(C:\Users\Zosia\Source\Repos\Incognito543210\MVC-RestAPI-Blazor\View\wwwroot\css\images\img1.png)
+    }
+</style>
 
-<EditForm Model="@recipe">
+<div class="page-background-class">
+    <EditForm Model="@recipe">
     <p><InputText id="title" placeholder="Nazwa" @bind-Value=recipe.Title /></p>
     <p><InputTextArea id="content" placeholder="Opis przygotowania" @bind-Value=recipe.Content /></p>
     <p><InputNumber id="portions" placeholder="Liczba porcji" @bind-Value=recipe.Portions /></p>
@@ -17,6 +22,8 @@
     
 </EditForm>
 <p><button class="btn btn-primary" @onclick="AddRecipe">Dodaj przepis</button></p>
+</div>
+<img src="/css/images/img1.png" width="500px"/>
 
 @code {
     Recipe recipe = new();

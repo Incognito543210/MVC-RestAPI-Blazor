@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -11,10 +11,6 @@
     <Content Remove="wwwroot\css\images\Nowy folder\**" />
     <EmbeddedResource Remove="wwwroot\css\images\Nowy folder\**" />
     <None Remove="wwwroot\css\images\Nowy folder\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\css\images\" />
   </ItemGroup>
 
   <ItemGroup>
