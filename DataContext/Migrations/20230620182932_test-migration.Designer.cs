@@ -11,29 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230617121818_database_relation_many_to_many_test")]
-    partial class database_relation_many_to_many_test
+    [Migration("20230620182932_test-migration")]
+    partial class testmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.7");
-
-            modelBuilder.Entity("IngridientRecipe", b =>
-                {
-                    b.Property<int>("IngridientsIngridientID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("RecipesRecipeID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("IngridientsIngridientID", "RecipesRecipeID");
-
-                    b.HasIndex("RecipesRecipeID");
-
-                    b.ToTable("IngridientRecipe");
-                });
 
             modelBuilder.Entity("Model.MODEL.HasCategory", b =>
                 {
@@ -203,36 +188,6 @@ namespace DAL.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("RecipeTag", b =>
-                {
-                    b.Property<int>("RecipesRecipeID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("tagsTagID")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("RecipesRecipeID", "tagsTagID");
-
-                    b.HasIndex("tagsTagID");
-
-                    b.ToTable("RecipeTag");
-                });
-
-            modelBuilder.Entity("IngridientRecipe", b =>
-                {
-                    b.HasOne("Model.MODEL.Ingridient", null)
-                        .WithMany()
-                        .HasForeignKey("IngridientsIngridientID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Model.MODEL.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesRecipeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Model.MODEL.HasCategory", b =>
                 {
                     b.HasOne("Model.MODEL.Recipe", "Recipe")
@@ -299,21 +254,6 @@ namespace DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("RecipeTag", b =>
-                {
-                    b.HasOne("Model.MODEL.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipesRecipeID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Model.MODEL.Tag", null)
-                        .WithMany()
-                        .HasForeignKey("tagsTagID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Model.MODEL.Ingridient", b =>
