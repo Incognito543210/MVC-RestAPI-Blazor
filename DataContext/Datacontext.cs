@@ -47,6 +47,7 @@ namespace DAL
                .HasOne(i => i.Ingridient)
                .WithMany(hc => hc.HasIngridients)
                .HasForeignKey(i => i.IngridientID);
+      
         }
 
     }

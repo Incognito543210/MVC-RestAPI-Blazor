@@ -11,7 +11,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<RecipeService>();
-//builder.Services.AddScoped<ICrudRepository<Recipe>,CrudRepository<Recipe>>(); - przyk³adowe wstrzykniecie zaleznosci
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

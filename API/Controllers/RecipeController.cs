@@ -10,26 +10,29 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class RecipeController : ControllerBase
     {
-        private readonly DataContext _context;
-        public RecipeController(DataContext context)
+
+   
+        private readonly IRecipeRepository _recipeRepository;
+
+        public RecipeController(IRecipeRepository recipeRepository)
+
         {
-            _context = context;
+         
+            _recipeRepository = recipeRepository;
         }
 
-        [HttpGet("{id}")]
-
-        public async Task<IActionResult> GetRecipebyId([FromRoute] int id)
+       
+        [HttpGet]
+        [ProducesResponseType(200,Type=typeof(IEnumerable<Recipe>))]
+        public IActionResult GetRecipes()
         {
-            var recipe = _context.Recipes.FirstOrDefault(a => a.RecipeID == id);
-            if (recipe is null)
+            var recipes = _recipeRepository.GetRecipes();
+            if(!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
-            else
-            {
-
-                return Ok(recipe);
-            }
+            return Ok(recipes);
         }
+
     }
 }
