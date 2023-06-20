@@ -1,6 +1,5 @@
 ﻿using API.Interfaces;
 using API.Repositories;
-using DAL;
 using Microsoft.AspNetCore.Mvc;
 using Model.MODEL;
 

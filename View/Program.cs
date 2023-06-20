@@ -1,5 +1,3 @@
-using API.Interfaces;
-using API.Repositories;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Model.MODEL;
