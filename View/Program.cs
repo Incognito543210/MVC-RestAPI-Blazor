@@ -9,8 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<IRecipeService,RecipeService>();
-builder.Services.AddSingleton<WeatherService>();
-builder.Services.AddHttpClient<WeatherService>(client =>
+builder.Services.AddHttpClient<IRecipeService, RecipeService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5227/");
 });
