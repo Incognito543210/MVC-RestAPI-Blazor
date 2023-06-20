@@ -1,5 +1,5 @@
 ﻿using API.Interfaces;
-using DataContext;
+using DAL;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -8,10 +8,10 @@ namespace API.Repositories
     public class CrudRepository<T> : ICrudRepository<T> where T : class
     {
 
-        private Datacontext _dataContext = null;
+        private DataContext _dataContext = null;
         private DbSet<T> table = null;
 
-        public CrudRepository(Datacontext datacontext)
+        public CrudRepository(DataContext datacontext)
         {
             _dataContext = datacontext;
             table = _dataContext.Set<T>();

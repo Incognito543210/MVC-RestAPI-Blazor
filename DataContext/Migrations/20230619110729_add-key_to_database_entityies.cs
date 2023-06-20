@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace DataContext.Migrations
+namespace DAL.Migrations
 {
     /// <inheritdoc />
     public partial class addkey_to_database_entityies : Migration
