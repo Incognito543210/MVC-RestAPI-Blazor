@@ -1,4 +1,4 @@
-﻿\namespace API.Interfaces
+﻿namespace API.Interfaces
 {
     public interface ITagRepository
     {
