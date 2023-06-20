@@ -1,5 +1,8 @@
+using API.Interfaces;
+using API.Repositories;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Model.MODEL;
 using View.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<RecipeService>();
-
+builder.Services.AddScoped<ICrudRepository<Recipe>,CrudRepository<Recipe>>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

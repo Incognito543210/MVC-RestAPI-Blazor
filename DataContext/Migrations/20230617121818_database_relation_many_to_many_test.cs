@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace DataContext.Migrations
+namespace DAL.Migrations
 {
     /// <inheritdoc />
     public partial class database_relation_many_to_many_test : Migration

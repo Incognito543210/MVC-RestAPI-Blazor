@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataContext\DataContext.csproj" />
+    <ProjectReference Include="..\DataContext\DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
