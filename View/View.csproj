@@ -17,4 +17,8 @@
     <Folder Include="wwwroot\css\images\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\API\API.csproj" />
+  </ItemGroup>
+
 </Project>

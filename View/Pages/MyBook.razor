@@ -1,7 +1,27 @@
 ﻿@page "/mybook"
+@inject NavigationManager NavMan
+@inject RecipeService RecServ
 
-<h3>MyBook</h3>
+<h3>Moje przepisy</h3>
+@foreach (var recipe in recipes)
+{
+    <p>
+        <b>Przepis: </b><span>@recipe.Title</span><br />
+    </p>
+}
+
+<p>
+    <button class="btn btn-primary" @onclick="onClick">Nowy przepis</button>
+</p>
+
 
 @code {
+    List<Recipe> recipes = new();
 
+    void onClick() => NavMan.NavigateTo("/newrecipe");
+
+    protected override void OnInitialized()
+    {
+        recipes = RecServ.GetRecipes();
+    }
 }

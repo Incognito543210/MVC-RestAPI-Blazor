@@ -1,0 +1,29 @@
+﻿@page "/newrecipe"
+@inject RecipeService RecServ
+
+<h3>Nowy przepis</h3>
+
+<EditForm Model="@recipe">
+    <p><InputText id="title" placeholder="Nazwa" @bind-Value=recipe.Title /></p>
+    <p><InputTextArea id="content" placeholder="Opis przygotowania" @bind-Value=recipe.Content /></p>
+    <p><InputNumber id="portions" placeholder="Liczba porcji" @bind-Value=recipe.Portions /></p>
+    <p><InputDate id="time" placeholder="Czas przygotowania" @bind-Value=recipe.PrepareTime /></p>
+    <p><InputSelect id="difficulty" placeholder="Trudność" @bind-Value=recipe.Difficulty>
+        <option value="1"></option>
+        <option value="2"></option>
+        <option value="3"></option>
+    </InputSelect>
+    </p>
+    
+</EditForm>
+<p><button class="btn btn-primary" @onclick="AddRecipe">Dodaj przepis</button></p>
+
+@code {
+    Recipe recipe = new();
+
+    void AddRecipe()
+    {
+        RecServ.AddRecipe(recipe);
+        recipe = new();
+    }
+}
