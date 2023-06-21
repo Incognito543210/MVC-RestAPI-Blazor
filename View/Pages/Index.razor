@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject IRecipeService RecServ
 
 <PageTitle>Index</PageTitle>
 
@@ -7,23 +6,8 @@
 
 Co dziś ugotujesz?
 
-<h2>Recipe List</h2>
-
-@foreach (var item in recList)
-{
-    <p>
-        <b>Przepis: </b><span>@item.Title</span><br />
-        <b>Porcje: </b><span>@item.Portions</span><br />
-    </p>
-}
 
 @code{
-    private List<Recipe> recList = new();
 
-
-    protected override async Task OnInitializedAsync()
-    {
-        recList = await RecServ.Get();
-    }
 
 }

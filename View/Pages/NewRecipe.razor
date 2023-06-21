@@ -1,5 +1,5 @@
 ﻿@page "/newrecipe"
-@inject IRecipeService RecServ
+@inject RecipeService RecServ
 
 <style>
     body{
@@ -9,9 +9,9 @@
 
 <div class="page-background-class">
     <EditForm Model="@recipe">
-    <p><InputText id="title" placeholder="Nazwa" @bind-Value=recipe.Title /></p>
-    <p><InputTextArea id="content" placeholder="Opis przygotowania" @bind-Value=recipe.Content /></p>
-    <p><InputNumber id="portions" placeholder="Liczba porcji" @bind-Value=recipe.Portions /></p>
+    <p><InputText style="width: 100%" id="title" placeholder="Nazwa" @bind-Value=recipe.Title /></p>
+    <p><InputTextArea style="width: 100%" id="content" placeholder="Opis przygotowania" @bind-Value=recipe.Content /></p>
+    <p>Liczba porcji <InputNumber title="Liczba porcji" placeholder="Liczba porcji" @bind-Value=recipe.Portions /></p>
     <p><InputDate id="time" placeholder="Czas przygotowania" @bind-Value=recipe.PrepareTime /></p>
     <p><InputSelect id="difficulty" placeholder="Trudność" @bind-Value=recipe.Difficulty>
         <option value="1"></option>
