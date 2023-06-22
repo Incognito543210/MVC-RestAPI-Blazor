@@ -69,30 +69,30 @@ namespace API.Controllers
             return Ok(opinion);
         }
 
-        //    [HttpPost]
-        //    [ProducesResponseType(204)]
-        //    [ProducesResponseType(400)]
-        //    public IActionResult CreateOpinion([FromQuery] int userID, int recipeID ,[FromBody] OpinionDto opinionCreate)
-        //    {
-        //        if(opinionCreate == null)
-        //            return BadRequest(ModelState);
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateOpinion([FromQuery] int userID, int recipeID, [FromBody] OpinionDto opinionCreate)
+        {
+            if (opinionCreate == null)
+                return BadRequest(ModelState);
 
-        //        if (!ModelState.IsValid)
-        //            return BadRequest(ModelState);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //        var opinionMap = _mapper.Map<Opinion>(opinionCreate);
+            var opinionMap = _mapper.Map<Opinion>(opinionCreate);
 
-        //        opinionMap.User = _userRepository.GetUser(userID);
-        //        opinionMap.Recipe = _recipeRepository.GetRecipe(recipeID);
+            opinionMap.User = _userRepository.GetUser(userID);
+            opinionMap.Recipe = _recipeRepository.GetRecipe(recipeID);
 
-        //        if(!_opinionRepository.CreateOpinion(opinionMap))
-        //        {
-        //            ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-        //            return BadRequest(ModelState);
-        //        }
+            if (!_opinionRepository.CreateOpinion(opinionMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
+                return BadRequest(ModelState);
+            }
 
-        //        return Ok("Pomyślnie zapisano opinię");
-        //    }
+            return Ok("Pomyślnie zapisano opinię");
+        }
 
         [HttpPut("{opinionID}")]
         [ProducesResponseType(204)]
@@ -119,7 +119,7 @@ namespace API.Controllers
                 ModelState.AddModelError("", "Coś poszło nie tak przy zmianie opinii");
             }
 
-            return NoContent();
+            return Ok("Pomyślnie zaktualizowano opinię");
         }
     }
 }
