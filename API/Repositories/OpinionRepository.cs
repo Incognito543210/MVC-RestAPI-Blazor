@@ -18,6 +18,11 @@ namespace API.Repositories
             return _context.Opinions.OrderBy(o=>o.OpinionID).ToList();
         }
 
+        public Opinion GetOpinion(int id)
+        {
+            return _context.Opinions.Where(o => o.OpinionID == id).FirstOrDefault();
+        }
+
         public bool OpinionExistsOnRecipe(int id)
         {
             return _context.Opinions.Any(o => o.RecipeID == id);
@@ -58,6 +63,12 @@ namespace API.Repositories
         public bool UpdateOpinion(Opinion opinion)
         {
             _context.Update(opinion);
+            return Save();
+        }
+
+        public bool DeleteOpinion(Opinion opinion)
+        {
+            _context.Remove(opinion);
             return Save();
         }
     }

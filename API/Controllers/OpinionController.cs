@@ -121,5 +121,27 @@ namespace API.Controllers
 
             return Ok("Pomyślnie zaktualizowano opinię");
         }
+
+        [HttpDelete("{opinionID}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteOpinion(int opinionID)
+        {
+            if (!_opinionRepository.OpinionExists(opinionID))
+                return NotFound();
+
+            var opinionToDelete = _opinionRepository.GetOpinion(opinionID);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_opinionRepository.DeleteOpinion(opinionToDelete))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania opinii");
+            }
+
+            return Ok("Usunięto opinie");
+        }
     }
 }
