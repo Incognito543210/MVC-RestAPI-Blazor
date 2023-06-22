@@ -4,12 +4,12 @@ namespace API.Interfaces
 {
     public interface ITagRepository
     {
-        public ICollection<Tag> GetTags();
-        public Tag GetTag(int id);
-        public bool TagExists(int id);
-        public bool CreateTag(Tag tag);
-        public bool UpdateTag(Tag tag);
-        public bool DeleteTag(Tag tag);
+        ICollection<Tag> GetTags();
+        Tag GetTag(int id);
+        bool TagExists(int id);
+        bool CreateTag(Tag tag);
+        bool UpdateTag(Tag tag);
+        bool DeleteTag(Tag tag);
         bool Save();
     }
 }

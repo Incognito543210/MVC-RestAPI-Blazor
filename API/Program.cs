@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<IHasCategoryRepository, HasCategoryRepository>();
 builder.Services.AddScoped<IOpinionRepository, OpinionRepository>();
 builder.Services.AddScoped<IRecipeRepository,RecipeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
