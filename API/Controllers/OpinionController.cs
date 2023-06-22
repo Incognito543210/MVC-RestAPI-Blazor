@@ -94,13 +94,32 @@ namespace API.Controllers
         //        return Ok("Pomyślnie zapisano opinię");
         //    }
 
-        //[HttpPut("{opinionID}")]
-        //[ProducesResponseType(204)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(404)]
-        //public IActionResult UpdateOpinion
-        //{
+        [HttpPut("{opinionID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOpinion(int opinionID, [FromBody]OpinionDto updatedOpinion)
+        {
+            if(updatedOpinion == null)
+                return BadRequest(ModelState);
 
-        //}
+            if(opinionID !=updatedOpinion.OpinionID)
+                return BadRequest(ModelState);
+            
+            if(!_opinionRepository.OpinionExists(opinionID))
+                return NotFound();
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var opinionMap = _mapper.Map<Opinion>(updatedOpinion);
+
+            if(!_opinionRepository.UpdateOpinion(opinionMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie opinii");
+            }
+
+            return NoContent();
+        }
     }
 }

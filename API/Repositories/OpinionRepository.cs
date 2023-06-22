@@ -28,6 +28,11 @@ namespace API.Repositories
             return _context.Opinions.Any(o => o.UserID == id);
         }
 
+        public bool OpinionExists(int id)
+        {
+            return _context.Opinions.Any(o=>o.OpinionID == id);
+        }
+
         public ICollection<Opinion> GetOpinionsForRecipe(int id)
         {
             return _context.Opinions.Where(o => o.RecipeID == id).ToList();
