@@ -1,4 +1,5 @@
 ﻿using API.Interfaces;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Model.MODEL;
 
@@ -9,11 +10,12 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, IMapper mapper)
         {
-
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet("{userID}")]
@@ -23,7 +25,7 @@ namespace API.Controllers
             if (!_userRepository.UserExists(userID))
                 return NotFound();
 
-            var recipes = _userRepository.GetUser(userID);
+            var recipes = _mapper.Map<User>(_userRepository.GetUser(userID));
 
             if (!ModelState.IsValid)
             {
