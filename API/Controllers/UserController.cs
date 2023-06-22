@@ -10,7 +10,7 @@ namespace API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper
+        private readonly IMapper _mapper;
 
         public UserController(IUserRepository userRepository, IMapper mapper)
         {
