@@ -1,13 +1,24 @@
 ﻿@page "/mybook"
 @inject NavigationManager NavMan
-@inject IRecipeService RecServ
+@inject RecipeService RecServ
 
 <h3>Moje przepisy</h3>
-@foreach (var recipe in recipes)
+
+@if (recList is null)
 {
     <p>
-        <b>Przepis: </b><span>@recipe.Title</span><br />
+        Loading...
     </p>
+}
+else
+{
+    @foreach (var item in recList)
+    {
+        <p>
+            <b>Przepis: </b><span>@item.Title</span><br />
+            <b>Porcje: </b><span>@item.Portions</span><br />
+        </p>
+    }
 }
 
 <p>
@@ -16,12 +27,15 @@
 
 
 @code {
-    List<Recipe> recipes = new();
+    private List<Recipe>? recList;
 
-    void onClick() => NavMan.NavigateTo("/newrecipe");
 
     protected override async Task OnInitializedAsync()
     {
-        recipes = await RecServ.GetRecipesAsync();
+        recList = await RecServ.GetRecipeListAsync();
     }
+
+    List<Recipe> recipes = new();
+
+    void onClick() => NavMan.NavigateTo("/newrecipe");
 }

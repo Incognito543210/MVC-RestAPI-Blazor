@@ -1,5 +1,4 @@
 ﻿@page "/"
-@inject WeatherService WeathServ
 
 <PageTitle>Index</PageTitle>
 
@@ -7,26 +6,8 @@
 
 Co dziś ugotujesz?
 
-<h2>Weather List</h2>
-
-@foreach (var item in weathList)
-{
-    <p>
-        <b>Przepis: </b><span>@item.Summary</span><br />
-    </p>
-}
 
 @code{
-    private List<WeatherForecast> weathList = new();
 
 
-    protected override async Task OnInitializedAsync()
-    {
-        await GetWeather();
-    }
-
-    private async Task GetWeather()
-    {
-        weathList = await WeathServ.Get();
-    }
 }

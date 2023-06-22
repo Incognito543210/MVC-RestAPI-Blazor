@@ -3,7 +3,7 @@ using Model.MODEL;
 
 namespace View.Data
 {
-    public class RecipeService : IRecipeService
+    public class RecipeService
     {
         private List<Recipe> recipes = new();
 
@@ -16,6 +16,18 @@ namespace View.Data
         public async Task<List<Recipe>> GetRecipesAsync()
         {
             return await Task.FromResult(recipes);
+        }
+
+        private readonly HttpClient _httpClient;
+
+        public RecipeService(HttpClient httpClient)
+        {
+            _httpClient = httpClient;
+        }
+
+        public async Task<List<Recipe>> GetRecipeListAsync()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Recipe>>("/api/Recipe");
         }
     }
 }
