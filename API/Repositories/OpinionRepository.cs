@@ -13,9 +13,41 @@ namespace API.Repositories
             _context = context;
         }
 
-        public ICollection<Opinion> GetOpinions()
+        public ICollection<Opinion> GetOpinions() 
         {
             return _context.Opinions.OrderBy(o=>o.OpinionID).ToList();
+        }
+
+        public bool OpinionExistsOnRecipe(int id)
+        {
+            return _context.Opinions.Any(o => o.RecipeID == id);
+        }
+
+        public bool OpinionExistsOnUser(int id)
+        {
+            return _context.Opinions.Any(o => o.UserID == id);
+        }
+
+        public ICollection<Opinion> GetOpinionsForRecipe(int id)
+        {
+            return _context.Opinions.Where(o => o.RecipeID == id).ToList();
+        }
+
+        public ICollection<Opinion> GetOpinionsForUser(int id)
+        {
+            return _context.Opinions.Where(o => o.UserID == id).ToList();
+        }
+
+        public bool CreateOpinion(Opinion opinion)
+        {
+            _context.Add(opinion);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
