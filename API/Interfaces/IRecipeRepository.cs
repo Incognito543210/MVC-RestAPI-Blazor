@@ -8,6 +8,11 @@ namespace API.Interfaces
 
         ICollection<Recipe> GetRecipes();
 
+        Recipe GetRecipe(int id);
+
+        bool RecipeExists(int recipeId);
+
+
 
     }
 }

@@ -9,7 +9,7 @@ namespace Model.DTO
 {
     public class IngridientDto
     {
-     
+        public int IngridientID { get; set; }
         public string name { get; set; }
      
 
