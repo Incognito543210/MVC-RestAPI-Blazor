@@ -49,5 +49,11 @@ namespace API.Repositories
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateOpinion(Opinion opinion)
+        {
+            _context.Update(opinion);
+            return Save();
+        }
     }
 }

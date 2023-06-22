@@ -11,5 +11,6 @@ namespace API.Interfaces
         public ICollection<Opinion> GetOpinionsForUser(int id);
         bool CreateOpinion(Opinion opinion);
         bool Save();
+        bool UpdateOpinion(Opinion opinion);
     }
 }
