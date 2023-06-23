@@ -2,6 +2,15 @@
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    margin: 0;
+    background-image: url(images/img1.png);
+    background-repeat: no-repeat;
+    background-size: 84% 100%;
+    background-position: right;
+    
 }
 
 h1:focus {
@@ -64,5 +73,5 @@ a, .btn-link {
     }
 
 .page-background-class {
-    background-image: url(C:\Users\Zosia\Source\Repos\Incognito543210\MVC-RestAPI-Blazor\View\wwwroot\css\images\img1.png)
+    opacity: 0.5;
 }
