@@ -7,5 +7,7 @@ namespace API.Interfaces
         public bool UserExists(int id);
         public User GetUser(int id);
 
+ 
+
     }
 }

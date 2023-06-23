@@ -14,9 +14,19 @@ namespace API.Repositories
             _context = context;
         }
 
+       public ICollection<Ingridient> GetIngridientsByRecipe(int id)
+        {
+            return _context.HasIngridients.Where(p=>p.RecipeID==id).Select(c=>c.Ingridient).ToList();   
+        }
+
         public Recipe GetRecipe(int id)
         {
            return _context.Recipes.Where(p=>p.RecipeID==id).FirstOrDefault();
+        }
+
+        public ICollection<Recipe> GetRecipesbyUser(int id)
+        {
+            return _context.Recipes.Where(p => p.UserID == id).ToList();
         }
 
         public ICollection<Recipe> GetRecipes()
@@ -24,9 +34,19 @@ namespace API.Repositories
             return _context.Recipes.OrderBy(p=>p.RecipeID).ToList();
         }
 
+        public bool IngredientsExistsOnRecipe(int id)
+        {
+            return _context.HasIngridients.Any(p => p.RecipeID == id);
+        }
+
         public bool RecipeExists(int recipeId)
         {
             return _context.Recipes.Any(p => p.RecipeID == recipeId);
+        }
+
+        public bool RecipeExistsOnUser(int id)
+        {
+            return _context.Recipes.Any(p => p.UserID == id);
         }
     }
 }

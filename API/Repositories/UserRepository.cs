@@ -11,11 +11,12 @@ namespace API.Repositories
         {
             _context = context;
         }
+      
         public User GetUser(int id)
         {
             return _context.Users.Where(c => c.UserID == id).FirstOrDefault();
         }
-
+   
         public bool UserExists(int id)
         {
             return _context.Users.Any(u=>u.UserID == id);
