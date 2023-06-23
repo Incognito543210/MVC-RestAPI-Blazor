@@ -1,13 +1,76 @@
 ﻿@page "/"
+@inject NavigationManager NavMan
+@inject RecipeService RecServ
 
-<PageTitle>Index</PageTitle>
+<h3>Strona główna</h3>
 
-<h1>Witaj!</h1>
+@if (recipesList == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    @if(recipesList.Any())
+    {
+        <div class="dottedline"></div>
+        <div id="recipes">
+        @foreach (var recipe in recipesList)
+        {
+                <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
+                    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp" align="left">
+                        <div id="description">
+                                <h3>@recipe.Title</h3>
+                                <p>
+                                    <b>Czas przygotowanie: </b>@recipe.PrepareTime<br />
+                                    <b>Porcje: </b>@recipe.Portions<br />
+                                    <b>Trudność: </b>@recipe.Difficulty<br />
+                                </p>
+                        </div>
+                        
+                </div>
+        }
+		</div>
 
-Co dziś ugotujesz?
+        <style>
+            #recipe:hover {
+                background: rgba( 22, 166, 185 );
+                cursor: pointer;
+            }
+            img {
+                display: inline;
+                margin-bottom: 20px;
+                margin-top: 20px;
+                margin-left: 20px;
+                margin-right: 20px;
+                border-radius: 8px;
+                height: 100px;
+            }
 
+            #description {
+                display: inline;
+                margin-bottom: 20px;
+                margin-top: 20px;
+                margin-left: 20px;
+                margin-right: 20px;
+                height: 100px;
+            }
+        </style>
+    }
+}
 
 @code{
+    private List<Recipe>? recipesList;
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        recipesList = await RecServ.GetRecipeListAsync();
+    }
 
+    void navigateToRecipe(int id)
+    {
+        NavMan.NavigateTo("/recipe/" + id);
+    }
 }
+
+

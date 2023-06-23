@@ -1,32 +1,37 @@
 ﻿@page "/newrecipe"
 @inject RecipeService RecServ
 
-<style>
-    body{
-    background-image: url(C:\Users\Zosia\Source\Repos\Incognito543210\MVC-RestAPI-Blazor\View\wwwroot\css\images\img1.png)
+@*<style>
+ .mydiv{
+        background-color: white;
     }
-</style>
+</style>*@
 
-<div class="page-background-class">
+<div >
     <EditForm Model="@recipe">
-    <p><InputText style="width: 100%" id="title" placeholder="Nazwa" @bind-Value=recipe.Title /></p>
-    <p><InputTextArea style="width: 100%" id="content" placeholder="Opis przygotowania" @bind-Value=recipe.Content /></p>
-    <p>Liczba porcji <InputNumber title="Liczba porcji" placeholder="Liczba porcji" @bind-Value=recipe.Portions /></p>
-    <p><InputDate id="time" placeholder="Czas przygotowania" @bind-Value=recipe.PrepareTime /></p>
-    <p><InputSelect id="difficulty" placeholder="Trudność" @bind-Value=recipe.Difficulty>
-        <option value="1"></option>
-        <option value="2"></option>
-        <option value="3"></option>
-    </InputSelect>
-    </p>
+        <p><MudTextField @bind-Value="recipe.Title" Label="Nazwa"></MudTextField></p>
+        <p><MudTextField T="string" Label="Opis przygotowania" Text="@recipe.Content" Lines="10" /></p>
+        <MudStack Row="true">
+            <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" />
+            <MudTimePicker Label="Czas przygotowania" @bind-Time="time" />
+            <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter">
+                <MudSelectItem T="int" Value="1" />
+                <MudSelectItem T="int" Value="2" />
+                <MudSelectItem T="int" Value="3" />
+                <MudSelectItem T="int" Value="4" />
+                <MudSelectItem T="int" Value="5" />
+            </MudSelect>
+        </MudStack>
     
-</EditForm>
-<p><button class="btn btn-primary" @onclick="AddRecipe">Dodaj przepis</button></p>
+</EditForm><br />
+    <p><MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="AddRecipe" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj</MudButton></p>
 </div>
-<img src="/css/images/img1.png" width="500px"/>
 
 @code {
     Recipe recipe = new();
+
+    TimeSpan? time = new TimeSpan(00, 00, 00);
+
 
     async Task AddRecipe()
     {
