@@ -37,7 +37,7 @@ namespace API.Controllers
 
 
 
-        [HttpGet("Ingridient/{IngridientId}")]
+        [HttpGet("{IngridientId}")]
         [ProducesResponseType(200, Type = typeof(Ingridient))]
         [ProducesResponseType(400)]
         public IActionResult GetIngridient(int id)
