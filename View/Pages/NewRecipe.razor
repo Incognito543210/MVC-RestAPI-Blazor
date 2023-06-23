@@ -1,11 +1,11 @@
 ﻿@page "/newrecipe"
 @inject RecipeService RecServ
 
-<style>
+@*<style>
  .mydiv{
         background-color: white;
     }
-</style>
+</style>*@
 
 <div >
     <EditForm Model="@recipe">
@@ -26,7 +26,6 @@
 </EditForm><br />
     <p><MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="AddRecipe" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj</MudButton></p>
 </div>
-@*<img src="/css/images/img1.png" width="500px"/>*@
 
 @code {
     Recipe recipe = new();
