@@ -29,5 +29,10 @@ namespace View.Data
         {
             return await _httpClient.GetFromJsonAsync<List<Recipe>>("/api/Recipe");
         }
+
+        public async Task<Recipe> GetRecipeAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<Recipe>("/api/RecipeId");
+        }
     }
 }
