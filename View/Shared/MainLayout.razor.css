@@ -8,6 +8,28 @@ main {
     flex: 1;
 }
 
+#content {
+    position: relative;
+}
+
+    #content::before {
+        content: "";
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        bottom: 0px;
+        left: 0px;
+        background-image: url(https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp);
+        background-repeat: no-repeat;
+        opacity: 0.25;
+    }
+
+article {
+    position: relative;
+    opacity: 1;
+    color: black;
+}
+
 .sidebar {
     background-image: linear-gradient(180deg, rgba( 22, 166, 185 ) 20%, rgba( 235, 234, 195 ) 70%);
 }

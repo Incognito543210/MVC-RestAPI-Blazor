@@ -6,11 +6,10 @@ html, body {
     height: 100vh;
     overflow: hidden;
     margin: 0;
-    background-image: url(images/img1.png);
+    /*background-image: url(images/img1.png);
     background-repeat: no-repeat;
     background-size: 84% 100%;
-    background-position: right;
-    
+    background-position: right;*/
 }
 
 h1:focus {
@@ -72,6 +71,6 @@ a, .btn-link {
         content: "An error has occurred."
     }
 
-.page-background-class {
+/*.page-background-class {
     opacity: 0.5;
-}
+}*/

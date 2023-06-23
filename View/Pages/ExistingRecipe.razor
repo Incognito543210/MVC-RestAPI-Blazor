@@ -1,0 +1,8 @@
+﻿@page "/recipe/{Id:int}"
+
+<h3>Recipe @Id</h3>
+
+@code {
+	[Parameter]
+	public int? Id { get; set; }
+}
