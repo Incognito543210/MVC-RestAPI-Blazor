@@ -9,7 +9,14 @@
 
 <div >
     <EditForm Model="@recipe">
-        <p><MudTextField @bind-Value="recipe.Title" Label="Nazwa"></MudTextField></p>
+        <MudStack Row="true">
+            <MudTextField @bind-Value="recipe.Title" Label="Nazwa"></MudTextField>
+            <MudTextField @bind-Value="ingredient" Label="Składnik"></MudTextField>
+            <MudTextField @bind-Value="quantity" Adornment="Adornment.End" AdornmentText="g" Label="Ilość"></MudTextField>
+            <MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
+            <MudTextField @bind-Value="tag" Adornment="Adornment.End" AdornmentText="g" Label="Tag"></MudTextField>
+            <MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
+        </MudStack>
         <p><MudTextField T="string" Label="Opis przygotowania" Text="@recipe.Content" Lines="10" /></p>
         <MudStack Row="true">
             <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" />
@@ -24,13 +31,50 @@
         </MudStack>
     
 </EditForm><br />
-    <p><MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="AddRecipe" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj</MudButton></p>
+    <p><MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="AddRecipe" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj przepis</MudButton></p>
+
+    @*@if (ingredients is null)
+    {
+        <p>
+            Ten przepis nie ma składników
+        </p>
+    }
+    else
+    {
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Składnik</th>
+                    <th>Ilość</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ingredients)
+                {
+                    <tr>
+                        <td>
+                            @item.Name
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="@(() => EditIngredient(item))">📝</button>
+                            <button class="btn btn-danger" @onclick="@(() => DeleteIngredient(item))">❌</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }*@
 </div>
 
 @code {
     Recipe recipe = new();
 
     TimeSpan? time = new TimeSpan(00, 00, 00);
+    String? ingredient = "";
+    String? tag = "";
+    int? quantity = 0;
+    List<Ingridient> ingridients = new();
 
 
     async Task AddRecipe()
