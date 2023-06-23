@@ -10,6 +10,8 @@ main {
 
 #content {
     position: relative;
+    height: 100%;
+    width: 100%
 }
 
     #content::before {
@@ -20,7 +22,7 @@ main {
         bottom: 0px;
         left: 0px;
         background-image: url(https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp);
-        background-repeat: no-repeat;
+        /*background-repeat: no-repeat;*/
         opacity: 0.25;
     }
 
