@@ -57,7 +57,7 @@ namespace API.Controllers
 
         }
 
-        [HttpPost]
+       /* [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateIngrideint([FromBody] IngridientDto ingridientCreate)
@@ -90,7 +90,7 @@ namespace API.Controllers
 
             return Ok("Zakończono pomyślnie");
 
-        }
+        }*/
 
 
 

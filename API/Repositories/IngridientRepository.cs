@@ -1,6 +1,7 @@
 ﻿using API.Interfaces;
 using DAL;
 using Model.MODEL;
+using SQLitePCL;
 
 namespace API.Repositories
 {
@@ -12,9 +13,35 @@ namespace API.Repositories
             _context= context;  
         }
 
-        public bool CreateIngridient(Ingridient ingridient)
+        public bool CreateIngridient(Ingridient ingridient, int recipeId)
         {
-            _context.Add(ingridient);
+            var ingridientCheckExists = GetIngridients().Where(c => c.name.Trim().ToUpper() == ingridient.name.TrimEnd().ToUpper()).FirstOrDefault();
+            var recipe = _context.Recipes.Where(a=>a.RecipeID== recipeId).FirstOrDefault();
+
+            if (ingridientCheckExists != null)
+            {
+                var hasIngridient = new HasIngridient()
+                {
+                    Ingridient = ingridientCheckExists,
+                    IngridientID = ingridientCheckExists.IngridientID,
+                    RecipeID = recipeId,
+                    Recipe = recipe,
+
+                };
+                _context.Add(hasIngridient);
+            }
+            else {
+                var hasIngridient = new HasIngridient()
+                {
+                    Ingridient = ingridient,
+                    IngridientID = ingridient.IngridientID,
+                    RecipeID = recipeId,
+                    Recipe = recipe,
+
+                };
+                _context.Add(hasIngridient);
+                _context.Add(ingridient);
+            }
             return Save();
         }
 
