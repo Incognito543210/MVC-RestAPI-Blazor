@@ -12,8 +12,6 @@ namespace API.Helper
             CreateMap<OpinionDto, Opinion>();
             CreateMap<Tag, TagDto>();
             CreateMap<TagDto, Tag>();
-            CreateMap<HasCategory, HasCategoryDto>();
-            CreateMap<HasCategoryDto, HasCategory>();
             CreateMap<Recipe, RecipeDto>();
             CreateMap<RecipeDto, Recipe>();
             CreateMap<Ingridient, IngridientDto>();

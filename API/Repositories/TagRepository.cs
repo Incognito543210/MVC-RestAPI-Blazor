@@ -16,13 +16,13 @@ namespace API.Repositories
         public bool CreateTag(Tag tag)
         {
             _context.Add(tag);
-            return Save();
+            return true;
         }
 
         public bool DeleteTag(Tag tag)
         {
             _context.Remove(tag);
-            return Save();
+            return true;
         }
 
         public Tag GetTag(int id)
@@ -35,12 +35,6 @@ namespace API.Repositories
             return _context.Tags.OrderBy(o => o.TagID).ToList();
         }
 
-        public bool Save()
-        {
-            var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
-        }
-
         public bool TagExists(int id)
         {
             return _context.Tags.Any(t=>t.TagID == id);
@@ -49,7 +43,7 @@ namespace API.Repositories
         public bool UpdateTag(Tag tag)
         {
             _context.Update(tag);
-            return Save();
+            return true;
         }
     }
 }

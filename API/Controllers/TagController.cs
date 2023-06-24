@@ -10,12 +10,12 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class TagController : ControllerBase
     {
-        private readonly ITagRepository _tagRepository;
+        private readonly ITagServices _tagServices;
         private readonly IMapper _mapper;
 
-        public TagController(ITagRepository tagRepository, IMapper mapper)
+        public TagController(ITagServices tagServices, IMapper mapper)
         {
-            _tagRepository = tagRepository;
+            _tagServices = tagServices;
             _mapper = mapper;
         }
 
@@ -24,7 +24,7 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetTags()
         {
-            var tags = _mapper.Map<List<Tag>>(_tagRepository.GetTags());
+            var tags = _mapper.Map<List<Tag>>(_tagServices.GetAllTags());
 
             if (!ModelState.IsValid)
             {
@@ -32,21 +32,6 @@ namespace API.Controllers
             }
            
             return Ok(tags);
-        }
-
-        [HttpGet("{tagID}")]
-        [ProducesResponseType(200, Type = typeof(Tag))]
-        [ProducesResponseType(400)]
-        public IActionResult GetTag(int tagID)
-        {
-            var tag = _mapper.Map<Tag>(_tagRepository.GetTag(tagID));
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            return Ok(tag);
         }
 
         [HttpPost]
@@ -60,7 +45,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            var tag = _tagRepository.GetTags()
+            var tag = _tagServices.GetAllTags()
                 .Where(t => t.Name.Trim().ToUpper() == tagCreate.Name.TrimEnd().ToUpper())
                 .FirstOrDefault();
             if (tag != null)
@@ -76,7 +61,7 @@ namespace API.Controllers
 
             var tagMap = _mapper.Map<Tag>(tagCreate);
 
-            if (!_tagRepository.CreateTag(tagMap))
+            if (!_tagServices.CreateTag(tagMap))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
                 return BadRequest(ModelState);
@@ -85,29 +70,21 @@ namespace API.Controllers
             return Ok("Pomyślnie zapisano tag");
         }
 
-        [HttpPut("{tagID}")]
+        [HttpPut]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateTag(int tagID, [FromBody] TagDto updatedTag)
+        public IActionResult UpdateTag( [FromBody] TagDto updatedTag)
         {
             if(updatedTag == null)
-                return BadRequest(ModelState);
-
-            if (tagID != updatedTag.TagID)
-                return BadRequest(ModelState);
-
-            if (!_tagRepository.TagExists(tagID))
-                return NotFound();
-
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+                return BadRequest();
 
             var tagMap = _mapper.Map<Tag>(updatedTag);
 
-            if (!_tagRepository.UpdateTag(tagMap))
+            if (!_tagServices.TagExists(tagMap))
+                return NotFound();
+
+            if (!_tagServices.UpdateTag(tagMap))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak przy zmianie tagu");
                 return StatusCode(422, ModelState);
@@ -116,21 +93,19 @@ namespace API.Controllers
             return NoContent();
         }
 
-        [HttpDelete("tagID")]
+        [HttpDelete]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteTag(int tagID)
+        public IActionResult DeleteTag(int id)
         {
-            if(!_tagRepository.TagExists(tagID))
+            if(!_tagServices.TagExists(id))
                 return NotFound();
-
-            var tagToDelete = _tagRepository.GetTag(tagID);
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if(!_tagRepository.DeleteTag(tagToDelete))
+            if(!_tagServices.DeleteTag(id))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania tagu");
                 return BadRequest(ModelState);

@@ -9,7 +9,8 @@ namespace API.Interfaces
         bool HasCategoryExistsByRecipe(int id);
         bool HasCategoryExistsByTag(int id);
         bool CreateHasCategory(HasCategory hasCategory);
-        bool DeleteHasCategory(HasCategory hasCategory);
         bool Save();
+        ICollection<HasCategory> GetHasCategoriesByTag(int tagID);
+        bool DeleteHasCategoryByTag(int tagID);
     }
 }

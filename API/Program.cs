@@ -1,5 +1,6 @@
 using API.Interfaces;
 using API.Repositories;
+using API.Services;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<ITagRepository, TagRepository>();
+builder.Services.AddScoped<ITagServices, TagServices>();
 builder.Services.AddScoped<IHasCategoryRepository, HasCategoryRepository>();
 builder.Services.AddScoped<IOpinionRepository, OpinionRepository>();
 builder.Services.AddScoped<IRecipeRepository,RecipeRepository>();

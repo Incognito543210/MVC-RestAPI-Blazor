@@ -16,13 +16,24 @@ namespace API.Repositories
         public bool CreateHasCategory(HasCategory hasCategory)
         {
             _context.Add(hasCategory);
-            return Save();
+            return true;
         }
 
-        public bool DeleteHasCategory(HasCategory hasCategory)
+        public ICollection<HasCategory> GetHasCategoriesByTag(int tagID)
         {
-            _context.Remove(hasCategory);
-            return Save();
+            return _context.HasCategories.Where(hs => hs.TagID == tagID).ToList();
+        }
+
+        public ICollection<HasCategory> GetHasCategoriesByRecipe(int  recipeID)
+        {
+            return _context.HasCategories.Where(hs => hs.RecipeID == recipeID).ToList();
+        }
+
+        public bool DeleteHasCategoryByTag(int tagID)
+        {
+            var hasCategoryToDelete = GetHasCategoriesByTag(tagID);
+            _context.Remove(hasCategoryToDelete);
+            return true;
         }
 
         public HasCategory GetHasCategoryForRecipe(int id)
@@ -52,7 +63,7 @@ namespace API.Repositories
         public bool UpdateHasCategory(HasCategory hasCategory)
         {
             _context.Update(hasCategory);
-            return Save();
+            return true;
         }
     }
 }
