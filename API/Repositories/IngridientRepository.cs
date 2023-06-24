@@ -11,6 +11,13 @@ namespace API.Repositories
         {
             _context= context;  
         }
+
+        public bool CreateIngridient(Ingridient ingridient)
+        {
+            _context.Add(ingridient);
+            return Save();
+        }
+
         public Ingridient GetIngridient(int id)
         {
             return _context.Ingridients.Where(c => c.IngridientID == id).FirstOrDefault();
@@ -25,6 +32,12 @@ namespace API.Repositories
         public bool IngridientExists(int id)
         {
             return _context.Ingridients.Any(c => c.IngridientID == id);
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

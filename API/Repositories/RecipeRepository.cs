@@ -48,5 +48,17 @@ namespace API.Repositories
         {
             return _context.Recipes.Any(p => p.UserID == id);
         }
+
+        public bool CreateRecipe(Recipe recipe)
+        {
+            _context.Add(recipe);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

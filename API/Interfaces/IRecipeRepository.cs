@@ -20,5 +20,12 @@ namespace API.Interfaces
 
         ICollection<Recipe> GetRecipesbyUser(int id);
 
+        bool CreateRecipe(Recipe recipe);
+
+        bool Save();
+
+
+
+
     }
 }

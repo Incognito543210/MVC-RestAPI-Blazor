@@ -9,7 +9,9 @@ namespace API.Interfaces
 
         bool IngridientExists(int id);
 
-       
+        bool CreateIngridient(Ingridient ingridient);
+
+        bool Save();
 
     }
 

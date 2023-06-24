@@ -13,6 +13,7 @@ namespace API.Controllers
     {
         private readonly IIngridientRepository _ingridientRepository;
         private readonly IMapper _mapper;
+        private readonly IRecipeRepository recipeRepository;
 
         public IngridientController(IIngridientRepository ingridientRepository, IMapper mapper)
         {
@@ -53,6 +54,41 @@ namespace API.Controllers
 
             return Ok(ingridient);
 
+
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateIngrideint([FromBody] IngridientDto ingridientCreate)
+        {
+            if (ingridientCreate == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var ingridient = _ingridientRepository.GetIngridients().Where(c => c.name.Trim().ToUpper() == ingridientCreate.name.TrimEnd().ToUpper()).FirstOrDefault();
+
+            if(ingridient != null)
+            {
+                ModelState.AddModelError("", "Składnik już istnieje");
+                return StatusCode(422, ModelState);
+            }
+
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var ingrideintMap = _mapper.Map<Ingridient>(ingridientCreate);
+
+
+            if(!_ingridientRepository.CreateIngridient(ingrideintMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Zakończono pomyślnie");
 
         }
 
