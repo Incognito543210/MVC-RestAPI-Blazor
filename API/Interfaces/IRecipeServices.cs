@@ -1,6 +1,10 @@
-﻿namespace API.Interfaces
+﻿using DAL;
+using Model.MODEL;
+
+namespace API.Interfaces
 {
-    public class IRecipeServices
+    public interface IRecipeServices
     {
+      /*  bool CreateRecipe(Recipe Recipe); */
     }
 }
