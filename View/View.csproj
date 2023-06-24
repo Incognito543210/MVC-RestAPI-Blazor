@@ -14,19 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Shared\Images\image1.jpg" />
-    <None Remove="Shared\Images\img1.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Shared\Images\image1.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Shared\Images\img1.png">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <None Remove="wwwroot\images\image1.jpg" />
+    <None Remove="wwwroot\images\img1.png" />
   </ItemGroup>
 
   <ItemGroup>

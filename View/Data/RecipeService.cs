@@ -27,12 +27,18 @@ namespace View.Data
 
         public async Task<List<Recipe>> GetRecipeListAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<Recipe>>("/api/Recipe");
+            return await _httpClient.GetFromJsonAsync<List<Recipe>>("/api/Recipe/AllRecipes");
         }
 
         public async Task<Recipe> GetRecipeAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Recipe>("/api/RecipeId");
+            return await _httpClient.GetFromJsonAsync<Recipe>("/api/Recipe/" + id);
         }
+
+        public async Task<List<Ingridient>> GetIngridientsListAsync(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<List<Ingridient>>("/api/Recipe/ingridients/" + id);
+        }
+
     }
 }
