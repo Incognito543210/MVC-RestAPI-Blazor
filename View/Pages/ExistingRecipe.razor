@@ -1,8 +1,66 @@
 ﻿@page "/recipe/{Id:int}"
+@inject NavigationManager NavMan
+@inject RecipeService RecServ
 
-<h3>Recipe @Id</h3>
+@if (recipe == null)
+{
+    <h3>Loading...</h3>
+}
+else
+{
+    <h3>@recipe.Title</h3>
+
+    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp" />
+
+    @if (ingridientsList == null)
+    {
+        <h3>Brak składników</h3>
+    }
+    else
+    {
+        @if (ingridientsList.Any())
+        {
+            <h5>Składniki:</h5>
+            <ul>
+                @foreach (var ingridient in ingridientsList)
+                {
+                    <li>@ingridient.name</li>
+                }
+            </ul>
+        }
+    }
+
+    <h5>Sposób przygotowania:</h5>
+    <p>@recipe.Content</p>
+}
+
+<style>
+    img {
+        width: 900px;
+        height: 150px;
+        object-fit: cover;
+        object-position: 25% 25%;
+        margin: 10px 0 10px 0;
+        border-radius: 8px
+    }
+
+    ul {
+        list-style-type: disc;
+        margin: 0 20px 0 0
+    }
+</style>
 
 @code {
-	[Parameter]
-	public int? Id { get; set; }
+    [Parameter]
+    public int Id { get; set; }
+
+    private Recipe? recipe;
+    private List<Ingridient>? ingridientsList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        recipe = await RecServ.GetRecipeAsync(Id);
+        ingridientsList = await RecServ.GetIngridientsListAsync(Id);
+    }
 }

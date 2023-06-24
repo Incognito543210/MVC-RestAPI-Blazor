@@ -65,7 +65,7 @@ namespace API.Controllers
 
         public IActionResult GetIngridientByRecipe(int recipeId)
         {
-            if (_recipeRepository.IngredientsExistsOnRecipe(recipeId))
+            if (!_recipeRepository.IngredientsExistsOnRecipe(recipeId))
                 return NotFound();
 
             var ingridients = _mapper.Map<List<IngridientDto>>(_recipeRepository.GetIngridientsByRecipe(recipeId));

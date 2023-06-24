@@ -2,6 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 main {
@@ -11,7 +12,7 @@ main {
 #content {
     position: relative;
     height: 100%;
-    width: 100%
+    width: 100%;
 }
 
     #content::before {
@@ -21,15 +22,19 @@ main {
         right: 0px;
         bottom: 0px;
         left: 0px;
-        background-image: url(https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp);
-        /*background-repeat: no-repeat;*/
-        opacity: 0.25;
+        background-image: url(images/img1.png);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-position: center;
+        background-size: cover;
+        opacity: 0.5;
     }
 
 article {
     position: relative;
     opacity: 1;
     color: black;
+    overflow: auto;
 }
 
 .sidebar {
