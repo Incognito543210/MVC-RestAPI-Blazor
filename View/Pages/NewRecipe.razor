@@ -7,21 +7,14 @@
     }
 </style>*@
 
-<div >
-    <EditForm Model="@recipe">
+<div>
+    <EditForm Model="@recipe" OnValidSubmit="@AddRecipe">
+        <DataAnnotationsValidator />
         <MudStack Row="true">
-            <MudTextField @bind-Value="recipe.Title" Label="Nazwa"></MudTextField>
-            <MudTextField @bind-Value="ingredient" Label="Składnik"></MudTextField>
-            <MudTextField @bind-Value="quantity" Adornment="Adornment.End" AdornmentText="g" Label="Ilość"></MudTextField>
-            <MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
-            <MudTextField @bind-Value="tag" Adornment="Adornment.End" AdornmentText="g" Label="Tag"></MudTextField>
-            <MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
-        </MudStack>
-        <p><MudTextField T="string" Label="Opis przygotowania" Text="@recipe.Content" Lines="10" /></p>
-        <MudStack Row="true">
-            <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" />
-            <MudTimePicker Label="Czas przygotowania" @bind-Time="time" />
-            <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter">
+            <MudTextField @bind-Value="recipe.Title" Label="Nazwa" For="@(() => recipe.Title)"></MudTextField>
+            <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" For="@(() => recipe.Portions)" />
+            <MudTimePicker Label="Czas przygotowania" @bind-Time="time" @*For="@(() => recipe.PrepareTime)"*@ />
+            <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter" For="@(() => recipe.Difficulty)">
                 <MudSelectItem T="int" Value="1" />
                 <MudSelectItem T="int" Value="2" />
                 <MudSelectItem T="int" Value="3" />
@@ -29,11 +22,29 @@
                 <MudSelectItem T="int" Value="5" />
             </MudSelect>
         </MudStack>
-    
-</EditForm><br />
-    <p><MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="AddRecipe" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj przepis</MudButton></p>
+        <p><MudTextField T="string" Label="Opis przygotowania" Text="@recipe.Content" Lines="10" For="@(() => recipe.Content)" /></p>
+        <p><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj przepis</MudButton></p>
+    </EditForm>
+    <MudStack Row="true">
+        <EditForm Model="@ingredient" OnValidSubmit="@AddIngredient">
+            <DataAnnotationsValidator />
+            <MudStack Row="true">
+                <MudTextField @bind-Value="ingredient.name" Label="Składnik" For="@(() => ingredient.name)"></MudTextField>
+                <MudTextField @bind-Value="quantity" Adornment="Adornment.End" AdornmentText="g" Label="Ilość"></MudTextField>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
+            </MudStack>
+        </EditForm>
+        <EditForm Model="@tag" OnValidSubmit="@AddTag">
+            <DataAnnotationsValidator />
+            <MudStack Row="true">
+                <MudTextField @bind-Value="tag.Name" Label="Tag" For="@(() => tag.Name)"></MudTextField>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
+            </MudStack>
+        </EditForm><br />
+    </MudStack><br />
 
-    @*@if (ingredients is null)
+
+    @if (ingredients is null)
     {
         <p>
             Ten przepis nie ma składników
@@ -53,33 +64,45 @@
                 {
                     <tr>
                         <td>
-                            @item.Name
+                            @item
                         </td>
                         <td>
-                            <button class="btn btn-primary" @onclick="@(() => EditIngredient(item))">📝</button>
-                            <button class="btn btn-danger" @onclick="@(() => DeleteIngredient(item))">❌</button>
+                            <button class="btn btn-primary" @*@onclick="@(() => EditIngredient(item))*@">📝</button>
+                            <button class="btn btn-danger" @*@onclick="@(() => DeleteIngredient(item))" *@>❌</button>
                         </td>
                     </tr>
                 }
             </tbody>
         </table>
 
-    }*@
+    }
 </div>
 
 @code {
-    Recipe recipe = new();
+    RecipeDto recipe = new();
+    IngridientDto ingredient = new();
+    TagDto tag = new();
 
     TimeSpan? time = new TimeSpan(00, 00, 00);
-    String? ingredient = "";
-    String? tag = "";
     int? quantity = 0;
-    List<Ingridient> ingridients = new();
+    List<IngridientDto> ingredients = new();
 
 
     async Task AddRecipe()
     {
         await RecServ.AddRecipeAsync(recipe);
         recipe = new();
+    }
+
+    async Task AddIngredient()
+    {
+        //await RecServ.AddRecipeAsync(recipe);
+        //recipe = new();
+    }
+
+    async Task AddTag()
+    {
+        //await RecServ.AddRecipeAsync(recipe);
+        //recipe = new();
     }
 }

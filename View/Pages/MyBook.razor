@@ -20,7 +20,7 @@ else
                     <div id="description">
                         <h3>@recipe.Title</h3>
                         <p>
-                            <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
+                            <b>Data dodania: </b>@recipe.PrepareTime<br />
                             <b>Porcje: </b>@recipe.Portions<br />
                             <b>Trudność: </b>@recipe.Difficulty<br />
                         </p>
@@ -33,7 +33,7 @@ else
 }
 
 <p>
-    <button class="btn btn-primary" @onclick="onClick">Nowy przepis</button>
+    <MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="onClick" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Nowy przepis</MudButton>
 </p>
 
 <style>
@@ -64,7 +64,7 @@ else
 
 
 @code {
-    private List<Recipe>? recipesList;
+    private List<RecipeDto>? recipesList;
 
 
     protected override async Task OnInitializedAsync()
@@ -73,7 +73,7 @@ else
         recipesList = await RecServ.GetRecipeListAsync();
     }
 
-    List<Recipe> recipes = new();
+    List<RecipeDto> recipes = new();
 
     void navigateToRecipe(int id)
     {

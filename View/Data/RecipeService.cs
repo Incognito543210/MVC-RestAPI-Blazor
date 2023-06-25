@@ -1,19 +1,19 @@
 ﻿using Model;
-using Model.MODEL;
+using Model.DTO;
 
 namespace View.Data
 {
     public class RecipeService
     {
-        private List<Recipe> recipes = new();
+        private List<RecipeDto> recipes = new();
 
-        public Task AddRecipeAsync(Recipe recipe)
+        public Task AddRecipeAsync(RecipeDto recipe)
         {
             recipes.Add(recipe);
             return Task.CompletedTask;
         }
 
-        public async Task<List<Recipe>> GetRecipesAsync()
+        public async Task<List<RecipeDto>> GetRecipesAsync()
         {
             return await Task.FromResult(recipes);
         }
@@ -25,19 +25,19 @@ namespace View.Data
             _httpClient = httpClient;
         }
 
-        public async Task<List<Recipe>> GetRecipeListAsync()
+        public async Task<List<RecipeDto>> GetRecipeListAsync()
         {
-            return await _httpClient.GetFromJsonAsync<List<Recipe>>("/api/Recipe/AllRecipes");
+            return await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/AllRecipes");
         }
 
-        public async Task<Recipe> GetRecipeAsync(int id)
+        public async Task<RecipeDto> GetRecipeAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Recipe>("/api/Recipe/" + id);
+            return await _httpClient.GetFromJsonAsync<RecipeDto>("/api/Recipe/" + id);
         }
 
-        public async Task<List<Ingridient>> GetIngridientsListAsync(int id)
+        public async Task<List<IngridientDto>> GetIngridientsListAsync(int id)
         {
-            return await _httpClient.GetFromJsonAsync<List<Ingridient>>("/api/Recipe/ingridients/" + id);
+            return await _httpClient.GetFromJsonAsync<List<IngridientDto>>("/api/Recipe/ingridients/" + id);
         }
 
     }

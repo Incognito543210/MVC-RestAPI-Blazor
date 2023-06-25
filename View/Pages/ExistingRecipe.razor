@@ -54,8 +54,8 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private Recipe? recipe;
-    private List<Ingridient>? ingridientsList;
+    private RecipeDto? recipe;
+    private List<IngridientDto>? ingridientsList;
 
     protected override async Task OnInitializedAsync()
     {
