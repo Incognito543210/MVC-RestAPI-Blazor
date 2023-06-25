@@ -36,6 +36,13 @@ namespace API.Repositories
             return true;
         }
 
+        public bool DeleteHasCategoryByRecipe(int recipeID)
+        {
+            var hasCategoryToDelete = GetHasCategoriesByRecipe(recipeID);
+            _context.Remove(hasCategoryToDelete);
+            return true;
+        }
+
         public HasCategory GetHasCategoryForRecipe(int id)
         {
             return _context.HasCategories.Where(hc => hc.RecipeID == id).FirstOrDefault();
@@ -52,18 +59,6 @@ namespace API.Repositories
         public bool HasCategoryExistsByTag(int id)
         {
             return _context.HasCategories.Any(hc => hc.TagID == id);
-        }
-
-        public bool Save()
-        {
-            var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
-        }
-
-        public bool UpdateHasCategory(HasCategory hasCategory)
-        {
-            _context.Update(hasCategory);
-            return true;
         }
     }
 }
