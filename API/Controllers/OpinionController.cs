@@ -122,7 +122,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            return NoContent();
+            return Ok("Pomyślnie zmodyfikowano opinię");
         }
 
         [HttpDelete("{opinionID}")]
@@ -145,7 +145,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            return NoContent();
+            return Ok("Pomyślnie usunięto opinię");
         }
     }
 }
