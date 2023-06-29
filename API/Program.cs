@@ -17,7 +17,7 @@ builder.Services.AddScoped<IRecipeRepository,RecipeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IIngridientRepository, IngridientRepository>();
 
-builder.Services.AddScoped<ITagServices, TagServices>();
+//builder.Services.AddScoped<ITagServices, TagServices>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

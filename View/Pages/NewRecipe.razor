@@ -12,8 +12,8 @@
         <DataAnnotationsValidator />
         <MudStack Row="true">
             <MudTextField @bind-Value="recipe.Title" Label="Nazwa" For="@(() => recipe.Title)"></MudTextField>
-            <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" For="@(() => recipe.Portions)" />
-            <MudTimePicker Label="Czas przygotowania" @bind-Time="time" @*For="@(() => recipe.PrepareTime)"*@ />
+            <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" Min="1" For="@(() => recipe.Portions)" />
+            @*<MudTimePicker Label="Czas przygotowania" @bind-Time="time" For="@(() => recipe.PrepareTime)" />*@
             <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter" For="@(() => recipe.Difficulty)">
                 <MudSelectItem T="int" Value="1" />
                 <MudSelectItem T="int" Value="2" />

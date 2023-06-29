@@ -34,7 +34,7 @@ namespace API.Controllers
             return Ok(tags);
         }
 
-        [HttpGet]
+        [HttpGet("{TagId}")]
         [ProducesResponseType(200, Type = typeof(Tag))]
         [ProducesResponseType(400)]
         public IActionResult GetByID(int id)

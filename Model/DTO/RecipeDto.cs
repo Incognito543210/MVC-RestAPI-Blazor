@@ -24,7 +24,7 @@ namespace Model.DTO
         public DateTime PostData { get; set; }
 
         [Required(ErrorMessage = "Określ liczbę porcji.")]
-        [Range(1, 5)]
+        [Range(1, 100)]
         public int Portions { get; set; }
 
         [Required(ErrorMessage = "Określ stopień trudności.")]
