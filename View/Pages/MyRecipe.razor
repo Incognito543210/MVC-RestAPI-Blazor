@@ -1,4 +1,4 @@
-﻿@page "/recipe/{Id:int}"
+﻿@page "/myrecipe/{Id:int}"
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 
@@ -13,7 +13,7 @@ else
     </div>
 
     <div id="info">
-        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp" >
+        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
         <div id="description">
             <p>
                 <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
@@ -105,8 +105,8 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private RecipeDto? recipe;
-    private List<IngridientDto>? ingridientsList;
+    private Recipe? recipe;
+    private List<Ingridient>? ingridientsList;
 
     protected override async Task OnInitializedAsync()
     {

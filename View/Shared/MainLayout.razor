@@ -6,18 +6,21 @@
 <MudSnackbarProvider />
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+    <div id="container">
+        <div id="topbar">
+            <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
+        </div>
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">Autorzy</a>
-        </div>
-        <div id="content">
-            <article class="content px-4">
-                @Body
-            </article>
-        </div>
-    </main>
+        <main>
+            <div id="nav">
+                <NavMenu/>
+            </div>
+
+            <div id="content">
+                <div id="article">
+                    @Body
+                </div>
+            </div>
+        </main>
+    </div>
 </div>

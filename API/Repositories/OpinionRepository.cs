@@ -51,25 +51,19 @@ namespace API.Repositories
         public bool CreateOpinion(Opinion opinion)
         {
             _context.Add(opinion);
-            return Save();
-        }
-
-        public bool Save()
-        {
-            var saved = _context.SaveChanges();
-            return saved > 0 ? true : false;
+            return true;
         }
 
         public bool UpdateOpinion(Opinion opinion)
         {
             _context.Update(opinion);
-            return Save();
+            return true;
         }
 
         public bool DeleteOpinion(Opinion opinion)
         {
             _context.Remove(opinion);
-            return Save();
+            return true;
         }
     }
 }

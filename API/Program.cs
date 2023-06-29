@@ -1,5 +1,6 @@
 using API.Interfaces;
 using API.Repositories;
+using API.Services;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,9 @@ builder.Services.AddScoped<IOpinionRepository, OpinionRepository>();
 builder.Services.AddScoped<IRecipeRepository,RecipeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IIngridientRepository, IngridientRepository>();
+
+builder.Services.AddScoped<ITagServices, TagServices>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

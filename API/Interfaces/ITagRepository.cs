@@ -6,10 +6,6 @@ namespace API.Interfaces
     {
         ICollection<Tag> GetTags();
         Tag GetTag(int id);
-        bool TagExists(int id);
-        bool CreateTag(Tag tag);
-        bool UpdateTag(Tag tag);
-        bool DeleteTag(Tag tag);
-        bool Save();
+        bool TagExists(int tag);
     }
 }

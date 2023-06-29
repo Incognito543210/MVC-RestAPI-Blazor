@@ -10,14 +10,14 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class OpinionController : ControllerBase
     {
-        private readonly IOpinionRepository _opinionRepository;
+        private readonly IOpinionServices _opinionServices;
         private readonly IUserRepository _userRepository;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IMapper _mapper;
 
-        public OpinionController(IOpinionRepository opinionRepository, IUserRepository userRepository, IRecipeRepository recipeRepository, IMapper mapper)
+        public OpinionController(IOpinionServices opinionServices, IUserRepository userRepository, IRecipeRepository recipeRepository, IMapper mapper)
         {
-            _opinionRepository = opinionRepository;
+            _opinionServices = opinionServices;
             _userRepository = userRepository;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
@@ -28,7 +28,7 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetOpinions()
         {
-            var opinions = _mapper.Map<List<OpinionDto>>(_opinionRepository.GetOpinions());
+            var opinions = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinions());
 
             if (!ModelState.IsValid)
             {
@@ -43,10 +43,10 @@ namespace API.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetOpinionsForRecipe(int recipeID)
         {
-            if (!_opinionRepository.OpinionExistsOnRecipe(recipeID))
+            if (!_opinionServices.OpinionExistsOnRecipe(recipeID))
                 return NotFound();
 
-            var opinion = _mapper.Map<List<OpinionDto>>(_opinionRepository.GetOpinionsForRecipe(recipeID));
+            var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForRecipe(recipeID));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -60,10 +60,10 @@ namespace API.Controllers
         [ProducesResponseType(404)]
         public IActionResult GetOpinionsForUser(int userID)
         {
-            if (!_opinionRepository.OpinionExistsOnUser(userID))
+            if (!_opinionServices.OpinionExistsOnUser(userID))
                 return NotFound();
 
-            var opinion = _mapper.Map<List<OpinionDto>>(_opinionRepository.GetOpinionsForUser(userID));
+            var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForUser(userID));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -87,7 +87,7 @@ namespace API.Controllers
             opinionMap.User = _userRepository.GetUser(userID);
             opinionMap.Recipe = _recipeRepository.GetRecipe(recipeID);
 
-            if (!_opinionRepository.CreateOpinion(opinionMap))
+            if (!_opinionServices.CreateOpinion(opinionMap))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
                 return BadRequest(ModelState);
@@ -108,7 +108,7 @@ namespace API.Controllers
             if (opinionID != updatedOpinion.OpinionID)
                 return BadRequest(ModelState);
 
-            if (!_opinionRepository.OpinionExists(opinionID))
+            if (!_opinionServices.OpinionExists(opinionID))
                 return NotFound();
 
             if (!ModelState.IsValid)
@@ -116,13 +116,13 @@ namespace API.Controllers
 
             var opinionMap = _mapper.Map<Opinion>(updatedOpinion);
 
-            if (!_opinionRepository.UpdateOpinion(opinionMap))
+            if (!_opinionServices.UpdateOpinion(opinionMap))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak przy zmianie opinii");
                 return BadRequest(ModelState);
             }
 
-            return NoContent();
+            return Ok("Pomyślnie zmodyfikowano opinię");
         }
 
         [HttpDelete("{opinionID}")]
@@ -131,21 +131,21 @@ namespace API.Controllers
         [ProducesResponseType(404)]
         public IActionResult DeleteOpinion(int opinionID)
         {
-            if (!_opinionRepository.OpinionExists(opinionID))
+            if (!_opinionServices.OpinionExists(opinionID))
                 return NotFound();
 
-            var opinionToDelete = _opinionRepository.GetOpinion(opinionID);
+            var opinionToDelete = _opinionServices.GetOpinion(opinionID);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (!_opinionRepository.DeleteOpinion(opinionToDelete))
+            if (!_opinionServices.DeleteOpinion(opinionToDelete))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania opinii");
                 return BadRequest(ModelState);
             }
 
-            return NoContent();
+            return Ok("Pomyślnie usunięto opinię");
         }
     }
 }

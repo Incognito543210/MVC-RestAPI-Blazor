@@ -1,6 +1,8 @@
 ﻿using API.Interfaces;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Model.DTO;
 using Model.MODEL;
 
 namespace API.Controllers
@@ -9,12 +11,12 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserServices _userServices;
         private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        public UserController(IUserServices userServices, IMapper mapper)
         {
-            _userRepository = userRepository;
+            _userServices = userServices;
             _mapper = mapper;
         }
 
@@ -22,10 +24,10 @@ namespace API.Controllers
         [ProducesResponseType(200, Type = typeof(User))]
         public IActionResult GetUser(int userID)
         {
-            if (!_userRepository.UserExists(userID))
+            if (!_userServices.UserExists(userID))
                 return NotFound();
 
-            var recipes = _mapper.Map<User>(_userRepository.GetUser(userID));
+            var recipes = _mapper.Map<User>(_userServices.GetUser(userID));
 
             if (!ModelState.IsValid)
             {
@@ -35,5 +37,97 @@ namespace API.Controllers
             return Ok(recipes);
         }
 
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateUser([FromBody] UserDto userDto)
+        {
+            if (userDto == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var users = _userServices.GetUsers()
+                .Where(u => u.Username.Trim().ToUpper() == userDto.Username.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (users != null)
+            {
+                ModelState.AddModelError("", "Użytkownik już istnieje");
+                return StatusCode(422, ModelState);
+            }
+
+            var userMap = _mapper.Map<User>(userDto);
+
+            if (!_userServices.CreateUser(userMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
+                return StatusCode(422, ModelState);
+            }
+            return Ok();
+        }
+
+        [HttpPut("userID")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOpinion(int userID, [FromBody] UserDto updatedUser)
+        {
+            if (updatedUser == null)
+                return BadRequest(ModelState);
+
+            if (!_userServices.UserExists(userID))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var users = _userServices.GetUsers()
+                .Where(u => u.Username.Trim().ToUpper() == updatedUser.Username.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (users != null)
+            {
+                ModelState.AddModelError("", "Użytkownik już istnieje");
+                return StatusCode(422, ModelState);
+
+            }
+
+                var userMap = _mapper.Map<User>(updatedUser);
+
+            if (!_userServices.UpdateUser(userMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie danych użytkownika");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Pomyślnie zmodyfikowano dane użytkownika");
+        }
+
+        [HttpDelete("{userID}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteUser(int userID)
+        {
+            if (!_userServices.UserExists(userID))
+                return NotFound();
+
+            var userToDelete = _userServices.GetUser(userID);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_userServices.DeleteUser(userToDelete))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania użytkownika");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Pomyślnie usunięto użytkonika");
+        }
     }
 }

@@ -14,6 +14,5 @@ namespace API.Interfaces
         bool CreateOpinion(Opinion opinion);
         bool UpdateOpinion(Opinion opinion);
         bool DeleteOpinion(Opinion opinion);
-        bool Save();
     }
 }

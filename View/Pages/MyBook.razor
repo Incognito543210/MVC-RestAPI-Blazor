@@ -2,7 +2,16 @@
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 
-<h3>Moje przepisy</h3>
+<div id="top">
+    <div id="title">
+        <h3 style="font-weight: bold">Moje przepisy</h3>
+    </div>
+    <div id="buttons">
+        <button class="btn1" @onclick="onClick">Nowy przepis</button>
+    </div>
+</div>
+
+<div style="clear: both;"></div>
 
 @if (recipesList == null)
 {
@@ -13,16 +22,16 @@ else
     @if (recipesList.Any())
     {
         <div id="recipes">
-            @foreach (var recipe in recipesList)
+             @foreach (var recipe in recipesList)
             {
                 <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
-                    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp" align="left">
+                    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
                     <div id="description">
-                        <h3>@recipe.Title</h3>
+                        <h5 style="font-weight: bold">@recipe.Title</h5>
                         <p>
                             <b>Data dodania: </b>@recipe.PrepareTime<br />
                             <b>Porcje: </b>@recipe.Portions<br />
-                            <b>Trudność: </b>@recipe.Difficulty<br />
+                            <b>Trudność: </b>@recipe.Difficulty/5<br />
                         </p>
                     </div>
 
@@ -32,33 +41,62 @@ else
     }
 }
 
-<p>
-    <MudButton Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" OnClick="onClick" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Nowy przepis</MudButton>
-</p>
-
 <style>
+    #top {
+        width: auto;
+        margin: 10px;
+        padding: 5px;
+        align-content: center;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    #title {
+        flex: 1;
+    }
+
+    #recipe {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn1 {
+        background: rgba( 22, 166, 185 );
+        padding: 10px;
+        float: right;
+        border-radius: 8px;
+        font-size: 1.17em;
+        font-weight: bold;
+    }
+
     #recipe:hover {
         background: rgba( 22, 166, 185 );
         cursor: pointer;
+        border-radius: 8px;
     }
 
     img {
-        display: inline;
         margin-bottom: 20px;
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 20px;
         border-radius: 8px;
         height: 100px;
+        float: left;
     }
 
     #description {
-        display: inline;
         margin-bottom: 20px;
         margin-top: 20px;
         margin-left: 20px;
         margin-right: 20px;
         height: 100px;
+        float: left;
     }
 </style>
 
@@ -77,7 +115,7 @@ else
 
     void navigateToRecipe(int id)
     {
-        NavMan.NavigateTo("/recipe/" + id);
+        NavMan.NavigateTo("/myrecipe/" + id);
     }
 
     void onClick() => NavMan.NavigateTo("/newrecipe");
