@@ -2,7 +2,7 @@
 
 namespace API.Interfaces
 {
-    public interface ITagRepository
+    public interface ITagsService
     {
         ICollection<Tag> GetTags();
         Tag GetTag(int id);

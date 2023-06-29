@@ -2,7 +2,7 @@
 
 namespace API.Interfaces
 {
-    public interface IOpinionRepository
+    public interface IOpinionsService
     {
         ICollection<Opinion> GetOpinions();
         Opinion GetOpinion(int id);

@@ -2,7 +2,7 @@
 
 namespace API.Interfaces
 {
-    public interface IUserServices
+    public interface IUsersService
     {
         bool CreateUser(User user);
         bool DeleteUser(User user);

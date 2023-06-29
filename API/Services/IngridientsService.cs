@@ -2,7 +2,7 @@
 
 namespace API.Services
 {
-    public class IngridientServices
+    public class IngridientsService
     {
         private DataContext _context;
         

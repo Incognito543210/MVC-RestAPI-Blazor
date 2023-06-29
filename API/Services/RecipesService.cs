@@ -5,13 +5,13 @@ using Model.MODEL;
 
 namespace API.Services
 {
-    public class RecipeServices: IRecipeServices
+    public class RecipesService: IRecipesService
     {
         private DataContext _context;
         private IIngridientRepository _ingridientrepository;
         private IRecipeRepository _recipeRepository;
 
-        public RecipeServices(DataContext context, IRecipeRepository recipeRepository, IIngridientRepository ingridientRepository)
+        public RecipesService(DataContext context, IRecipeRepository recipeRepository, IIngridientRepository ingridientRepository)
         {
             _context=context;
             _recipeRepository=recipeRepository;

@@ -5,11 +5,11 @@ using Model.MODEL;
 
 namespace API.Repositories
 {
-    public class TagRepository : ITagRepository
+    public class TagsService : ITagsService
     {
         private readonly DataContext _context;
 
-        public TagRepository(DataContext context)
+        public TagsService(DataContext context)
         {
             _context = context;
         }

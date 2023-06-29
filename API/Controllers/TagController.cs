@@ -10,12 +10,12 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class TagController : ControllerBase
     {
-        private readonly ITagRepository _tagRepository;
+        private readonly ITagsService _tagsService;
         private readonly IMapper _mapper;
 
-        public TagController(ITagRepository tagRepository, IMapper mapper)
+        public TagController(ITagsService tagsService, IMapper mapper)
         {
-            _tagRepository = tagRepository;
+            _tagsService = tagsService;
             _mapper = mapper;
         }
 
@@ -24,7 +24,7 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetTags()
         {
-            var tags = _mapper.Map<List<Tag>>(_tagRepository.GetTags());
+            var tags = _mapper.Map<List<Tag>>(_tagsService.GetTags());
 
             if (!ModelState.IsValid)
             {
@@ -39,7 +39,7 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetByID(int id)
         {
-            var tag = _mapper.Map<Tag>(_tagRepository.GetTag(id));
+            var tag = _mapper.Map<Tag>(_tagsService.GetTag(id));
 
             if (!ModelState.IsValid)
             {

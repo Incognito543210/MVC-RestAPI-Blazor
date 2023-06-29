@@ -3,7 +3,7 @@ using Model.MODEL;
 
 namespace API.Interfaces
 {
-    public interface IRecipeServices
+    public interface IRecipesService
     {
       /*  bool CreateRecipe(Recipe Recipe); */
     }

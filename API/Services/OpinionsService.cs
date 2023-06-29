@@ -4,15 +4,13 @@ using Model.MODEL;
 
 namespace API.Services
 {
-    public class OpinionServices : IOpinionServices
+    public class OpinionsServices : IOpinionsService
     {
         private readonly DataContext _context;
-        private readonly IOpinionRepository _opinionRepository;
 
-        public OpinionServices(DataContext context, IOpinionRepository opinionRepository)
+        public OpinionsServices(DataContext context)
         {
             _context = context;
-            _opinionRepository = opinionRepository;
         }
 
         public bool CreateOpinion(Opinion opinion)
@@ -41,32 +39,32 @@ namespace API.Services
 
         public ICollection<Opinion> GetOpinions()
         {
-            return _opinionRepository.GetOpinions();
+            return _context.Opinions.OrderBy(o => o.OpinionID).ToList();
         }
 
         public Opinion GetOpinion(int id)
         {
-            return _opinionRepository.GetOpinion(id);
+            return _context.Opinions.Where(o => o.OpinionID == id).FirstOrDefault();
         }
         public bool OpinionExistsOnRecipe(int id)
         {
-            return _opinionRepository.OpinionExistsOnRecipe(id);
+            return _context.Opinions.Any(o => o.RecipeID == id);
         }
         public bool OpinionExistsOnUser(int id)
         {
-            return _opinionRepository.OpinionExistsOnUser(id);
+            return _context.Opinions.Any(o => o.UserID == id);
         }
         public bool OpinionExists(int id)
         {
-            return _opinionRepository.OpinionExists(id);
+            return _context.Opinions.Any(o => o.OpinionID == id);
         }
         public ICollection<Opinion> GetOpinionsForRecipe(int id)
         {
-            return _opinionRepository.GetOpinionsForRecipe(id);
+            return _context.Opinions.Where(o => o.RecipeID == id).ToList();
         }
         public ICollection<Opinion> GetOpinionsForUser(int id)
         {
-            return _opinionRepository.GetOpinionsForUser(id);
+            return _context.Opinions.Where(o => o.UserID == id).ToList();
         }
     }
 }

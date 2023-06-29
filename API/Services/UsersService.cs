@@ -4,15 +4,13 @@ using Model.MODEL;
 
 namespace API.Services
 {
-    public class UserServices : IUserServices
+    public class UsersService : IUsersService
     {
         DataContext _context;
-        IUserRepository _userRepository;
 
-        public UserServices(DataContext context, IUserRepository userRepository)
+        public UsersService(DataContext context)
         {
             _context = context;
-            _userRepository = userRepository;
         }
 
         public bool Save()
@@ -23,48 +21,56 @@ namespace API.Services
 
         public bool CreateUser(User user)
         {
-            bool result = _userRepository.CreateUser(user);
+            if (UsernameExists(user.Username))
+                return false;
 
-            result &= Save();
+            _context.Users.Add(user);
+
+            bool result = Save();
 
             return result;
         }
 
         public bool DeleteUser(User user)
         {
-            bool result = _userRepository.DeleteUser(user);
-
             //usuwanie przepisów
 
             //usuwanie opinii
 
-            result &= Save();
+            _context.Users.Remove(user);
+
+            bool result = Save();
 
             return result;
         }
 
         public bool UpdateUser(User user)
         {
-            bool result = _userRepository.UpdateUser(user);
+            _context.Users.Update(user);
 
-            result &= Save();
+            bool result = Save();
 
             return result;
         }
 
         public bool UserExists(int id)
         {
-            return _userRepository.UserExists(id);
+            return _context.Users.Any(u => u.UserID == id);
+        }
+
+        public bool UsernameExists(string username)
+        {
+            return _context.Users.Where(u => u.Username == username).Any();
         }
 
         public User GetUser(int id)
         {
-            return _userRepository.GetUser(id);
+            return _context.Users.Where(c => c.UserID == id).FirstOrDefault();
         }
 
         public IEnumerable<User> GetUsers()
         {
-            return _userRepository.GetUsers();
+            return _context.Users.OrderBy(u => u.UserID).ToList();
         }
     }
 }

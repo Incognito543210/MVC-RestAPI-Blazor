@@ -10,15 +10,15 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class OpinionController : ControllerBase
     {
-        private readonly IOpinionServices _opinionServices;
-        private readonly IUserRepository _userRepository;
+        private readonly IOpinionsService _opinionServices;
+        private readonly IUsersService _usersService;
         private readonly IRecipeRepository _recipeRepository;
         private readonly IMapper _mapper;
 
-        public OpinionController(IOpinionServices opinionServices, IUserRepository userRepository, IRecipeRepository recipeRepository, IMapper mapper)
+        public OpinionController(IOpinionsService opinionServices, IUsersService usersService, IRecipeRepository recipeRepository, IMapper mapper)
         {
             _opinionServices = opinionServices;
-            _userRepository = userRepository;
+            _usersService = usersService;
             _recipeRepository = recipeRepository;
             _mapper = mapper;
         }
@@ -84,7 +84,7 @@ namespace API.Controllers
 
             var opinionMap = _mapper.Map<Opinion>(opinionCreate);
 
-            opinionMap.User = _userRepository.GetUser(userID);
+            opinionMap.User = _usersService.GetUser(userID);
             opinionMap.Recipe = _recipeRepository.GetRecipe(recipeID);
 
             if (!_opinionServices.CreateOpinion(opinionMap))
