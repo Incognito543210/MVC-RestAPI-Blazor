@@ -13,8 +13,8 @@
         <MudStack Row="true">
             <MudTextField @bind-Value="recipe.Title" Label="Nazwa" For="@(() => recipe.Title)"></MudTextField>
             <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" Min="1" For="@(() => recipe.Portions)" />
-            @*<MudTimePicker Label="Czas przygotowania" @bind-Time="time" For="@(() => recipe.PrepareTime)" />*@
-            <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter" For="@(() => recipe.Difficulty)">
+            <MudTimePicker Label="Czas przygotowania" @bind-Time="recipe.PrepTimeAsTimeSpan" For="@(() => recipe.PrepTimeAsTimeSpan)" />
+            <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter" Min="1" For="@(() => recipe.Difficulty)">
                 <MudSelectItem T="int" Value="1" />
                 <MudSelectItem T="int" Value="2" />
                 <MudSelectItem T="int" Value="3" />
@@ -37,6 +37,12 @@
         <EditForm Model="@tag" OnValidSubmit="@AddTag">
             <DataAnnotationsValidator />
             <MudStack Row="true">
+                <MudSelect T="string" Label="Lista tagów" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.Bookmarks">
+                    @foreach (var item in tags)
+                    {
+                        <MudSelectItem Value="@item">@item</MudSelectItem>
+                    }
+                </MudSelect>
                 <MudTextField @bind-Value="tag.Name" Label="Tag" For="@(() => tag.Name)"></MudTextField>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
             </MudStack>
@@ -78,12 +84,28 @@
     }
 </div>
 
+
 @code {
-    RecipeDto recipe = new();
+    class MyRecipe : RecipeDto
+    {
+        public TimeSpan? PrepTimeAsTimeSpan
+        {
+            get => PrepareTime.TimeOfDay;
+            set => PrepareTime = new DateTime() + value?? new DateTime();
+        }
+
+    }
+    MyRecipe recipe = new();
     IngridientDto ingredient = new();
     TagDto tag = new();
+    List<TagDto> tags = new();
 
-    TimeSpan? time = new TimeSpan(00, 00, 00);
+    TimeSpan DateTimeToTimeSpan(DateTime? ts)
+    {
+        if (!ts.HasValue) return TimeSpan.Zero;
+        else return new TimeSpan(0, ts.Value.Hour, ts.Value.Minute, ts.Value.Second, ts.Value.Millisecond);
+    }
+
     int? quantity = 0;
     List<IngridientDto> ingredients = new();
 
