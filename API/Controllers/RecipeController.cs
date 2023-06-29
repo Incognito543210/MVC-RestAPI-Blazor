@@ -13,10 +13,10 @@ namespace API.Controllers
     {
 
    
-        private readonly IRecipeRepository _recipeRepository;
+        private readonly IRecipesService _recipeRepository;
         private readonly IMapper _mapper;
 
-        public RecipeController(IRecipeRepository recipeRepository, IMapper mapper)
+        public RecipeController(IRecipesService recipeRepository, IMapper mapper)
 
         {
             _recipeRepository = recipeRepository;

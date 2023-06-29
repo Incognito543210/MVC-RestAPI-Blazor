@@ -2,13 +2,13 @@
 using DAL;
 using Model.MODEL;
 
-namespace API.Repositories
+namespace API.Services
 {
-    public class HasCategoryRepository : IHasCategoryRepository
+    public class HasCategoriesService : IHasCategoriesService
     {
         private readonly DataContext _context;
 
-        public HasCategoryRepository(DataContext context)
+        public HasCategoriesService(DataContext context)
         {
             _context = context;
         }
@@ -24,7 +24,7 @@ namespace API.Repositories
             return _context.HasCategories.Where(hs => hs.TagID == tagID).ToList();
         }
 
-        public ICollection<HasCategory> GetHasCategoriesByRecipe(int  recipeID)
+        public ICollection<HasCategory> GetHasCategoriesByRecipe(int recipeID)
         {
             return _context.HasCategories.Where(hs => hs.RecipeID == recipeID).ToList();
         }

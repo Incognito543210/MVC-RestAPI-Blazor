@@ -12,10 +12,10 @@ namespace API.Controllers
     {
         private readonly IOpinionsService _opinionServices;
         private readonly IUsersService _usersService;
-        private readonly IRecipeRepository _recipeRepository;
+        private readonly IRecipesService _recipeRepository;
         private readonly IMapper _mapper;
 
-        public OpinionController(IOpinionsService opinionServices, IUsersService usersService, IRecipeRepository recipeRepository, IMapper mapper)
+        public OpinionController(IOpinionsService opinionServices, IUsersService usersService, IRecipesService recipeRepository, IMapper mapper)
         {
             _opinionServices = opinionServices;
             _usersService = usersService;

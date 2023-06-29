@@ -25,4 +25,8 @@
     <ProjectReference Include="..\DataContext\DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

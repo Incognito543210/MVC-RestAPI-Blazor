@@ -2,7 +2,7 @@
 
 namespace API.Interfaces
 {
-    public interface IIngridientRepository
+    public interface IIngridientsService
     {
         ICollection<Ingridient>GetIngridients();
         Ingridient GetIngridient(int id);

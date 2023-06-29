@@ -1,10 +1,31 @@
-﻿using DAL;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Model.MODEL;
 
 namespace API.Interfaces
 {
-    public interface IRecipesService
+    public interface IRecipesService 
     {
-      /*  bool CreateRecipe(Recipe Recipe); */
+
+        ICollection<Recipe> GetRecipes();
+
+        Recipe GetRecipe(int id);
+
+        bool RecipeExists(int recipeId);
+
+        bool IngredientsExistsOnRecipe(int id);
+        
+        ICollection<Ingridient> GetIngridientsByRecipe(int id);
+
+        bool RecipeExistsOnUser(int id);
+
+        ICollection<Recipe> GetRecipesbyUser(int id);
+
+        bool CreateRecipe(Recipe recipe);
+
+        bool Save();
+
+        /*  bool CreateRecipe(Recipe Recipe); */
+
+
     }
 }

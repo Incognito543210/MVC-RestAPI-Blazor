@@ -11,11 +11,11 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class IngridientController : ControllerBase
     {
-        private readonly IIngridientRepository _ingridientRepository;
+        private readonly IIngridientsService _ingridientRepository;
         private readonly IMapper _mapper;
-        private readonly IRecipeRepository recipeRepository;
+        private readonly IRecipesService recipeRepository;
 
-        public IngridientController(IIngridientRepository ingridientRepository, IMapper mapper)
+        public IngridientController(IIngridientsService ingridientRepository, IMapper mapper)
         {
             _ingridientRepository = ingridientRepository;
             _mapper = mapper;

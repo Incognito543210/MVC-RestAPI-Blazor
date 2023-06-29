@@ -2,7 +2,7 @@
 
 namespace API.Interfaces
 {
-    public interface IHasCategoryRepository
+    public interface IHasCategoriesService
     {
         HasCategory GetHasCategoryForRecipe(int id);
         HasCategory GetHasCategoryForTag(int id);

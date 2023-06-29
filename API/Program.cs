@@ -14,11 +14,11 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<ITagsService, TagsService>();
-builder.Services.AddScoped<IHasCategoryRepository, HasCategoryRepository>();
+builder.Services.AddScoped<IHasCategoriesService, HasCategoriesService>();
 builder.Services.AddScoped<IOpinionsService, OpinionsService>();
-builder.Services.AddScoped<IRecipeRepository,RecipeRepository>();
+builder.Services.AddScoped<IRecipesService,RecipesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
-builder.Services.AddScoped<IIngridientRepository, IngridientRepository>();
+builder.Services.AddScoped<IIngridientsService, IngridientsService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
