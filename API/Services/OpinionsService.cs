@@ -4,11 +4,11 @@ using Model.MODEL;
 
 namespace API.Services
 {
-    public class OpinionsServices : IOpinionsService
+    public class OpinionsService : IOpinionsService
     {
         private readonly DataContext _context;
 
-        public OpinionsServices(DataContext context)
+        public OpinionsService(DataContext context)
         {
             _context = context;
         }
