@@ -7,9 +7,9 @@ namespace API.Services
     public class UsersService : IUsersService
     {
         DataContext _context;
-        Encryptor _encryptor;
+        IEncryptor _encryptor;
 
-        public UsersService(DataContext context, Encryptor encryptor)
+        public UsersService(DataContext context, IEncryptor encryptor)
         {
             _context = context;
             _encryptor = encryptor;

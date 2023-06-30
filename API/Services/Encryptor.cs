@@ -1,6 +1,8 @@
-﻿namespace API.Services
+﻿using API.Interfaces;
+
+namespace API.Services
 {
-    public class Encryptor
+    public class Encryptor : IEncryptor
     {
         public string EncryptPassword(string password)
         {
