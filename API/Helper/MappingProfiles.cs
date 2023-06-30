@@ -16,6 +16,8 @@ namespace API.Helper
             CreateMap<RecipeDto, Recipe>();
             CreateMap<Ingridient, IngridientDto>();
             CreateMap<IngridientDto, Ingridient>();
+            CreateMap<UserDto, User>();
+            //CreateMap<User, UserDto>();
         }
     }
 }

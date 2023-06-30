@@ -1,6 +1,7 @@
 ﻿using API.Interfaces;
 using DAL;
 using Model.MODEL;
+using System.Text.RegularExpressions;
 
 namespace API.Services
 {
@@ -62,6 +63,16 @@ namespace API.Services
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.OrderBy(u => u.UserID).ToList();
+        }
+
+        public bool IsEmailValid(string email)
+        {
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regex.Match(email);
+            if (match.Success)
+                return true;
+            else
+                return false;
         }
     }
 }

@@ -62,6 +62,12 @@ namespace API.Controllers
 
             var userMap = _mapper.Map<User>(userDto);
 
+            if (!_userServices.IsEmailValid(userMap.Email))
+            {
+                ModelState.AddModelError("", "Nieprawidłowy adres email");
+                return StatusCode(422, ModelState);
+            }
+
             if (!_userServices.CreateUser(userMap))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
@@ -96,7 +102,7 @@ namespace API.Controllers
 
             }
 
-                var userMap = _mapper.Map<User>(updatedUser);
+            var userMap = _mapper.Map<User>(updatedUser);
 
             if (!_userServices.UpdateUser(userMap))
             {
