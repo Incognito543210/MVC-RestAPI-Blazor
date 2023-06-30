@@ -9,7 +9,7 @@ namespace API.Interfaces
 
         bool IngridientExists(int id);
 
-        bool CreateIngridient(Ingridient ingridient, string recipeName);
+        bool CreateIngridient(Ingridient ingridient, string recipeName, string amount);
 
         bool Save();
 
