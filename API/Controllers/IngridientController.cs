@@ -60,7 +60,7 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeID)
+        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName)
         {
             
             foreach( IngridientDto ingridientCreate in ingridientsCreate)
@@ -79,7 +79,7 @@ namespace API.Controllers
                 var ingrideintMap = _mapper.Map<Ingridient>(ingridientCreate);
 
 
-                if (!_ingridientService.CreateIngridient(ingrideintMap, recipeID))
+                if (!_ingridientService.CreateIngridient(ingrideintMap, recipeName))
                 {
                     ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
                     return StatusCode(500, ModelState);
