@@ -60,12 +60,14 @@ namespace API.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName)
+        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName, [FromBody] ICollection<string> amounts)
         {
-            
-            foreach( IngridientDto ingridientCreate in ingridientsCreate)
+
+            var ingridentsWithAmounts = ingridientsCreate.Zip(amounts, (ingridentCreate, amount) => new { IngridientCreate = ingridentCreate, Amount = amount });
+
+            foreach( var pair in ingridentsWithAmounts)
            {
-                if (ingridientCreate == null)
+                if (pair.IngridientCreate == null)
                 {
                     return BadRequest(ModelState);
                 }
@@ -76,7 +78,7 @@ namespace API.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                var ingrideintMap = _mapper.Map<Ingridient>(ingridientCreate);
+              
 
 
                 if (!_ingridientService.CreateIngridient(ingrideintMap, recipeName))
