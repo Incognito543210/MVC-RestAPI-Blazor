@@ -32,6 +32,8 @@ namespace Model.DTO
 
         public int UserID { get; set; }
 
+        //[Required(MinLengthAttribute = 1)]
+        public List<IngridientDto> Ingridients { get; set;}
 
 
 

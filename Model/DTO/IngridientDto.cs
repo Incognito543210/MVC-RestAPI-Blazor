@@ -14,8 +14,7 @@ namespace Model.DTO
 
         [Required(ErrorMessage = "Nazwij składnik.")]
         public string Name { get; set; }
-     
-
+        public string Quantity { get; set; }
 
     }
 }
