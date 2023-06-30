@@ -111,7 +111,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
 
 
-            var recipe = _recipeService.GetRecipes().Where(u=>u.Title.Trim().ToLower()==recipeCreate.Title.Trim().ToLower());
+            var recipe = _recipeService.GetRecipes().Where(u=>u.Title.Trim().ToLower()==recipeCreate.Title.TrimEnd().ToLower()).FirstOrDefault();
 
             if(recipe!=null)
             {
