@@ -57,7 +57,7 @@ namespace API.Controllers
 
         }
 
-      /*  [HttpPost]
+         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName, [FromBody] ICollection<string> amounts)
@@ -96,7 +96,7 @@ namespace API.Controllers
 
             return Ok("Zakończono pomyślnie");
 
-        }*/
+        }
 
 
 
