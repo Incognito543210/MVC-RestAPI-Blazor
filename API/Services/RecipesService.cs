@@ -8,12 +8,12 @@ namespace API.Services
     public class RecipesService : IRecipesService
     {
         private DataContext _context;
-        private IIngridientsService _ingridientrepository;
+       
 
-        public RecipesService(DataContext context, IIngridientsService ingridientRepository)
+        public RecipesService(DataContext context)
         {
             _context = context;
-            _ingridientrepository = ingridientRepository;
+        
         }
 
         public ICollection<Ingridient> GetIngridientsByRecipe(int id)
