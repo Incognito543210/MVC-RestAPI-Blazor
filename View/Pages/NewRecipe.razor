@@ -43,7 +43,6 @@
                         <MudSelectItem Value="@item">@item</MudSelectItem>
                     }
                 </MudSelect>
-                <MudTextField @bind-Value="tag.Name" Label="Tag" For="@(() => tag.Name)"></MudTextField>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
             </MudStack>
         </EditForm><br />
