@@ -8,6 +8,7 @@ namespace API.Interfaces
         User GetUser(int id);
         IEnumerable<User> GetUsers();
         bool IsEmailValid(string email);
+        bool IsPasswordStrong(string password);
         bool Save();
         bool UpdateUser(User user);
         bool UserExists(int id);

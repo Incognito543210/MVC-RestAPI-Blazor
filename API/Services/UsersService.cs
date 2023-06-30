@@ -9,11 +9,13 @@ namespace API.Services
     {
         DataContext _context;
         IEncryptor _encryptor;
+        IPasswordGetter _passwordGetter;
 
-        public UsersService(DataContext context, IEncryptor encryptor)
+        public UsersService(DataContext context, IEncryptor encryptor, IPasswordGetter passwordGetter)
         {
             _context = context;
             _encryptor = encryptor;
+            _passwordGetter = passwordGetter;
         }
 
         public bool Save()
@@ -73,6 +75,32 @@ namespace API.Services
                 return true;
             else
                 return false;
+        }
+
+        public bool IsPasswordStrong(string password)
+        {
+            //Musi zawierać co najmniej 8 liter
+            //Musi mieć co najmniej jedną dużą literę
+            //Musi mieć co najmniej jedną małą literę
+            //Musi mieć co najmniej jedną cyfrę
+            //Musi mieć co najmniej jeden znak specjalny
+            Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+            Match match = regex.Match(password);
+            if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsPasswordPopular(string password)
+        {
+            ICollection<string> popularPasswords = _passwordGetter.GetPopularPasswords();
+
+            foreach (string popularPassword in popularPasswords)
+                if (popularPassword == password)
+                    return true;
+
+            return false;
         }
     }
 }

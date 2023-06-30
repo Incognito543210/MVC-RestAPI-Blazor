@@ -68,6 +68,12 @@ namespace API.Controllers
                 return StatusCode(422, ModelState);
             }
 
+            if (!_userServices.IsPasswordStrong(userMap.Email))
+            {
+                ModelState.AddModelError("", "Hasło jest niewystarczająco mocne");
+                return StatusCode(422, ModelState);
+            }
+
             if (!_userServices.CreateUser(userMap))
             {
                 ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
@@ -103,6 +109,24 @@ namespace API.Controllers
             }
 
             var userMap = _mapper.Map<User>(updatedUser);
+
+            if (!_userServices.IsEmailValid(userMap.Email))
+            {
+                ModelState.AddModelError("", "Nieprawidłowy adres email");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!_userServices.IsPasswordStrong(userMap.Email))
+            {
+                ModelState.AddModelError("", "Hasło jest niewystarczająco mocne");
+                return StatusCode(422, ModelState);
+            }
+
+            if (_userServices.IsPasswordPopular(userMap.Password))
+            {
+                ModelState.AddModelError("", "Hasło jest zbyt popularne");
+                return StatusCode(422, ModelState);
+            }
 
             if (!_userServices.UpdateUser(userMap))
             {
