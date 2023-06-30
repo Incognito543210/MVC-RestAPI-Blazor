@@ -1,16 +1,21 @@
 ﻿using API.Interfaces;
 using DAL;
 using Model.MODEL;
+using System.Text.RegularExpressions;
 
 namespace API.Services
 {
     public class UsersService : IUsersService
     {
         DataContext _context;
+        IEncryptor _encryptor;
+        IPasswordGetter _passwordGetter;
 
-        public UsersService(DataContext context)
+        public UsersService(DataContext context, IEncryptor encryptor, IPasswordGetter passwordGetter)
         {
             _context = context;
+            _encryptor = encryptor;
+            _passwordGetter = passwordGetter;
         }
 
         public bool Save()
@@ -24,20 +29,9 @@ namespace API.Services
             if (UsernameExists(user.Username))
                 return false;
 
+            user.Password = _encryptor.EncryptPassword(user.Password);
+
             _context.Users.Add(user);
-
-            bool result = Save();
-
-            return result;
-        }
-
-        public bool DeleteUser(User user)
-        {
-            //usuwanie przepisów
-
-            //usuwanie opinii
-
-            _context.Users.Remove(user);
 
             bool result = Save();
 
@@ -71,6 +65,42 @@ namespace API.Services
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.OrderBy(u => u.UserID).ToList();
+        }
+
+        public bool IsEmailValid(string email)
+        {
+            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+            Match match = regex.Match(email);
+            if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsPasswordStrong(string password)
+        {
+            //Musi zawierać co najmniej 8 liter
+            //Musi mieć co najmniej jedną dużą literę
+            //Musi mieć co najmniej jedną małą literę
+            //Musi mieć co najmniej jedną cyfrę
+            //Musi mieć co najmniej jeden znak specjalny
+            Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+            Match match = regex.Match(password);
+            if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+        public bool IsPasswordPopular(string password)
+        {
+            ICollection<string> popularPasswords = _passwordGetter.GetPopularPasswords();
+
+            foreach (string popularPassword in popularPasswords)
+                if (popularPassword == password)
+                    return true;
+
+            return false;
         }
     }
 }

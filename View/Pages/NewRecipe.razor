@@ -26,15 +26,15 @@
         <p><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj przepis</MudButton></p>
     </EditForm>
     <MudStack Row="true">
-        <EditForm Model="@ingredient" OnValidSubmit="@AddIngredient">
+        <EditForm Model="@ingredient" OnValidSubmit="@AddIngredientToList">
             <DataAnnotationsValidator />
             <MudStack Row="true">
                 <MudTextField @bind-Value="ingredient.Name" Label="Składnik" For="@(() => ingredient.Name)"></MudTextField>
-                <MudTextField @bind-Value="quantity" Adornment="Adornment.End" AdornmentText="g" Label="Ilość"></MudTextField>
+                <MudTextField @bind-Value="ingredient.Quantity" Label="Ilość" For="@(() => ingredient.Quantity)"></MudTextField>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
             </MudStack>
         </EditForm>
-        <EditForm Model="@tag" OnValidSubmit="@AddTag">
+        <EditForm Model="@tag" OnValidSubmit="@AddTagToList">
             <DataAnnotationsValidator />
             <MudStack Row="true">
                 <MudSelect T="string" Label="Lista tagów" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.Bookmarks">
@@ -49,7 +49,7 @@
     </MudStack><br />
 
 
-    @if (ingredients is null)
+    @if (recipe.Ingridients.Count == 0)
     {
         <p>
             Ten przepis nie ma składników
@@ -62,18 +62,22 @@
                 <tr>
                     <th>Składnik</th>
                     <th>Ilość</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in ingredients)
+                @foreach (var item in recipe.Ingridients)
                 {
                     <tr>
                         <td>
-                            @item
+                            @item.Name
                         </td>
                         <td>
-                            <button class="btn btn-primary" @*@onclick="@(() => EditIngredient(item))*@">📝</button>
-                            <button class="btn btn-danger" @*@onclick="@(() => DeleteIngredient(item))" *@>❌</button>
+                            @item.Quantity                          
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" @onclick="@(() => UpdateIngredientInList(item))">📝</button>
+                            <button class="btn btn-danger" @onclick="@(() => DeleteIngredientFromList(item))">❌</button>
                         </td>
                     </tr>
                 }
@@ -82,7 +86,7 @@
 
     }
 
-@if (ingredients is null)
+@if (recipe.Tags.Count == 0)
     {
         <p>
             Ten przepis nie ma tagów
@@ -97,15 +101,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in tags)
+                @foreach (var item in recipe.Tags)
                 {
                     <tr>
                         <td>
-                            @item
+                            @item.Name
                         </td>
                         <td>
-                            <button class="btn btn-primary" @*@onclick="@(() => EditIngredient(item))*@">📝</button>
-                            <button class="btn btn-danger" @*@onclick="@(() => DeleteIngredient(item))" *@>❌</button>
+                            <button class="btn btn-danger" @onclick="@(() => DeleteTagFromList(item))">❌</button>
                         </td>
                     </tr>
                 }
@@ -126,6 +129,7 @@
         }
 
     }
+
     MyRecipe recipe = new();
     IngridientDto ingredient = new();
     TagDto tag = new();
@@ -137,9 +141,33 @@
         else return new TimeSpan(0, ts.Value.Hour, ts.Value.Minute, ts.Value.Second, ts.Value.Millisecond);
     }
 
-    int? quantity = 0;
-    List<IngridientDto> ingredients = new();
+    void AddIngredientToList()
+    {
+        recipe.Ingridients.Add(ingredient);
+        ingredient = new();
+    }
 
+    void AddTagToList()
+    {
+        recipe.Tags.Add(tag);
+        tag = new();
+    }
+
+    void UpdateIngredientInList(IngridientDto ingredient)
+    {
+        DeleteIngredientFromList(ingredient);
+        this.ingredient = ingredient;
+    }
+
+    void DeleteIngredientFromList(IngridientDto ingredient)
+    {
+        recipe.Ingridients.Remove(ingredient);
+    }
+
+    void DeleteTagFromList(TagDto tag)
+    {
+        recipe.Tags.Remove(tag);
+    }
 
     async Task AddRecipe()
     {

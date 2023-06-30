@@ -1,11 +1,4 @@
-﻿using Model.MODEL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Model.DTO
 {
@@ -14,10 +7,9 @@ namespace Model.DTO
         public int RecipeID { get; set; }
 
         [Required(ErrorMessage = "Nazwij przepis.")]
-        public string Title { get; set; }
+        public string Title { get; set; } = "";
 
-        [Required(ErrorMessage = "Opis jest wymagany.")]
-        public string Content { get; set; }
+        public string Content { get; set; } = "";
 
         public DateTime PrepareTime { get; set; }
       
@@ -32,6 +24,10 @@ namespace Model.DTO
 
         public int UserID { get; set; }
 
+        //[Required(MinLengthAttribute = 1)]
+        public List<IngridientDto> Ingridients { get; set; } = new();
+
+        public List<TagDto> Tags { get; set; } = new();
 
 
 

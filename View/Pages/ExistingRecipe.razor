@@ -23,20 +23,20 @@ else
         </div>
     </div>
 
-    @if (ingridientsList == null)
+    @if (ingredientsList == null)
     {
         <h3>Brak składników</h3>
     }
     else
     {
-        @if (ingridientsList.Any())
+        @if (ingredientsList.Any())
         {
             <div id="ingridients">
                 <div id="sec-title">
                     <p>SKŁADNIKI</p>
                 </div>
                 <ul>
-                    @foreach (var ingridient in ingridientsList)
+                    @foreach (var ingridient in ingredientsList)
                     {
                         <li>@ingridient.Name</li>
                     }
@@ -106,12 +106,12 @@ else
     public int Id { get; set; }
 
     private RecipeDto? recipe;
-    private List<IngridientDto>? ingridientsList;
+    private List<IngridientDto>? ingredientsList;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         recipe = await RecServ.GetRecipeAsync(Id);
-        ingridientsList = await RecServ.GetIngridientsListAsync(Id);
+        ingredientsList = await RecServ.GetIngredientsListAsync(Id);
     }
 }
