@@ -99,10 +99,10 @@ namespace API.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("{userID}")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult CreateRecipe([FromQuery] int  userID, [FromBody]RecipeDto recipeCreate)
+        public IActionResult CreateRecipe(int  userID, [FromBody]RecipeDto recipeCreate)
         {
             if (recipeCreate == null)
                 return BadRequest(ModelState);
