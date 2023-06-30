@@ -16,15 +16,6 @@ namespace API.Services
             _ingridientrepository = ingridientRepository;
         }
 
-        /*   public bool CreateRecipe(Recipe recipe)
-           {
-               _context.Add(recipe);
-               _recipeRepository.Save();
-               foreach (var ingrident in recipe.HasIngridients)
-               {
-                   _ingridientrepository.CreateIngridient(ingrident, recipe.RecipeID);
-               }
-           }*/
         public ICollection<Ingridient> GetIngridientsByRecipe(int id)
         {
             return _context.HasIngridients.Where(p => p.RecipeID == id).Select(c => c.Ingridient).ToList();

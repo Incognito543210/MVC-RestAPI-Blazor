@@ -1,6 +1,7 @@
 ﻿using API.Interfaces;
 using API.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -13,14 +14,16 @@ namespace API.Controllers
     {
 
    
-        private readonly IRecipesService _recipeRepository;
+        private readonly IRecipesService _recipeService;
         private readonly IMapper _mapper;
+        private readonly IUsersService _usersService;
 
-        public RecipeController(IRecipesService recipeRepository, IMapper mapper)
+        public RecipeController(IRecipesService recipeService, IMapper mapper, IUsersService usersService)
 
         {
-            _recipeRepository = recipeRepository;
+            _recipeService = recipeService;
              _mapper = mapper;
+            _usersService = usersService;
         }
 
 
@@ -30,7 +33,7 @@ namespace API.Controllers
         public IActionResult GetRecipes()
 
         {
-            var recipes = _mapper.Map<List<RecipeDto>>(_recipeRepository.GetRecipes());
+            var recipes = _mapper.Map<List<RecipeDto>>(_recipeService.GetRecipes());
             if(!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -45,10 +48,10 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetRecipe(int recipeId)
         {
-            if (!_recipeRepository.RecipeExists(recipeId))
+            if (!_recipeService.RecipeExists(recipeId))
                 return NotFound();
 
-            var recipe = _mapper.Map<RecipeDto>(_recipeRepository.GetRecipe(recipeId));
+            var recipe = _mapper.Map<RecipeDto>(_recipeService.GetRecipe(recipeId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -65,10 +68,10 @@ namespace API.Controllers
 
         public IActionResult GetIngridientByRecipe(int recipeId)
         {
-            if (!_recipeRepository.IngredientsExistsOnRecipe(recipeId))
+            if (!_recipeService.IngredientsExistsOnRecipe(recipeId))
                 return NotFound();
 
-            var ingridients = _mapper.Map<List<IngridientDto>>(_recipeRepository.GetIngridientsByRecipe(recipeId));
+            var ingridients = _mapper.Map<List<IngridientDto>>(_recipeService.GetIngridientsByRecipe(recipeId));
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -83,10 +86,10 @@ namespace API.Controllers
 
         public IActionResult GetRecipesByUser(int userId)
         {
-            if (_recipeRepository.RecipeExistsOnUser(userId))
+            if (_recipeService.RecipeExistsOnUser(userId))
                 return NotFound();
 
-            var recipes = _mapper.Map<List<RecipeDto>>(_recipeRepository.GetRecipesbyUser(userId));
+            var recipes = _mapper.Map<List<RecipeDto>>(_recipeService.GetRecipesbyUser(userId));
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -95,7 +98,33 @@ namespace API.Controllers
 
         }
 
-     
+
+        [HttpPost]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateRecipe([FromQuery] int  userID, [FromBody]RecipeDto recipeCreate)
+        {
+            if (recipeCreate == null)
+                return BadRequest(ModelState);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var recipeMap = _mapper.Map<Recipe>(recipeCreate);
+
+
+            recipeMap.User = _usersService.GetUser(userID);
+            recipeMap.UserID = userID;
+
+            if(!_recipeService.CreateRecipe(recipeMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Pomyślnie zapisano przepis");
+
+        }
 
 
 

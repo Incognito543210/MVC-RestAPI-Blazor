@@ -8,15 +8,16 @@ namespace API.Services
     public class IngridientsService : IIngridientsService
     {
         private DataContext _context;
+       
         public IngridientsService(DataContext context)
         {
             _context = context;
         }
 
-        public bool CreateIngridient(Ingridient ingridient, int recipeId)
+        public bool CreateIngridient(Ingridient ingridient, int recipeID, String amount)
         {
             var ingridientCheckExists = GetIngridients().Where(c => c.name.Trim().ToUpper() == ingridient.name.TrimEnd().ToUpper()).FirstOrDefault();
-            var recipe = _context.Recipes.Where(a => a.RecipeID == recipeId).FirstOrDefault();
+            var recipe = _context.Recipes.Where(a => a.RecipeID==recipeID).FirstOrDefault();
 
             if (ingridientCheckExists != null)
             {
@@ -24,8 +25,9 @@ namespace API.Services
                 {
                     Ingridient = ingridientCheckExists,
                     IngridientID = ingridientCheckExists.IngridientID,
-                    RecipeID = recipeId,
+                    RecipeID = recipe.RecipeID,
                     Recipe = recipe,
+                    Amonut = amount,
 
                 };
                 _context.Add(hasIngridient);
@@ -36,10 +38,11 @@ namespace API.Services
                 {
                     Ingridient = ingridient,
                     IngridientID = ingridient.IngridientID,
-                    RecipeID = recipeId,
+                    RecipeID = recipe.RecipeID,
                     Recipe = recipe,
+                    Amonut = amount,
 
-                };
+    };
                 _context.Add(hasIngridient);
                 _context.Add(ingridient);
             }

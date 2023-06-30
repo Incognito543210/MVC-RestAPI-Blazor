@@ -11,13 +11,13 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class IngridientController : ControllerBase
     {
-        private readonly IIngridientsService _ingridientRepository;
+        private readonly IIngridientsService _ingridientService;
         private readonly IMapper _mapper;
-        private readonly IRecipesService recipeRepository;
+        private readonly IRecipesService recipeService;
 
-        public IngridientController(IIngridientsService ingridientRepository, IMapper mapper)
+        public IngridientController(IIngridientsService ingridientService, IMapper mapper)
         {
-            _ingridientRepository = ingridientRepository;
+            _ingridientService = ingridientService;
             _mapper = mapper;
 
         }
@@ -28,7 +28,7 @@ namespace API.Controllers
         public IActionResult GetIngridients()
 
         {
-            var ingridients = _mapper.Map<List<IngridientDto>>(_ingridientRepository.GetIngridients());
+            var ingridients = _mapper.Map<List<IngridientDto>>(_ingridientService.GetIngridients());
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -43,10 +43,10 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetIngridient(int id)
         {
-            if (!_ingridientRepository.IngridientExists(id))
+            if (!_ingridientService.IngridientExists(id))
                 return NotFound();
 
-            var ingridient = _mapper.Map<IngridientDto>(_ingridientRepository.GetIngridient(id));
+            var ingridient = _mapper.Map<IngridientDto>(_ingridientService.GetIngridient(id));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -57,40 +57,40 @@ namespace API.Controllers
 
         }
 
-       /* [HttpPost]
+        [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateIngrideint([FromBody] IngridientDto ingridientCreate)
+        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, int recipeID, [FromBody] ICollection<String> amounts)
         {
-            if (ingridientCreate == null)
-            {
-                return BadRequest(ModelState);
-            }
+            
+            foreach( IngridientDto ingridientCreate in ingridientsCreate)
+           {
+                if (ingridientCreate == null)
+                {
+                    return BadRequest(ModelState);
+                }
 
-            var ingridient = _ingridientRepository.GetIngridients().Where(c => c.name.Trim().ToUpper() == ingridientCreate.name.TrimEnd().ToUpper()).FirstOrDefault();
+             
 
-            if(ingridient != null)
-            {
-                ModelState.AddModelError("", "Składnik już istnieje");
-                return StatusCode(422, ModelState);
-            }
-
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-            var ingrideintMap = _mapper.Map<Ingridient>(ingridientCreate);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var ingrideintMap = _mapper.Map<Ingridient>(ingridientCreate);
 
 
-            if(!_ingridientRepository.CreateIngridient(ingrideintMap))
-            {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-                return StatusCode(500, ModelState);
+                if (!_ingridientService.CreateIngridient(ingrideintMap, recipeID, amounts))
+                {
+                    ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
+                    return StatusCode(500, ModelState);
+                }
+
+                
             }
 
             return Ok("Zakończono pomyślnie");
 
-        }*/
+        }
 
 
 

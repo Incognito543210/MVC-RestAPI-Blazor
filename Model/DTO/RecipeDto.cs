@@ -30,10 +30,6 @@ namespace Model.DTO
         [Required(ErrorMessage = "Określ stopień trudności.")]
         public int Difficulty { get; set; }
 
-
-        public User User { get; set; }
-
-
         public int UserID { get; set; }
 
 
