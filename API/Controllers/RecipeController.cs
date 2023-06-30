@@ -110,6 +110,21 @@ namespace API.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+
+            var recipe = _recipeService.GetRecipes().Where(u=>u.Title.Trim().ToLower()==recipeCreate.Title.Trim().ToLower());
+
+            if(recipe!=null)
+            {
+                {
+                    ModelState.AddModelError("", "Przepis już istnieje");
+                    return StatusCode(422, ModelState);
+                }
+            }
+
+
+
+
+
             var recipeMap = _mapper.Map<Recipe>(recipeCreate);
 
 
