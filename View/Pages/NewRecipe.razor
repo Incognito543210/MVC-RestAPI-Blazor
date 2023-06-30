@@ -63,11 +63,42 @@
                 <tr>
                     <th>Składnik</th>
                     <th>Ilość</th>
-                    <th>Tagi</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in ingredients)
+                {
+                    <tr>
+                        <td>
+                            @item
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" @*@onclick="@(() => EditIngredient(item))*@">📝</button>
+                            <button class="btn btn-danger" @*@onclick="@(() => DeleteIngredient(item))" *@>❌</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+
+@if (ingredients is null)
+    {
+        <p>
+            Ten przepis nie ma tagów
+        </p>
+    }
+    else
+    {
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Tag</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in tags)
                 {
                     <tr>
                         <td>
