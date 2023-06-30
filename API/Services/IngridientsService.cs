@@ -18,7 +18,7 @@ namespace API.Services
 
         public bool CreateIngridient(Ingridient ingridient, string recipeName, string amount)
         {
-            var ingridientCheckExists = GetIngridients().Where(c => c.Name.Trim().ToUpper() == ingridient.Name.TrimEnd().ToUpper()).FirstOrDefault();
+            var ingridientCheckExists = GetIngridients().Where(c => c.Name.Trim().ToUpper() == ingridient.Name.Trim().ToUpper()).FirstOrDefault();
             var recipe = _context.Recipes.Where(u => u.Title.Trim().ToLower() == recipeName.Trim().ToLower()).FirstOrDefault();
 
             if (ingridientCheckExists != null)
@@ -44,7 +44,7 @@ namespace API.Services
                     Recipe = recipe,
                     Amount = amount,
 
-    };
+                 };
                 _context.Add(hasIngridient);
                 _context.Add(ingridient);
             }

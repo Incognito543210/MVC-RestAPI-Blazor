@@ -38,15 +38,15 @@ namespace API.Controllers
 
 
 
-        [HttpGet("{IngridientId}")]
+        [HttpGet("{ingridientId}")]
         [ProducesResponseType(200, Type = typeof(Ingridient))]
         [ProducesResponseType(400)]
-        public IActionResult GetIngridient(int id)
+        public IActionResult GetIngridient(int ingridientId)
         {
-            if (!_ingridientService.IngridientExists(id))
+            if (!_ingridientService.IngridientExists(ingridientId))
                 return NotFound();
 
-            var ingridient = _mapper.Map<IngridientDto>(_ingridientService.GetIngridient(id));
+            var ingridient = _mapper.Map<IngridientDto>(_ingridientService.GetIngridient(ingridientId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -63,9 +63,9 @@ namespace API.Controllers
         public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName)
         {       
 
-            foreach( IngridientDto ingridient in ingridientsCreate)
+            foreach( IngridientDto ingridientCreate in ingridientsCreate)
            {
-                if (ingridient == null)
+                if (ingridientCreate == null)
                 {
                     return BadRequest(ModelState);
                 }
@@ -78,15 +78,13 @@ namespace API.Controllers
                 }
 
 
-                var ingridientMap = _mapper.Map<Ingridient>(ingridient);
+                var ingridientMap = _mapper.Map<Ingridient>(ingridientCreate);
 
-                if (!_ingridientService.CreateIngridient(ingridientMap, recipeName, ingridient.Quantity))
+                if (!_ingridientService.CreateIngridient(ingridientMap, recipeName, ingridientCreate.Quantity))
                 {
                     ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
                     return StatusCode(500, ModelState);
                 }
-
-
             }
 
             return Ok("Zakończono pomyślnie");

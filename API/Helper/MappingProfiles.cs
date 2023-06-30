@@ -38,7 +38,7 @@ namespace API.Helper
                 .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Name));
             CreateMap<IngridientDto, Ingridient>()
                 .ForMember(dst => dst.IngridientID, opt => opt.MapFrom(src => src.IngridientID))
-                .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.IngridientID));
+                .ForMember(dst => dst.Name, opt => opt.MapFrom(src => src.Name));
 
             CreateMap<UserDto, User>();
 

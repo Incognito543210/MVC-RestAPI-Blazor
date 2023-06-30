@@ -43,7 +43,7 @@ namespace API.Controllers
 
 
 
-        [HttpGet("{RecipeId}")]
+        [HttpGet("{recipeId}")]
         [ProducesResponseType(200, Type = typeof(Recipe))]
         [ProducesResponseType(400)]
         public IActionResult GetRecipe(int recipeId)
