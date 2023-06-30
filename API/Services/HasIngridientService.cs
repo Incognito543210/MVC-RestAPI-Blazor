@@ -26,11 +26,11 @@ namespace API.Services
 
         }
 
-        public string getAmountByRecipeAndIngridient(int recipeId, int ingridientId)
+        public HasIngridient getAmountByRecipeAndIngridient(int recipeId, int ingridientId)
         {
             var hasIngridient = _context.HasIngridients.FirstOrDefault(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
-          
-            return hasIngridient.Amount;
+
+            return hasIngridient;
           
         }
     }

@@ -31,13 +31,13 @@ namespace API.Controllers
             if (!_hasIngridientService.AmountByRecipeAndIngridientExists(recipeId, ingridentId))
                 return NotFound();
 
-            var amount = _mapper.Map<HasIngridientDto>(_hasIngridientService.getAmountByRecipeAndIngridient(recipeId, ingridentId));
+            var hasIngridient = _mapper.Map<HasIngridientDto>(_hasIngridientService.getAmountByRecipeAndIngridient(recipeId, ingridentId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
 
-            return Ok(amount);
+            return Ok(hasIngridient.Amount);
         }
 
         
