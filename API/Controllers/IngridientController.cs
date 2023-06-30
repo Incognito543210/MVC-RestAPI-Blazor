@@ -57,17 +57,15 @@ namespace API.Controllers
 
         }
 
-         [HttpPost]
+        [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName, [FromBody] ICollection<string> amounts)
-        {
+        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName)
+        {       
 
-            var ingridentsWithAmounts = ingridientsCreate.Zip(amounts, (ingridentCreate, amount) => new { IngridientCreate = ingridentCreate, Amount = amount });
-
-            foreach( var pair in ingridentsWithAmounts)
+            foreach( IngridientDto ingridient in ingridientsCreate)
            {
-                if (pair.IngridientCreate == null)
+                if (ingridient == null)
                 {
                     return BadRequest(ModelState);
                 }
@@ -79,13 +77,10 @@ namespace API.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var ingrideintMap = new Ingridient()
-                {
-                    name = pair.IngridientCreate.Name,
-                };
 
+                var ingridientMap = _mapper.Map<Ingridient>(ingridient);
 
-                if (!_ingridientService.CreateIngridient(ingrideintMap, recipeName, pair.Amount))
+                if (!_ingridientService.CreateIngridient(ingridientMap, recipeName, ingridient.Quantity))
                 {
                     ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
                     return StatusCode(500, ModelState);
@@ -97,7 +92,7 @@ namespace API.Controllers
             return Ok("Zakończono pomyślnie");
 
         }
-
+       
 
 
     }
