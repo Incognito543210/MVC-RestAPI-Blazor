@@ -68,10 +68,17 @@ namespace API.Controllers
                 return StatusCode(422, ModelState);
             }
 
-            if (!_userServices.IsPasswordStrong(userMap.Email))
+            if (!_userServices.IsPasswordStrong(userMap.Password))
             {
                 ModelState.AddModelError("", "Hasło jest niewystarczająco mocne");
                 return StatusCode(422, ModelState);
+            }
+
+            if (_userServices.IsPasswordPopular(userMap.Password))
+            {
+                ModelState.AddModelError("", "Hasło jest zbyt popularne");
+                return StatusCode(422, ModelState);
+
             }
 
             if (!_userServices.CreateUser(userMap))
@@ -116,7 +123,7 @@ namespace API.Controllers
                 return StatusCode(422, ModelState);
             }
 
-            if (!_userServices.IsPasswordStrong(userMap.Email))
+            if (!_userServices.IsPasswordStrong(userMap.Password))
             {
                 ModelState.AddModelError("", "Hasło jest niewystarczająco mocne");
                 return StatusCode(422, ModelState);

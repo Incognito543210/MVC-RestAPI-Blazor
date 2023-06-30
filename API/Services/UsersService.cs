@@ -9,7 +9,7 @@ namespace API.Services
     {
         DataContext _context;
         IEncryptor _encryptor;
-        //IPasswordGetter _passwordGetter;
+        IPasswordGetter _passwordGetter;
 
         public UsersService(DataContext context, IEncryptor encryptor, IPasswordGetter passwordGetter)
         {

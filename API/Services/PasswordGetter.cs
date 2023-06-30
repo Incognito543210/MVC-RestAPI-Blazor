@@ -1,10 +1,12 @@
-﻿namespace API.Helper
+﻿using API.Interfaces;
+
+namespace API.Services
 {
     public class PasswordGetter : IPasswordGetter
     {
-        private readonly string popularPasswordsStringPath = "10-million-password-list-top-1000000.txt";
+        private readonly string popularPasswordsStringPath = "./Helper/10-million-password-list-top-1000000.txt";
 
-        public ICollection<string> PopularPasswords()
+        public ICollection<string> GetPopularPasswords()
         {
             if (!File.Exists(popularPasswordsStringPath))
                 throw new FileNotFoundException("Nie znaleziono pliku z popularnymi hasłami");

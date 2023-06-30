@@ -21,6 +21,8 @@ builder.Services.AddScoped<IRecipesService,RecipesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IIngridientsService, IngridientsService>();
 
+builder.Services.AddScoped<IPasswordGetter, PasswordGetter>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

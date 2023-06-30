@@ -1,7 +1,7 @@
-﻿namespace API.Helper
+﻿namespace API.Interfaces
 {
     public interface IPasswordGetter
     {
-        ICollection<string> PopularPasswords();
+        ICollection<string> GetPopularPasswords();
     }
 }
