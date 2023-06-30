@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.AddScoped<IEncryptor, Encryptor>();
 builder.Services.AddScoped<ITagsService, TagsService>();
 builder.Services.AddScoped<IHasCategoriesService, HasCategoriesService>();
 builder.Services.AddScoped<IOpinionsService, OpinionsService>();
