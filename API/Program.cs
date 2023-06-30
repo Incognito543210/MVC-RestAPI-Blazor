@@ -20,6 +20,7 @@ builder.Services.AddScoped<IOpinionsService, OpinionsService>();
 builder.Services.AddScoped<IRecipesService,RecipesService>();
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IIngridientsService, IngridientsService>();
+builder.Services.AddScoped<IHasCategoriesService, HasCategoriesService>();
 
 builder.Services.AddScoped<IPasswordGetter, PasswordGetter>();
 

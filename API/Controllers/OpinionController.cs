@@ -71,10 +71,10 @@ namespace API.Controllers
             return Ok(opinion);
         }
 
-        [HttpPost]
+        [HttpPost("{userID},{recipeID}")]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
-        public IActionResult CreateOpinion([FromQuery] int userID, int recipeID, [FromBody] OpinionDto opinionCreate)
+        public IActionResult CreateOpinion( int userID, int recipeID, [FromBody] OpinionDto opinionCreate)
         {
             if (opinionCreate == null)
                 return BadRequest(ModelState);

@@ -8,7 +8,7 @@ namespace API.Services
     public class IngridientsService : IIngridientsService
     {
         private DataContext _context;
-    
+        
        
         public IngridientsService(DataContext context)
         {

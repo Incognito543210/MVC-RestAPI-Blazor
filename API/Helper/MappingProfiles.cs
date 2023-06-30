@@ -43,6 +43,9 @@ namespace API.Helper
             CreateMap<UserDto, User>();
 
             //CreateMap<User, UserDto>();
+
+            CreateMap<HasIngridient, HasIngridientDto>();
+            CreateMap<HasIngridientDto, HasIngridient>();
         }
     }
 }

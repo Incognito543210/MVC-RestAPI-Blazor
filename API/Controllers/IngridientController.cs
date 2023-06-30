@@ -13,7 +13,6 @@ namespace API.Controllers
     {
         private readonly IIngridientsService _ingridientService;
         private readonly IMapper _mapper;
-        private readonly IRecipesService recipeService;
 
         public IngridientController(IIngridientsService ingridientService, IMapper mapper)
         {
@@ -57,10 +56,10 @@ namespace API.Controllers
 
         }
 
-        [HttpPost]
+        [HttpPost("{recipeName}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, [FromQuery]string recipeName)
+        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate,string recipeName)
         {       
 
             foreach( IngridientDto ingridientCreate in ingridientsCreate)
