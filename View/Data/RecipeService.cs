@@ -35,7 +35,7 @@ namespace View.Data
             return await _httpClient.GetFromJsonAsync<RecipeDto>("/api/Recipe/" + id);
         }
 
-        public async Task<List<IngridientDto>> GetIngridientsListAsync(int id)
+        public async Task<List<IngridientDto>> GetIngredientsListAsync(int id)
         {
             return await _httpClient.GetFromJsonAsync<List<IngridientDto>>("/api/Recipe/ingridients/" + id);
         }
