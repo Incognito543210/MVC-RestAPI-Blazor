@@ -1,10 +1,4 @@
-﻿using Model.MODEL;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Model.DTO
 {
@@ -13,8 +7,10 @@ namespace Model.DTO
         public int IngridientID { get; set; }
 
         [Required(ErrorMessage = "Nazwij składnik.")]
-        public string Name { get; set; }
-        public string Quantity { get; set; }
+        public string Name { get; set; } = "";
+
+        [Required(ErrorMessage = "Podaj ilość.")]
+        public string Quantity { get; set; } = "";
 
     }
 }
