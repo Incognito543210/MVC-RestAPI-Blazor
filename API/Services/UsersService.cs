@@ -7,10 +7,12 @@ namespace API.Services
     public class UsersService : IUsersService
     {
         DataContext _context;
+        Encryptor _encryptor;
 
-        public UsersService(DataContext context)
+        public UsersService(DataContext context, Encryptor encryptor)
         {
             _context = context;
+            _encryptor = encryptor;
         }
 
         public bool Save()
@@ -24,20 +26,9 @@ namespace API.Services
             if (UsernameExists(user.Username))
                 return false;
 
+            user.Password = _encryptor.EncryptPassword(user.Password);
+
             _context.Users.Add(user);
-
-            bool result = Save();
-
-            return result;
-        }
-
-        public bool DeleteUser(User user)
-        {
-            //usuwanie przepisów
-
-            //usuwanie opinii
-
-            _context.Users.Remove(user);
 
             bool result = Save();
 

@@ -106,28 +106,5 @@ namespace API.Controllers
 
             return Ok("Pomyślnie zmodyfikowano dane użytkownika");
         }
-
-        [HttpDelete("{userID}")]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(404)]
-        public IActionResult DeleteUser(int userID)
-        {
-            if (!_userServices.UserExists(userID))
-                return NotFound();
-
-            var userToDelete = _userServices.GetUser(userID);
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            if (!_userServices.DeleteUser(userToDelete))
-            {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania użytkownika");
-                return BadRequest(ModelState);
-            }
-
-            return Ok("Pomyślnie usunięto użytkonika");
-        }
     }
 }
