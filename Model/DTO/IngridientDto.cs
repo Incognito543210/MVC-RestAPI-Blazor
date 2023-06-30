@@ -13,7 +13,7 @@ namespace Model.DTO
         public int IngridientID { get; set; }
 
         [Required(ErrorMessage = "Nazwij składnik.")]
-        public string name { get; set; }
+        public string Name { get; set; }
      
 
 

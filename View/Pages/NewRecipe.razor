@@ -29,7 +29,7 @@
         <EditForm Model="@ingredient" OnValidSubmit="@AddIngredient">
             <DataAnnotationsValidator />
             <MudStack Row="true">
-                <MudTextField @bind-Value="ingredient.name" Label="Składnik" For="@(() => ingredient.name)"></MudTextField>
+                <MudTextField @bind-Value="ingredient.Name" Label="Składnik" For="@(() => ingredient.Name)"></MudTextField>
                 <MudTextField @bind-Value="quantity" Adornment="Adornment.End" AdornmentText="g" Label="Ilość"></MudTextField>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
             </MudStack>
@@ -63,6 +63,7 @@
                 <tr>
                     <th>Składnik</th>
                     <th>Ilość</th>
+                    <th>Tagi</th>
                 </tr>
             </thead>
             <tbody>
