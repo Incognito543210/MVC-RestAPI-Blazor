@@ -34,12 +34,12 @@ namespace API.Controllers
             return Ok(tags);
         }
 
-        [HttpGet("{TagId}")]
+        [HttpGet("{tagID}")]
         [ProducesResponseType(200, Type = typeof(Tag))]
         [ProducesResponseType(400)]
-        public IActionResult GetByID(int id)
+        public IActionResult GetByID(int tagID)
         {
-            var tag = _mapper.Map<Tag>(_tagsService.GetTag(id));
+            var tag = _mapper.Map<Tag>(_tagsService.GetTag(tagID));
 
             if (!ModelState.IsValid)
             {
