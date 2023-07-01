@@ -46,7 +46,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Zaloguj się</h5>
+                <h5 class="modal-title">Logowanie</h5>
                 <button class="btn btn-danger" @onclick="ClickClose">❌</button>
                 @*<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
                     <span aria-hidden="true">&times;</span>
@@ -56,16 +56,20 @@
                 <div class="mb-3">
                     @*<label for="loginEmail" class="form-label">Email</label>
                     <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com" autocomplete="off" required @bind-value="user" />*@
-                    <MudTextField @bind-Value="Login" Label="Login" Colo></MudTextField>
+                    <MudTextField @bind-Value="Login" Label="Login"></MudTextField>
                 </div>
                 <div class="mb-3">
                     @*<label for="loginPassword" class="form-label">Password</label>
                     <input type="password" class="form-control" id="loginPassword" required />*@
-                    <MudTextField @bind-Value="Password" Label="Password" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+                    <MudTextField @bind-Value="Password" Label="Hasło" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+                </div>
+                <div class="mb-3" id="bottom">
+                    <a>Nie masz konta?</a>
+                    <button class="btn-link" type="button" @onclick="SignUp">Zarejestruj się</button>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-login" @onclick="ClickLogin">Zaloguj</button>
+                <button class="btn-login" @onclick="ClickLogin">Zaloguj się</button>
                 <button class="btn-cancel" data-dismiss="modal" @onclick="ClickClose">Anuluj</button>
             </div>
         </div>
@@ -122,5 +126,13 @@
             PasswordInputIcon = Icons.Material.Filled.Visibility;
             PasswordInput = InputType.Text;
         }
+    }
+
+    private async Task SignUp()
+    {
+        show = false;
+        await Task.Delay(500);
+        display = false;
+        NavMan.NavigateTo("/signup");
     }
 }

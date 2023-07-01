@@ -26,6 +26,10 @@ b {
     flex: 1;
 }
 
+a {
+    padding-right: 5px;
+}
+
 #buttons {
     display: flex;
     justify-content: flex-end;
@@ -113,3 +117,18 @@ main {
     .btn-login:hover, .btn-cancel:hover {
         background-color: rgba(227, 225, 222);
     }
+
+.btn-link {
+    color: rgba( 22, 166, 185 );
+    text-decoration: none;
+}
+
+    .btn-link:hover {
+        text-decoration: underline;
+    }
+
+#bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

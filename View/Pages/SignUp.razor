@@ -1,0 +1,102 @@
+﻿@page "/signup"
+
+<div id="signup-page">
+    <div class="content">
+        <div class="header">
+            <h3 class="modal-title">Rejestracja konta</h3>
+        </div>
+        <div class="modal-body">
+            <MudTextField @bind-Value="Email" Label="Adres e-mail"></MudTextField>
+            <div id="firstname">
+                <MudTextField @bind-Value="FirstName" Label="Imię"></MudTextField>
+            </div>
+            <div id="lastname">
+                <MudTextField @bind-Value="LastName" Label="Nazwisko"></MudTextField>
+            </div>
+            <div style="clear: both;"></div>
+            <MudTextField @bind-Value="Username" Label="Nazwa użytkownika"></MudTextField>
+            <MudTextField @bind-Value="Password" Label="Hasło" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+        </div>
+        <div class="modal-footer">
+            <button class="btn-signup">Zarejestruj się</button>
+        </div>
+    </div>
+</div>
+
+<style>
+	#signup-page {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+    .content {
+        width: 70%;
+    }
+
+    h3 {
+        margin: 0;
+        padding: 0;
+        font-weight: bolder;
+    }
+
+    .btn-signup {
+        background-color: rgba( 22, 166, 185 );
+        padding: 10px;
+        border-radius: 8px;
+        font-size: 1.17em;
+        color: white;
+    }
+
+        .btn-signup:hover {
+            background-color: rgba(227, 225, 222);
+        }
+
+    .header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #firstname{
+        padding-right: 10px;
+    }
+
+    #lastname {
+        padding-left: 10px;
+    }
+
+    #firstname, #lastname {
+        float: left;
+        width: 50%;
+    }
+
+</style>
+
+@code {
+    public string Email { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Username { get; set; }
+    public string Password { get; set; }
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void ButtonTestClick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+}
