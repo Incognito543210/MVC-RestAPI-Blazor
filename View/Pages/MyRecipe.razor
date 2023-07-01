@@ -8,8 +8,14 @@
 }
 else
 {
-    <div id="title">
-        <h3 style="text-align: center; font-weight: bolder">@recipe.Title</h3>
+    <div id="top">
+        <div id="title">
+            <h3 style="font-weight: bold">@recipe.Title</h3>
+        </div>
+        <div id="buttons">
+            <button class="btn1">Edytuj</button>
+            <button class="btn2">Usuń</button>
+        </div>
     </div>
 
     <div id="info">
@@ -54,11 +60,50 @@ else
 }
 
 <style>
-    #title {
+    #top {
         width: auto;
         margin: 10px;
         padding: 5px;
+        align-content: center;
+        display: flex;
+        justify-content: space-between;
     }
+
+    #title {
+        flex: 1;
+    }
+
+    h3 {
+        margin: 0;
+        padding: 0;
+    }
+
+    #recipe {
+        display: flex;
+        flex-direction: row;
+    }
+
+    #buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn1, .btn2 {
+        background: rgba( 22, 166, 185 );
+        padding: 10px;
+        float: right;
+        border-radius: 8px;
+        font-size: 1.17em;
+        color: white;
+    }
+
+    .btn1 {
+        margin-right: 5px;
+    }
+
+        .btn1:hover, .btn2:hover {
+            background-color: rgba(227, 225, 222);
+        }
 
     #sec-title {
         background-color: rgba( 22, 166, 185 );

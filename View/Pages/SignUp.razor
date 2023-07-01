@@ -1,22 +1,25 @@
 ﻿@page "/signup"
+@inject UserService UserServ
 
 <div id="signup-page">
     <div class="content">
         <div class="header">
-            <h3 class="modal-title">Rejestracja konta</h3>
+            <h3 class="title">Rejestracja konta</h3>
         </div>
-        <div class="modal-body">
-            <MudTextField @bind-Value="Email" Label="Adres e-mail"></MudTextField>
+        <EditForm Model="@user" OnValidSubmit="@CreateUser">
+            <DataAnnotationsValidator />
+            <MudTextField @bind-Value="user.Email" Label="Adres e-mail" For="@(() => user.Email)"></MudTextField>
             <div id="firstname">
-                <MudTextField @bind-Value="FirstName" Label="Imię"></MudTextField>
+                <MudTextField @bind-Value="user.FirstName" Label="Imię" For="@(() => user.FirstName)"></MudTextField>
             </div>
             <div id="lastname">
-                <MudTextField @bind-Value="LastName" Label="Nazwisko"></MudTextField>
+                <MudTextField @bind-Value="user.LastName" Label="Nazwisko" For="@(() => user.LastName)"></MudTextField>
             </div>
             <div style="clear: both;"></div>
-            <MudTextField @bind-Value="Username" Label="Nazwa użytkownika"></MudTextField>
-            <MudTextField @bind-Value="Password" Label="Hasło" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
-        </div>
+            <MudTextField @bind-Value="user.Username" Label="Nazwa użytkownika" For="@(() => user.Username)"></MudTextField>
+            <MudTextField @bind-Value="user.Password" Label="Hasło" For="@(() => user.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+            @*<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{}; color:{Colors.Grey.Lighten5};")">Zarejestruj się</MudButton>*@
+        </EditForm>
         <div class="modal-footer">
             <button class="btn-signup">Zarejestruj się</button>
         </div>
@@ -24,11 +27,11 @@
 </div>
 
 <style>
-	#signup-page {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
+    #signup-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
     .content {
         width: 70%;
@@ -58,7 +61,7 @@
         align-items: center;
     }
 
-    #firstname{
+    #firstname {
         padding-right: 10px;
     }
 
@@ -74,15 +77,22 @@
 </style>
 
 @code {
-    public string Email { get; set; }
-    public string FirstName { get; set; }
-    public string LastName { get; set; }
-    public string Username { get; set; }
-    public string Password { get; set; }
+    UserDto user = new();
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
+
+    async Task CreateUser()
+    {
+        await UserServ.CreateUserAsync(user);
+        user = new();
+    }
 
     void ButtonTestClick()
     {

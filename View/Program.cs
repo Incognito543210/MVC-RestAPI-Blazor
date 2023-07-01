@@ -13,6 +13,11 @@ builder.Services.AddHttpClient<RecipeService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5227/");
 });
+builder.Services.AddSingleton<UserService>();
+builder.Services.AddHttpClient<UserService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5227/");
+});
 builder.Services.AddMudServices();
 
 var app = builder.Build();
