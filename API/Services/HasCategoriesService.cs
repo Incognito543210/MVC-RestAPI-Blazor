@@ -84,5 +84,11 @@ namespace API.Services
             return _context.HasCategories.Any(p => p.RecipeID == recipeId && p.TagID == tagId);
 
         }
+
+        public bool DeleteTagsForRecipe(List<HasCategory> hasCategories)
+        {
+            _context.RemoveRange(hasCategories);
+            return Save();
+        }
     }
 }

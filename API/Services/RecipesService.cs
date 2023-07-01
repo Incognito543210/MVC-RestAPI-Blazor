@@ -80,5 +80,11 @@ namespace API.Services
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool DeleteRecipe(Recipe recipe)
+        {
+            _context.Remove(recipe);
+            return Save();
+        }
     }
 }

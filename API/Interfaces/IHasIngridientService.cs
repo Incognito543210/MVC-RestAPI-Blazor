@@ -10,5 +10,9 @@ namespace API.Interfaces
 
         bool DelateHasIngridient(HasIngridient hasIngridient);
 
+        ICollection<HasIngridient> GetHasIngridientsByRecipe(int recipeID);
+        bool Save();
+
+        bool DeleteIngridientsForRecipe(List<HasIngridient> hasIngridients);
     }
 }

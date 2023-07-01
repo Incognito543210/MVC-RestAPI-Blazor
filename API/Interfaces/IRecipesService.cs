@@ -29,7 +29,8 @@ namespace API.Interfaces
          ICollection<Tag> GetTagsByRecipe(int id);
          bool TagsExistsOnRecipe(int id);
 
-
+        public bool DeleteRecipe(Recipe recipe);
+       
 
 
 

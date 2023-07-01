@@ -66,5 +66,11 @@ namespace API.Services
         {
             return _context.Opinions.Where(o => o.UserID == id).ToList();
         }
+
+        public bool DeleteOpinionsForRecipe(List<Opinion> opinions)
+        {
+            _context.RemoveRange(opinions);
+            return Save();
+        }
     }
 }

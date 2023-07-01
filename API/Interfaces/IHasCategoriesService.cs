@@ -17,5 +17,7 @@ namespace API.Interfaces
 
         public HasCategory GetHasCategoryByRecipeAndTag(int recipeId, int tagId);
         bool HasCategorytByRecipeAndTagExists(int recipeId, int tagId);
+
+        bool DeleteTagsForRecipe(List<HasCategory> hasCategories);
     }
 }

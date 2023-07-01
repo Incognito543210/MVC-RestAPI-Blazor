@@ -17,13 +17,19 @@ namespace API.Controllers
         private readonly IRecipesService _recipeService;
         private readonly IMapper _mapper;
         private readonly IUsersService _usersService;
+        private readonly IOpinionsService _opinionsService;
+        private readonly IHasCategoriesService _hasCategoriesService;
+        private readonly IHasIngridientService _hasIngridientService;
 
-        public RecipeController(IRecipesService recipeService, IMapper mapper, IUsersService usersService)
+        public RecipeController(IRecipesService recipeService, IMapper mapper, IUsersService usersService, IOpinionsService opinionsService, IHasCategoriesService hasCategoriesService, IHasIngridientService hasIngridientService)
 
         {
             _recipeService = recipeService;
              _mapper = mapper;
             _usersService = usersService;
+            _hasCategoriesService = hasCategoriesService;   
+            _hasIngridientService= hasIngridientService;    
+            _opinionsService= opinionsService;  
         }
 
 
@@ -189,6 +195,45 @@ namespace API.Controllers
 
         }
 
+        [HttpDelete("recipeId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+
+        public IActionResult DeleteRecipe(int recipeId)
+        {
+            if(!_recipeService.RecipeExists(recipeId))
+            {
+                return NotFound();
+            }
+
+            var opinionsToDelete = _opinionsService.GetOpinionsForRecipe(recipeId);
+            var hasIngridientToDelete = _hasIngridientService.GetHasIngridientsByRecipe(recipeId);
+            var hasCategoryToDelete = _hasCategoriesService.GetHasCategoriesByRecipe(recipeId);
+            var recipeToDelete = _recipeService.GetRecipe(recipeId);
+
+            if(!_opinionsService.DeleteOpinionsForRecipe(opinionsToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem opini przepisu");
+            }
+
+            if (!_hasIngridientService.DeleteIngridientsForRecipe(hasIngridientToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem składnikami przepisu");
+            }
+
+            if (!_hasCategoriesService.DeleteTagsForRecipe(hasCategoryToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem tagami przepisu");
+            }
+
+            if(!_recipeService.DeleteRecipe(recipeToDelete))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem przepisu");
+            }
+
+            return Ok("Usunięto przepis pomyślnie");
+        }
 
 
     }
