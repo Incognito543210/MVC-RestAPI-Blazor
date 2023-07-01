@@ -24,7 +24,9 @@ namespace API.Interfaces
 
         bool Save();
 
-        /*  bool CreateRecipe(Recipe Recipe); */
+        bool UpdateRecipe(Recipe recipe);
+
+       
 
 
     }

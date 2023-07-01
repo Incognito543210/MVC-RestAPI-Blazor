@@ -57,6 +57,12 @@ namespace API.Services
             return Save();
         }
 
+        public bool UpdateRecipe(Recipe recipe)
+        {
+            _context.Update(recipe);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

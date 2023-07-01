@@ -138,8 +138,38 @@ namespace API.Controllers
 
         }
 
+        [HttpPut("{recipeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult UpdateRecipe(int recipeId, [FromBody] RecipeDto updateRecipe)
+        {
+            if (updateRecipe == null)
+                return BadRequest(ModelState);
+
+            if (recipeId != updateRecipe.RecipeID)
+                return BadRequest(ModelState);
+
+            if (!_recipeService.RecipeExists(recipeId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var recipeMap = _mapper.Map<Recipe>(updateRecipe);
+
+            if(!_recipeService.UpdateRecipe(recipeMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie przepis");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Pomyślnie zmodyfikowano przepis");
 
 
+
+        }
 
 
 
