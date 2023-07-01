@@ -1,4 +1,5 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavMan
 
 <PageTitle>View</PageTitle>
 <MudThemeProvider />
@@ -8,7 +9,21 @@
 <div class="page">
     <div id="container">
         <div id="topbar">
-            <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
+            <div>
+                <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
+            </div>
+            <div id="buttons">
+                <button class="openlogin_btn" @onclick="OpenLogin"></button>
+
+                @*@if (loggedIn)
+                {
+                    <button class="account_btn" @onclick="onClickAccount"></button>
+                }
+                else
+                {
+                    <button class="login_btn" @onclick="onClickLogin"></button>
+                }*@
+            </div>
         </div>
 
         <main>
@@ -24,3 +39,88 @@
         </main>
     </div>
 </div>
+
+<div class="modal-backdrop fade @(show ? "show" : "") @(display ? "d-block" : "d-none")"></div>
+
+<div class="modal fade @(show ? "show" : "")  @(display ? "d-block" : "d-none")" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Zaloguj się</h5>
+                <button class="btn btn-danger" @onclick="ClickClose">❌</button>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    @*<label for="loginEmail" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com" autocomplete="off" required @bind-value="user" />*@
+                    <MudTextField @bind-Value="Login" Label="Login" Colo></MudTextField>
+                </div>
+                <div class="mb-3">
+                    @*<label for="loginPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="loginPassword" required />*@
+                    <MudTextField @bind-Value="Password" Label="Password" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-login" @onclick="ClickLogin">Zaloguj</button>
+                <button class="btn-cancel" data-dismiss="modal" @onclick="ClickClose">Anuluj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    private bool show, display, loggedIn;
+    private string? user;
+
+    public string Login { get; set; }
+    public string Password { get; set; }
+
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    public string? GetUserName()
+    {
+        return loggedIn ? user : null;
+    }
+
+    public async Task OpenLogin()
+    {
+        display = true;
+        await Task.Delay(100);
+        show = true;
+    }
+
+    private async Task ClickClose()
+    {
+        show = false;
+        await Task.Delay(500);
+        display = false;
+    }
+
+    private async Task ClickLogin()
+    {
+        
+    }
+
+    void ButtonTestClick()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+}
