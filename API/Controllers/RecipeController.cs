@@ -13,7 +13,7 @@ namespace API.Controllers
     public class RecipeController : ControllerBase
     {
 
-   
+
         private readonly IRecipesService _recipeService;
         private readonly IMapper _mapper;
         private readonly IUsersService _usersService;
@@ -25,22 +25,22 @@ namespace API.Controllers
 
         {
             _recipeService = recipeService;
-             _mapper = mapper;
+            _mapper = mapper;
             _usersService = usersService;
-            _hasCategoriesService = hasCategoriesService;   
-            _hasIngridientService= hasIngridientService;    
-            _opinionsService= opinionsService;  
+            _hasCategoriesService = hasCategoriesService;
+            _hasIngridientService = hasIngridientService;
+            _opinionsService = opinionsService;
         }
 
 
-  
+
         [HttpGet("AllRecipes")]
-        [ProducesResponseType(200,Type=typeof(IEnumerable<Recipe>))]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Recipe>))]
         public IActionResult GetRecipes()
 
         {
             var recipes = _mapper.Map<List<RecipeDto>>(_recipeService.GetRecipes());
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
@@ -95,6 +95,8 @@ namespace API.Controllers
             if (!_recipeService.TagsExistsOnRecipe(recipeId))
                 return NotFound();
 
+
+
             var tagsMap = _mapper.Map<List<TagDto>>(_recipeService.GetTagsByRecipe(recipeId));
 
             if (!ModelState.IsValid)
@@ -122,6 +124,27 @@ namespace API.Controllers
 
         }
 
+        [HttpPost("ByTags")]
+        [ProducesResponseType(200, Type = typeof(Recipe))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetRecipesByTags([FromBody] ICollection<TagDto> tags)
+        {
+
+            var listOfTags = _mapper.Map<List<Tag>>(tags);
+
+            if (!_recipeService.GetRecipesByTagsExists(listOfTags))
+                return NotFound();
+
+            var recipes = _mapper.Map<List<RecipeDto>>(_recipeService.GetRecipesByTags(listOfTags));
+   
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(recipes);
+
+        }
 
         [HttpPost("{userID}")]
         [ProducesResponseType(201)]

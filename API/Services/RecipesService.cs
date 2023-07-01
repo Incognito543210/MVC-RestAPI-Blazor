@@ -1,5 +1,6 @@
 ﻿using API.Interfaces;
 using DAL;
+using Microsoft.EntityFrameworkCore;
 using Model.MODEL;
 
 namespace API.Services
@@ -85,6 +86,39 @@ namespace API.Services
         {
             _context.Remove(recipe);
             return Save();
+        }
+
+        public ICollection<Recipe> GetRecipesByTags(ICollection<Tag> tags)
+        {
+            var recipeIdWithTags= _context.HasCategories.Where(mapping => tags.Contains(mapping.Tag))
+            .GroupBy(mapping => mapping.RecipeID)
+            .Where(group => group.Count() == tags.Count)
+            .Select(group => group.Key)
+            .ToList();
+
+            var recipes = _context.Recipes .Where(recipe => recipeIdWithTags.Contains(recipe.RecipeID)).ToList();
+
+            return recipes;
+        }
+
+        public bool GetRecipesByTagsExists(ICollection<Tag> tags)
+        {
+            var recipeIdWithTags = _context.HasCategories.Where(mapping => tags.Contains(mapping.Tag))
+            .GroupBy(mapping => mapping.RecipeID)
+            .Where(group => group.Count() == tags.Count)
+            .Select(group => group.Key)
+            .ToList();
+
+            var recipes = _context.Recipes.Where(recipe => recipeIdWithTags.Contains(recipe.RecipeID)).ToList();
+
+            if(recipes != null)
+            {
+                return true;
+            }
+            else
+            { 
+                return false; 
+            };
         }
     }
 }
