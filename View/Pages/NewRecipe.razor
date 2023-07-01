@@ -14,7 +14,7 @@
             <MudTextField @bind-Value="recipe.Title" Label="Nazwa" For="@(() => recipe.Title)"></MudTextField>
             <MudNumericField @bind-Value="recipe.Portions" Label="Liczba porcji" Step="1" Min="1" For="@(() => recipe.Portions)" />
             <MudTimePicker Label="Czas przygotowania" @bind-Time="recipe.PrepTimeAsTimeSpan" For="@(() => recipe.PrepTimeAsTimeSpan)" />
-            <MudSelect T="int" Label="Stopień trudności" AnchorOrigin="Origin.BottomCenter" Min="1" For="@(() => recipe.Difficulty)">
+            <MudSelect T="int" Label="Stopień trudności" @bind-Value="recipe.Difficulty" AnchorOrigin="Origin.BottomCenter" For="@(() => recipe.Difficulty)">
                 <MudSelectItem T="int" Value="1" />
                 <MudSelectItem T="int" Value="2" />
                 <MudSelectItem T="int" Value="3" />
@@ -22,7 +22,7 @@
                 <MudSelectItem T="int" Value="5" />
             </MudSelect>
         </MudStack>
-        <p><MudTextField T="string" Label="Opis przygotowania" Text="@recipe.Content" Lines="10" For="@(() => recipe.Content)" /></p>
+        <p><MudTextField T="string" @bind-Value="recipe.Content" Label="Opis przygotowania" Text="@recipe.Content" Lines="10" For="@(() => recipe.Content)" /></p>
         <p><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj przepis</MudButton></p>
     </EditForm>
     <MudStack Row="true">
@@ -193,8 +193,8 @@
         if(recipe.Ingridients.Count != 0)
         {
             await RecServ.AddRecipeAsync(recipe);
-            //await AddIngredients();
-            //await AddTags();
+            await AddIngredients();
+            await AddTags();
             recipe = new();
         }        
     }
@@ -207,7 +207,7 @@
 
     async Task AddTags()
     {
-        //await RecServ.AddRecipeAsync(recipe);
-        //recipe = new();
+        await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
+        recipe.Tags = new();
     }
 }

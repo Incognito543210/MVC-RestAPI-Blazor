@@ -50,17 +50,16 @@ namespace View.Data
             await LogRequest(wynik);
         }
 
+        public async Task AddTagsToRecipeAsync(List<TagDto> tags, string recipeTitle)
+        {
+            var wynik = await _httpClient.PostAsJsonAsync<List<TagDto>>("api/Tag/" + recipeTitle, tags);
+            await LogRequest(wynik);
+        }
         private async Task LogRequest(HttpResponseMessage wynik)
         {
             var str = await wynik.RequestMessage!.Content!.ReadAsStringAsync();
             var url = wynik.RequestMessage.RequestUri;
             _log.LogWarning(url + " przerwa " + str);
-        }
-
-        public async Task AddTagsToRecipeAsync(List<TagDto> ingredients, string recipeTitle)
-        {
-            //var wynik = await _httpClient.PostAsJsonAsync<List<IngridientDto>>("api/Ingridient/" + recipeTitle, ingredients);
-            //await LoqRequest(wynik);
         }
 
     }
