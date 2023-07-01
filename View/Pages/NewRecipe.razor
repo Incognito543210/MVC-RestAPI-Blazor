@@ -8,7 +8,7 @@
 </style>*@
 
 <div>
-    <EditForm Model="@recipe" OnValidSubmit="@AddRecipe">
+    <EditForm Model="@recipe" OnValidSubmit="@AddRecipeAndIngredients">
         <DataAnnotationsValidator />
         <MudStack Row="true">
             <MudTextField @bind-Value="recipe.Title" Label="Nazwa" For="@(() => recipe.Title)"></MudTextField>
@@ -169,17 +169,19 @@
         recipe.Tags.Remove(tag);
     }
 
-    async Task AddRecipe()
+    async Task AddRecipeAndIngredients()
     {
         await RecServ.AddRecipeAsync(recipe);
         recipe = new();
+        await RecServ.AddIngredientsAsync(recipe.Ingridients, recipe.Title);
+        recipe.Ingridients = new();
     }
 
-    async Task AddIngredient()
-    {
-        //await RecServ.AddRecipeAsync(recipe);
-        //recipe = new();
-    }
+    //async Task AddIngredient()
+    //{
+    //    await RecServ.AddIngredientsAsync(recipe.Ingridients, recipe.Title);
+    //    recipe.Ingridients = new();
+    //}
 
     async Task AddTag()
     {

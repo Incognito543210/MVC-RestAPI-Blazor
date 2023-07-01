@@ -2,6 +2,7 @@
 using Model.DTO;
 using Model.MODEL;
 using System.Diagnostics;
+using View.Pages;
 
 namespace View.Data
 {
@@ -33,6 +34,13 @@ namespace View.Data
         public async Task AddRecipeAsync(RecipeDto recipe)
         {
             var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe?userID=" + _userId, recipe);
+            Debug.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            Debug.WriteLine(wynik.RequestMessage);
+        }
+
+        public async Task AddIngredientsAsync(List<IngridientDto> ingredients, string recipeTitle)
+        {
+            var wynik = await _httpClient.PostAsJsonAsync<List<IngridientDto>>("api/Ingridient/" + recipeTitle, ingredients);
             Debug.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             Debug.WriteLine(wynik.RequestMessage);
         }
