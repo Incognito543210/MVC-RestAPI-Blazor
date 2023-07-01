@@ -13,25 +13,28 @@ namespace API.Services
             _context=context;
         }
 
-        public bool AmountByRecipeAndIngridientExists(int recipeId, int ingridientId)
+        public bool HasIngridientByRecipeAndIngridientExists(int recipeId, int ingridientId)
         {
-            var hasIngridient = _context.HasIngridients.Any(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
-
-            if(hasIngridient != null)
-            {
-                return true;
-            }
-
-            return false;
+             return _context.HasIngridients.Any(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
 
         }
 
-        public HasIngridient getAmountByRecipeAndIngridient(int recipeId, int ingridientId)
+        public HasIngridient getHasIngridientByRecipeAndIngridient(int recipeId, int ingridientId)
         {
-            var hasIngridient = _context.HasIngridients.FirstOrDefault(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
-
-            return hasIngridient;
+            return _context.HasIngridients.FirstOrDefault(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
           
+        }
+
+        public bool DelateHasIngridient(HasIngridient hasIngridient)
+        {
+            _context.Remove(hasIngridient);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }
