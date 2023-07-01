@@ -40,8 +40,8 @@ namespace View.Data
 
         public async Task AddRecipeAsync(RecipeDto recipe)
         {
-            var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe?userID=" + _userId, recipe);
-           await LogRequest(wynik);
+            var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + _userId, recipe);
+            await LogRequest(wynik);
         }
 
         public async Task AddIngredientsToRecipeAsync(List<IngridientDto> ingredients, string recipeTitle)

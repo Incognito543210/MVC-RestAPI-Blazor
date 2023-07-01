@@ -193,8 +193,8 @@
         if(recipe.Ingridients.Count != 0)
         {
             await RecServ.AddRecipeAsync(recipe);
-            await AddIngredients();
-            await AddTags();
+            //await AddIngredients();
+            //await AddTags();
             recipe = new();
         }        
     }
