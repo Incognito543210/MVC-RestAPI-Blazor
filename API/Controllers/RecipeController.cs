@@ -17,13 +17,19 @@ namespace API.Controllers
         private readonly IRecipesService _recipeService;
         private readonly IMapper _mapper;
         private readonly IUsersService _usersService;
+        private readonly IOpinionsService _opinionsService;
+        private readonly IHasCategoriesService _hasCategoriesService;
+        private readonly IHasIngridientService _hasIngridientService;
 
-        public RecipeController(IRecipesService recipeService, IMapper mapper, IUsersService usersService)
+        public RecipeController(IRecipesService recipeService, IMapper mapper, IUsersService usersService, IOpinionsService opinionsService, IHasCategoriesService hasCategoriesService, IHasIngridientService hasIngridientService)
 
         {
             _recipeService = recipeService;
              _mapper = mapper;
             _usersService = usersService;
+            _hasCategoriesService = hasCategoriesService;   
+            _hasIngridientService= hasIngridientService;    
+            _opinionsService= opinionsService;  
         }
 
 
@@ -77,6 +83,24 @@ namespace API.Controllers
                 return BadRequest();
 
             return Ok(ingridients);
+
+        }
+
+        [HttpGet("tags/{recipeId}")]
+        [ProducesResponseType(200, Type = typeof(Tag))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetTagsByRecipe(int recipeId)
+        {
+            if (!_recipeService.TagsExistsOnRecipe(recipeId))
+                return NotFound();
+
+            var tagsMap = _mapper.Map<List<TagDto>>(_recipeService.GetTagsByRecipe(recipeId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(tagsMap);
 
         }
 
@@ -138,9 +162,78 @@ namespace API.Controllers
 
         }
 
+        [HttpPut("{recipeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult UpdateRecipe(int recipeId, [FromBody] RecipeDto updateRecipe)
+        {
+            if (updateRecipe == null)
+                return BadRequest(ModelState);
+
+            if (recipeId != updateRecipe.RecipeID)
+                return BadRequest(ModelState);
+
+            if (!_recipeService.RecipeExists(recipeId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var recipeMap = _mapper.Map<Recipe>(updateRecipe);
+
+            if(!_recipeService.UpdateRecipe(recipeMap))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie przepis");
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Pomyślnie zmodyfikowano przepis");
 
 
 
+        }
+
+        [HttpDelete("recipeId")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+
+        public IActionResult DeleteRecipe(int recipeId)
+        {
+            if(!_recipeService.RecipeExists(recipeId))
+            {
+                return NotFound();
+            }
+
+            var opinionsToDelete = _opinionsService.GetOpinionsForRecipe(recipeId);
+            var hasIngridientToDelete = _hasIngridientService.GetHasIngridientsByRecipe(recipeId);
+            var hasCategoryToDelete = _hasCategoriesService.GetHasCategoriesByRecipe(recipeId);
+            var recipeToDelete = _recipeService.GetRecipe(recipeId);
+
+            if(!_opinionsService.DeleteOpinionsForRecipe(opinionsToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem opini przepisu");
+            }
+
+            if (!_hasIngridientService.DeleteIngridientsForRecipe(hasIngridientToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem składnikami przepisu");
+            }
+
+            if (!_hasCategoriesService.DeleteTagsForRecipe(hasCategoryToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem tagami przepisu");
+            }
+
+            if(!_recipeService.DeleteRecipe(recipeToDelete))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem przepisu");
+            }
+
+            return Ok("Usunięto przepis pomyślnie");
+        }
 
 
     }

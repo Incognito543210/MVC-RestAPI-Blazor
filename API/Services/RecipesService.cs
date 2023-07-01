@@ -41,6 +41,18 @@ namespace API.Services
             return _context.HasIngridients.Any(p => p.RecipeID == id);
         }
 
+        public bool TagsExistsOnRecipe(int id)
+        {
+            return _context.HasCategories.Any(p => p.RecipeID == id);
+        }
+
+
+        public ICollection<Tag> GetTagsByRecipe(int id)
+        {
+            return _context.HasCategories.Where(p => p.RecipeID == id).Select(c => c.Tag).ToList();
+        }
+
+
         public bool RecipeExists(int recipeId)
         {
             return _context.Recipes.Any(p => p.RecipeID == recipeId);
@@ -57,10 +69,22 @@ namespace API.Services
             return Save();
         }
 
+        public bool UpdateRecipe(Recipe recipe)
+        {
+            _context.Update(recipe);
+            return Save();
+        }
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool DeleteRecipe(Recipe recipe)
+        {
+            _context.Remove(recipe);
+            return Save();
         }
     }
 }

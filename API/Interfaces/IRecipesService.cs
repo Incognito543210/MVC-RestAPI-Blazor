@@ -24,7 +24,14 @@ namespace API.Interfaces
 
         bool Save();
 
-        /*  bool CreateRecipe(Recipe Recipe); */
+        bool UpdateRecipe(Recipe recipe);
+
+         ICollection<Tag> GetTagsByRecipe(int id);
+         bool TagsExistsOnRecipe(int id);
+
+        public bool DeleteRecipe(Recipe recipe);
+       
+
 
 
     }

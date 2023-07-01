@@ -37,10 +37,10 @@
         <EditForm Model="@tag" OnValidSubmit="@AddTagToList">
             <DataAnnotationsValidator />
             <MudStack Row="true">
-                <MudSelect T="string" Label="Lista tagów" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.Bookmarks">
+                <MudSelect T="string" Label="Lista tagów" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.Bookmarks" @bind-Value="tag.Name">
                     @foreach (var item in tags)
                     {
-                        <MudSelectItem Value="@item">@item</MudSelectItem>
+                        <MudSelectItem Value="@item.Name">@item.Name</MudSelectItem>
                     }
                 </MudSelect>
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
@@ -98,6 +98,8 @@
             <thead>
                 <tr>
                     <th>Tag</th>
+                    <th></th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -141,6 +143,12 @@
         else return new TimeSpan(0, ts.Value.Hour, ts.Value.Minute, ts.Value.Second, ts.Value.Millisecond);
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        tags = await RecServ.GetTagListAsync();
+    }
+
     void AddIngredientToList()
     {
         recipe.Ingridients.Add(ingredient);
@@ -149,7 +157,18 @@
 
     void AddTagToList()
     {
-        recipe.Tags.Add(tag);
+        bool IsInList = false;
+        foreach (var item in recipe.Tags)
+        {
+            if (item.Name == tag.Name)
+            {
+                IsInList = true;
+            }
+        }
+        if(!IsInList)
+        {
+            recipe.Tags.Add(tag);
+        }
         tag = new();
     }
 
@@ -171,17 +190,22 @@
 
     async Task AddRecipe()
     {
-        await RecServ.AddRecipeAsync(recipe);
-        recipe = new();
+        if(recipe.Ingridients.Count != 0)
+        {
+            await RecServ.AddRecipeAsync(recipe);
+            //await AddIngredients();
+            //await AddTags();
+            recipe = new();
+        }        
     }
 
-    async Task AddIngredient()
+    async Task AddIngredients()
     {
-        //await RecServ.AddRecipeAsync(recipe);
-        //recipe = new();
+        await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
+        recipe.Ingridients = new();
     }
 
-    async Task AddTag()
+    async Task AddTags()
     {
         //await RecServ.AddRecipeAsync(recipe);
         //recipe = new();

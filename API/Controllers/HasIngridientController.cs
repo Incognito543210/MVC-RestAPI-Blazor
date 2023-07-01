@@ -31,7 +31,7 @@ namespace API.Controllers
             if (!_hasIngridientService.HasIngridientByRecipeAndIngridientExists(recipeId, ingridentId))
                 return NotFound();
 
-            var hasIngridient = _mapper.Map<HasIngridientDto>(_hasIngridientService.getHasIngridientByRecipeAndIngridient(recipeId, ingridentId));
+            var hasIngridient = _mapper.Map<HasIngridientDto>(_hasIngridientService.GetHasIngridientByRecipeAndIngridient(recipeId, ingridentId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -51,14 +51,14 @@ namespace API.Controllers
             if (!_hasIngridientService.HasIngridientByRecipeAndIngridientExists(recipeId, ingridientId))
                 return NotFound();
 
-            var HasIngridientToDelate = _hasIngridientService.getHasIngridientByRecipeAndIngridient(recipeId, ingridientId);
+            var HasIngridientToDelate = _hasIngridientService.GetHasIngridientByRecipeAndIngridient(recipeId, ingridientId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             if(!_hasIngridientService.DelateHasIngridient(HasIngridientToDelate))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania opinii");
+                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania składnika");
                 return BadRequest(ModelState);
             }
 
