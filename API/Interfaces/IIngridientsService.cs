@@ -11,6 +11,8 @@ namespace API.Interfaces
 
         bool CreateIngridient(Ingridient ingridient, string recipeName, string amount);
 
+        bool UpdateIngridient(Ingridient ingridient, int recipeId, string amount);
+
         bool Save();
 
     }

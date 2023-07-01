@@ -72,5 +72,47 @@ namespace API.Services
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateIngridient(Ingridient ingridient, int recipeId, string amount)
+        {
+            
+            var ingridientCheckExists = GetIngridients().Where(c => c.Name.Trim().ToUpper() == ingridient.Name.Trim().ToUpper()).FirstOrDefault();
+            var recipe = _context.Recipes.Where(u => u.RecipeID == recipeId).FirstOrDefault();
+            var HasIngridientExists = _context.HasIngridients.Where(p => p.RecipeID == recipeId && (p.Ingridient.Name.Trim().ToUpper() == ingridient.Name.Trim().ToUpper())).FirstOrDefault();
+           
+            if (HasIngridientExists != null)
+            {
+                return true;
+            }
+            else if (ingridientCheckExists != null)
+            {
+                var hasIngridient = new HasIngridient()
+                {
+                    Ingridient = ingridientCheckExists,
+                    IngridientID = ingridientCheckExists.IngridientID,
+                    RecipeID = recipe.RecipeID,
+                    Recipe = recipe,
+                    Amount = amount,
+
+                };
+                _context.Add(hasIngridient);
+                return Save();
+            }
+            else
+            {
+                var hasIngridient = new HasIngridient()
+                {
+                    Ingridient = ingridient,
+                    IngridientID = ingridient.IngridientID,
+                    RecipeID = recipe.RecipeID,
+                    Recipe = recipe,
+                    Amount = amount,
+
+                };
+                _context.Add(hasIngridient);
+                _context.Add(ingridient);
+                return Save();
+            }
+        }
     }
 }
