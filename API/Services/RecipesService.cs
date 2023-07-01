@@ -41,6 +41,18 @@ namespace API.Services
             return _context.HasIngridients.Any(p => p.RecipeID == id);
         }
 
+        public bool TagsExistsOnRecipe(int id)
+        {
+            return _context.HasCategories.Any(p => p.RecipeID == id);
+        }
+
+
+        public ICollection<Tag> GetTagsByRecipe(int id)
+        {
+            return _context.HasCategories.Where(p => p.RecipeID == id).Select(c => c.Tag).ToList();
+        }
+
+
         public bool RecipeExists(int recipeId)
         {
             return _context.Recipes.Any(p => p.RecipeID == recipeId);

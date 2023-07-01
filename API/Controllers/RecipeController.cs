@@ -80,6 +80,24 @@ namespace API.Controllers
 
         }
 
+        [HttpGet("tags/{recipeId}")]
+        [ProducesResponseType(200, Type = typeof(Tag))]
+        [ProducesResponseType(400)]
+
+        public IActionResult GetTagsByRecipe(int recipeId)
+        {
+            if (!_recipeService.TagsExistsOnRecipe(recipeId))
+                return NotFound();
+
+            var tagsMap = _mapper.Map<List<TagDto>>(_recipeService.GetTagsByRecipe(recipeId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(tagsMap);
+
+        }
+
         [HttpGet("ByUser/{userId}")]
         [ProducesResponseType(200, Type = typeof(Recipe))]
         [ProducesResponseType(400)]

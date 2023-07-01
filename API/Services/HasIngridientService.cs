@@ -19,7 +19,7 @@ namespace API.Services
 
         }
 
-        public HasIngridient getHasIngridientByRecipeAndIngridient(int recipeId, int ingridientId)
+        public HasIngridient GetHasIngridientByRecipeAndIngridient(int recipeId, int ingridientId)
         {
             return _context.HasIngridients.FirstOrDefault(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
           

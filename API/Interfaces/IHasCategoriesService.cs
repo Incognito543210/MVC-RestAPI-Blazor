@@ -12,5 +12,7 @@ namespace API.Interfaces
         ICollection<HasCategory> GetHasCategoriesByTag(int tagID);
         ICollection<HasCategory> GetHasCategoriesByRecipe(int recipeID);
         bool DeleteHasCategoryByTag(int tagID);
+
+        
     }
 }

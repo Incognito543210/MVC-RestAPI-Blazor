@@ -26,7 +26,11 @@ namespace API.Interfaces
 
         bool UpdateRecipe(Recipe recipe);
 
-       
+         ICollection<Tag> GetTagsByRecipe(int id);
+         bool TagsExistsOnRecipe(int id);
+
+
+
 
 
     }
