@@ -28,18 +28,41 @@ namespace API.Controllers
         public IActionResult GetAmountByRecipeAndIngridient(int recipeId, int ingridentId)
         {
 
-            if (!_hasIngridientService.AmountByRecipeAndIngridientExists(recipeId, ingridentId))
+            if (!_hasIngridientService.HasIngridientByRecipeAndIngridientExists(recipeId, ingridentId))
                 return NotFound();
 
-            var amount = _mapper.Map<HasIngridientDto>(_hasIngridientService.getAmountByRecipeAndIngridient(recipeId, ingridentId));
+            var hasIngridient = _mapper.Map<HasIngridientDto>(_hasIngridientService.GetHasIngridientByRecipeAndIngridient(recipeId, ingridentId));
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
 
-            return Ok(amount);
+            return Ok(hasIngridient.Amount);
         }
 
-        
+
+        [HttpDelete("{recipeId},{ingridientId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult DeleteHasIngridient(int recipeId, int ingridientId)
+        {
+            if (!_hasIngridientService.HasIngridientByRecipeAndIngridientExists(recipeId, ingridientId))
+                return NotFound();
+
+            var HasIngridientToDelate = _hasIngridientService.GetHasIngridientByRecipeAndIngridient(recipeId, ingridientId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_hasIngridientService.DelateHasIngridient(HasIngridientToDelate))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania składnika");
+                return BadRequest(ModelState);
+            }
+
+            return NoContent();
+        }
     }
 }

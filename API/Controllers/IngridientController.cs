@@ -59,17 +59,17 @@ namespace API.Controllers
         [HttpPost("{recipeName}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate,string recipeName)
-        {       
+        public IActionResult CreateIngrideint([FromBody] ICollection<IngridientDto> ingridientsCreate, string recipeName)
+        {
 
-            foreach( IngridientDto ingridientCreate in ingridientsCreate)
-           {
+            foreach (IngridientDto ingridientCreate in ingridientsCreate)
+            {
                 if (ingridientCreate == null)
                 {
                     return BadRequest(ModelState);
                 }
 
-             
+
 
                 if (!ModelState.IsValid)
                 {
@@ -89,8 +89,36 @@ namespace API.Controllers
             return Ok("Zakończono pomyślnie");
 
         }
-       
 
+        [HttpPut("{recipeId}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
+        public IActionResult UpdateIngridenits(int recipeId, [FromBody] ICollection<IngridientDto> ingridientsUpdate)
+        {
+            foreach(IngridientDto ingridientUpdate in ingridientsUpdate)
+            {
+
+                if (ingridientUpdate == null)
+                    return BadRequest(ModelState);
+
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState);
+
+                var ingridientMap = _mapper.Map<Ingridient>(ingridientUpdate);
+
+                if(!_ingridientService.UpdateIngridient(ingridientMap,recipeId,ingridientUpdate.Quantity))
+                {
+                    ModelState.AddModelError("", "Coś poszło nie tak przy zmianie składnika");
+                    return BadRequest(ModelState);
+                }
+
+            }
+            return Ok("Pomyślnie zmodyfikowano składniki");
+
+
+        }
 
     }
 }

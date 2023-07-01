@@ -19,7 +19,29 @@
     padding: 2rem;
     align-items: center;
     position: sticky;
+    justify-content: space-between;
 }
+
+b {
+    flex: 1;
+}
+
+#buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.openlogin_btn, .account_btn {
+    background-image: url(images/user_image.png);
+    background-size: cover;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+}
+    .openlogin_btn:hover, .account_btn:hover {
+        background-color: rgba(255,255,255,0.1);
+        cursor: pointer;
+    }
 
 main {
     display: flex;
@@ -71,3 +93,23 @@ main {
     height: 100%;
     overflow: auto;
 }
+
+.btn-login {
+    background-color: rgba( 22, 166, 185 );
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.17em;
+    color: white;
+}
+
+.btn-cancel {
+    background-color: gray;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 1.17em;
+    color: white;
+}
+
+    .btn-login:hover, .btn-cancel:hover {
+        background-color: rgba(227, 225, 222);
+    }

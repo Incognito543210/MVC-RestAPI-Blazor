@@ -145,7 +145,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
 
-            return Ok("Pomyślnie usunięto opinię");
+            return Ok("Pomyślnie usunięto opinię"); //nie powinno być NoContent ???
         }
     }
 }

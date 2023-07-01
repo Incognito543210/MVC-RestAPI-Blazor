@@ -13,25 +13,39 @@ namespace API.Services
             _context=context;
         }
 
-        public bool AmountByRecipeAndIngridientExists(int recipeId, int ingridientId)
+        public bool HasIngridientByRecipeAndIngridientExists(int recipeId, int ingridientId)
         {
-            var hasIngridient = _context.HasIngridients.Any(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
-
-            if(hasIngridient != null)
-            {
-                return true;
-            }
-
-            return false;
+             return _context.HasIngridients.Any(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
 
         }
 
-        public string getAmountByRecipeAndIngridient(int recipeId, int ingridientId)
+        public ICollection<HasIngridient> GetHasIngridientsByRecipe(int recipeID)
         {
-            var hasIngridient = _context.HasIngridients.FirstOrDefault(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
+            return _context.HasIngridients.Where(hs => hs.RecipeID == recipeID).ToList();
+        }
+
+        public HasIngridient GetHasIngridientByRecipeAndIngridient(int recipeId, int ingridientId)
+        {
+            return _context.HasIngridients.FirstOrDefault(p => p.RecipeID == recipeId && p.IngridientID == ingridientId);
           
-            return hasIngridient.Amount;
-          
+        }
+
+        public bool DelateHasIngridient(HasIngridient hasIngridient)
+        {
+            _context.Remove(hasIngridient);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public bool DeleteIngridientsForRecipe(List<HasIngridient> hasIngridients)
+        {
+            _context.RemoveRange(hasIngridients);
+            return Save();
         }
     }
 }

@@ -1,9 +1,18 @@
-﻿namespace API.Interfaces
+﻿using Model.MODEL;
+
+namespace API.Interfaces
 {
     public interface IHasIngridientService       
     {
-        String getAmountByRecipeAndIngridient(int recipeId, int ingridientId);
+        HasIngridient GetHasIngridientByRecipeAndIngridient(int recipeId, int ingridientId);
 
-        bool AmountByRecipeAndIngridientExists(int recipeId, int ingridientId);
+        bool HasIngridientByRecipeAndIngridientExists(int recipeId, int ingridientId);
+
+        bool DelateHasIngridient(HasIngridient hasIngridient);
+
+        ICollection<HasIngridient> GetHasIngridientsByRecipe(int recipeID);
+        bool Save();
+
+        bool DeleteIngridientsForRecipe(List<HasIngridient> hasIngridients);
     }
 }

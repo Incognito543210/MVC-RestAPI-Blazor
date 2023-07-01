@@ -1,4 +1,5 @@
-﻿using Model.MODEL;
+﻿using Microsoft.AspNetCore.Components.Web;
+using Model.MODEL;
 
 namespace API.Interfaces
 {
@@ -7,5 +8,13 @@ namespace API.Interfaces
         ICollection<Tag> GetTags();
         Tag GetTag(int id);
         bool TagExists(int tag);
+
+        bool AddTagsForRecipe(Tag tag, string recipeName);
+
+        bool UpdateTagsForRecipe(Tag tag, int recipeId);
+
+        bool Save();
+
+
     }
 }
