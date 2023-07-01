@@ -1,5 +1,6 @@
 ﻿using API.Interfaces;
 using DAL;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Model.MODEL;
 
 namespace API.Services
@@ -61,6 +62,27 @@ namespace API.Services
             return _context.HasCategories.Any(hc => hc.TagID == id);
         }
 
+        public bool DelateHasCategory(HasCategory hasCategory)
+        {
+            _context.Remove(hasCategory);
+            return Save();
+        }
 
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
+
+        public HasCategory GetHasCategoryByRecipeAndTag(int recipeId, int tagId)
+        {
+            return _context.HasCategories.FirstOrDefault(p => p.RecipeID == recipeId && p.TagID == tagId);
+        }
+
+        public bool HasCategorytByRecipeAndTagExists(int recipeId, int tagId)
+        {
+            return _context.HasCategories.Any(p => p.RecipeID == recipeId && p.TagID == tagId);
+
+        }
     }
 }

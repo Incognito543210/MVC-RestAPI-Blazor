@@ -49,6 +49,9 @@ namespace API.Helper
                
             CreateMap<HasIngridientDto, HasIngridient>()
                 .ForMember(dst => dst.Amount, opt => opt.MapFrom(src => src.Amount));
+
+            CreateMap<HasCategory, HasCategoryDto>();
+            CreateMap<HasCategoryDto, HasCategory>();
         }
     }
 }

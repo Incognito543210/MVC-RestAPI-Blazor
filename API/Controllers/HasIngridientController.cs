@@ -58,7 +58,7 @@ namespace API.Controllers
 
             if(!_hasIngridientService.DelateHasIngridient(HasIngridientToDelate))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania opinii");
+                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania składnika");
                 return BadRequest(ModelState);
             }
 
