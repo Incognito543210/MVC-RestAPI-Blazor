@@ -1,5 +1,6 @@
 ﻿using API.Interfaces;
 using API.Repositories;
+using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
@@ -13,12 +14,13 @@ namespace API.Controllers
     {
         private readonly IIngridientsService _ingridientService;
         private readonly IMapper _mapper;
+        private readonly IHasIngridientService _hasIngridientService;
 
-        public IngridientController(IIngridientsService ingridientService, IMapper mapper)
+        public IngridientController(IIngridientsService ingridientService, IMapper mapper, IHasIngridientService hasIngridientService)
         {
             _ingridientService = ingridientService;
             _mapper = mapper;
-
+            _hasIngridientService = hasIngridientService;
         }
 
 
@@ -97,7 +99,13 @@ namespace API.Controllers
 
         public IActionResult UpdateIngridenits(int recipeId, [FromBody] ICollection<IngridientDto> ingridientsUpdate)
         {
-            foreach(IngridientDto ingridientUpdate in ingridientsUpdate)
+            var hasIngridientToDelete = _hasIngridientService.GetHasIngridientsByRecipe(recipeId);
+            if (!_hasIngridientService.DeleteIngridientsForRecipe(hasIngridientToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem składnikami przepisu");
+            }
+
+            foreach (IngridientDto ingridientUpdate in ingridientsUpdate)
             {
 
                 if (ingridientUpdate == null)

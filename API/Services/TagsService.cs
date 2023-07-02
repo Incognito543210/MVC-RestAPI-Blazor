@@ -1,4 +1,5 @@
 ﻿using API.Interfaces;
+using API.Services;
 using DAL;
 using Microsoft.EntityFrameworkCore;
 using Model.MODEL;
@@ -8,10 +9,12 @@ namespace API.Repositories
     public class TagsService : ITagsService
     {
         private readonly DataContext _context;
+       
 
-        public TagsService(DataContext context)
+        public TagsService(DataContext context )
         {
             _context = context;
+          
         }
 
         public bool AddTagsForRecipe(Tag tag, string recipeName)
@@ -52,15 +55,10 @@ namespace API.Repositories
         {
             var recipe = _context.Recipes.Where(u => u.RecipeID == recipeId).FirstOrDefault();
             var tagContext = GetTags().Where(c => c.Name.Trim().ToUpper() == tag.Name.Trim().ToUpper()).FirstOrDefault();
-            var HasCategoryExists = _context.HasCategories.Where(p => p.RecipeID == recipeId && (p.Tag.Name.Trim().ToUpper() == tag.Name.Trim().ToUpper())).FirstOrDefault();
+           
 
-            if (HasCategoryExists != null)
-            {
-                return true;
-            }
-            else
-            {
-                var hasCategory = new HasCategory()
+
+            var hasCategory = new HasCategory()
                 {
                     Tag = tagContext,
                     TagID = tagContext.TagID,
@@ -72,7 +70,7 @@ namespace API.Repositories
                 _context.Add(hasCategory);
 
                 return Save();
-            }
+            
         }
 
 
