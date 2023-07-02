@@ -112,7 +112,7 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private RecipeDto? recipe;
+    private RecipeAdapter? recipe;
     private List<IngridientDto>? ingredientsList;
 
     protected override async Task OnInitializedAsync()

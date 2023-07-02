@@ -1,5 +1,6 @@
 ﻿@page "/newrecipe"
 @inject RecipeService RecServ
+@inject NavigationManager NavMan
 <h3>Utwórz przepis</h3>
 
 @if(tags is not null)
@@ -18,7 +19,7 @@
         await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
         //tags
         await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
-        recipe = new();
+        NavMan.NavigateTo("/mybook");
     }
 
     protected override async Task OnInitializedAsync()
