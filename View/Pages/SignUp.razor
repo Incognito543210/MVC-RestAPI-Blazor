@@ -3,6 +3,12 @@
 
 <div id="signup-page">
     <div class="content">
+        @if(errorMessage != null)
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
         <div class="header">
             <h3 class="title">Rejestracja konta</h3>
         </div>
@@ -76,6 +82,8 @@
 @code {
     UserDto user = new();
 
+    string errorMessage;
+
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -87,7 +95,7 @@
 
     async Task CreateUser()
     {
-        await UserServ.CreateUserAsync(user);
+        errorMessage = await UserServ.CreateUserAsync(user);
         user = new();
     }
 
