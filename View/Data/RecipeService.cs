@@ -68,6 +68,7 @@ namespace View.Data
         public async Task UpdateRecipeAsync(RecipeDto recipe, int id)
         {
             var wynik = await _httpClient.PutAsJsonAsync<RecipeDto>("api/Recipe/" + id, recipe);
+            await LogRequest(wynik);
         }
 
         public async Task UpdateIngredientsInRecipeAsync(List<IngridientDto> ingredients, int id)

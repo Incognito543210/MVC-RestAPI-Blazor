@@ -1,5 +1,6 @@
 ﻿@page "/updaterecipe/{Id:int}"
 @inject RecipeService RecServ
+@inject NavigationManager NavMan
 <h3>Edytuj przepis</h3>
 
 @if (tags is not null && recipe is not null)
@@ -20,7 +21,11 @@
         //przepis będzie mógł być zmieniony i zapisany do bazy
         //mam sklejony przepis w recipe - jest typu recipeAdapter, po zmianach
         //chcę zapisać przepis do bazy, wywołując metodę putRecipe, putIngredients, putTags
-
+        //zapis przepisu
+        await RecServ.UpdateRecipeAsync(recipe, recipe.RecipeID);
+        await RecServ.UpdateIngredientsInRecipeAsync(recipe.Ingridients, recipe.RecipeID);
+        await RecServ.UpdateTagsInRecipeAsync(recipe.Tags, recipe.RecipeID);
+        NavMan.NavigateTo("/mybook");
     }
 
     protected override async Task OnInitializedAsync()
@@ -47,6 +52,5 @@
             item.Quantity = hasIngrid.Amount;
         }
         return recipe;
-        //tutaj muszę posklejać recipeAdaptera i go zwrócić
     }
 }
