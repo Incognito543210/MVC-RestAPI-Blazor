@@ -23,12 +23,12 @@ namespace API.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
 
-        public IActionResult DeleteHasCategory(int recipeId, int ingridientId)
+        public IActionResult DeleteHasCategory(int recipeId, int categoryId)
         {
-            if (!_hasCategoryService.HasCategorytByRecipeAndTagExists(recipeId, ingridientId))
+            if (!_hasCategoryService.HasCategorytByRecipeAndTagExists(recipeId, categoryId))
                 return NotFound();
 
-            var HasCategoryToDelate = _hasCategoryService.GetHasCategoryByRecipeAndTag(recipeId, ingridientId);
+            var HasCategoryToDelate = _hasCategoryService.GetHasCategoryByRecipeAndTag(recipeId, categoryId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

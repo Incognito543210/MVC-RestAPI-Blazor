@@ -78,7 +78,7 @@ namespace API.Services
             
             var ingridientCheckExists = GetIngridients().Where(c => c.Name.Trim().ToUpper() == ingridient.Name.Trim().ToUpper()).FirstOrDefault();
             var recipe = _context.Recipes.Where(u => u.RecipeID == recipeId).FirstOrDefault();
-            var HasIngridientExists = _context.HasIngridients.Where(p => p.RecipeID == recipeId && (p.Ingridient.Name.Trim().ToUpper() == ingridient.Name.Trim().ToUpper())).FirstOrDefault();
+            var HasIngridientExists = _context.HasIngridients.Where(p => p.RecipeID == recipeId && (p.Ingridient.Name.Trim().ToLower() == ingridient.Name.Trim().ToLower())).FirstOrDefault();
            
             if (HasIngridientExists != null)
             {
