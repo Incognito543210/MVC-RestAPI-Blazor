@@ -35,8 +35,8 @@ namespace API.Controllers
 
             if (!_hasCategoryService.DelateHasCategory(HasCategoryToDelate))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania kategori");
-                return BadRequest(ModelState);
+                
+                return BadRequest("Coś poszło nie tak podczas usuwania kategori");
             }
 
             return NoContent();

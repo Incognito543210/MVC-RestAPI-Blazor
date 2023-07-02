@@ -163,8 +163,7 @@ namespace API.Controllers
             if(recipe!=null)
             {
                 {
-                    ModelState.AddModelError("", "Przepis już istnieje");
-                    return StatusCode(422, ModelState);
+                    return StatusCode(422, "Przepis już istnieje");
                 }
             }
 
@@ -177,8 +176,7 @@ namespace API.Controllers
 
             if(!_recipeService.CreateRecipe(recipeMap))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak podczas zapisywania");
             }
 
             return Ok("Pomyślnie zapisano przepis");
@@ -208,8 +206,7 @@ namespace API.Controllers
 
             if(!_recipeService.UpdateRecipe(recipeMap))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie przepis");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak przy zmianie przepis");
             }
 
             return Ok("Pomyślnie zmodyfikowano przepis");
