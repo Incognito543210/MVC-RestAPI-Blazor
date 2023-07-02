@@ -4,6 +4,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
+using System.Diagnostics.Eventing.Reader;
 
 namespace API.Controllers
 {
@@ -37,6 +38,30 @@ namespace API.Controllers
             return Ok(recipes);
         }
 
+        [HttpGet("{login},{password}")]
+        [ProducesResponseType(200, Type = typeof(User))]
+        public IActionResult Login(string login, string password)
+        {
+            if (login is null)
+                return BadRequest(ModelState);
+
+            if (password is null)
+                return BadRequest(ModelState);
+
+            if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
+            {
+                var userMap = _mapper.Map<UserDto>(_userServices.Logger(login, password));
+                return Ok(userMap);
+            }
+            else
+            {
+                ModelState.AddModelError("", "Taki użytkownik nie istnieje");
+                return StatusCode(422, ModelState);
+            }
+
+        }
+
+
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]
@@ -50,13 +75,15 @@ namespace API.Controllers
                 return BadRequest();
             }
 
-            var users = _userServices.GetUsers()
-                .Where(u => u.Username.Trim().ToUpper() == userDto.Username.TrimEnd().ToUpper())
-                .FirstOrDefault();
-
-            if (users != null)
+            if (_userServices.UsernameExists(userDto.Username))
             {
-                ModelState.AddModelError("", "Użytkownik już istnieje");
+                ModelState.AddModelError("", "Nazwa takiego użytkownika już istnieje");
+                return StatusCode(422, ModelState);
+            }
+
+            if (_userServices.EmailExists(userDto.Email))
+            {
+                ModelState.AddModelError("", "Ten email już jest wykorzystany");
                 return StatusCode(422, ModelState);
             }
 

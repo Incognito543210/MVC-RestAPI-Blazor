@@ -57,11 +57,28 @@ namespace API.Services
             return _context.Users.Where(u => u.Username == username).Any();
         }
 
+        public bool EmailExists(string email)
+        {
+            return _context.Users.Where(u=>u.Email == email).Any();
+        }
+
+        public User Logger(string login, string password)
+        {
+            string pass = _encryptor.EncryptPassword(password);
+            if (UsernameExists(login))
+            {
+                return _context.Users.Where(u =>u.Username == login).Where(p=>p.Password==pass).FirstOrDefault();
+            }
+            else
+            {
+                return _context.Users.Where(u => u.Email == login).Where(p => p.Password == pass).FirstOrDefault();
+            }
+        }
+
         public User GetUser(int id)
         {
             return _context.Users.Where(c => c.UserID == id).FirstOrDefault();
         }
-
         public IEnumerable<User> GetUsers()
         {
             return _context.Users.OrderBy(u => u.UserID).ToList();
