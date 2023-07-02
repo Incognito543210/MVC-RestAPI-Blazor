@@ -1,0 +1,30 @@
+﻿@page "/updaterecipe"
+@inject RecipeService RecServ
+<h3>Edytuj przepis</h3>
+
+@if (tags is not null && recipe is not null)
+{
+    <RecipeForm Recipe="recipe" OnValidSubmit="Update" Tags="tags"/>
+}
+
+@code {
+    List<TagDto>? tags;
+    RecipeAdapter recipe = new();
+    //Chcę zgarnąć ten recipe do edycji, wsadzić go do formularza i zmienić treść updaterecipe, żeby się zgadzała :)
+
+    async Task Update()
+    {
+        //await RecServ.AddRecipeAsync(recipe);
+        ////ingredients
+        //await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
+        ////tags
+        //await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
+        //recipe = new();
+
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        tags = await RecServ.GetTagListAsync();
+    }
+}

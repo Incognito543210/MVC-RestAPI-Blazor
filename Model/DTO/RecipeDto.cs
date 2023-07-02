@@ -23,13 +23,5 @@ namespace Model.DTO
         public int Difficulty { get; set; }
 
         public int UserID { get; set; }
-
-        //[Required(MinLengthAttribute = 1)]
-        public List<IngridientDto> Ingridients { get; set; } = new();
-
-        public List<TagDto> Tags { get; set; } = new();
-
-
-
     }
 }
