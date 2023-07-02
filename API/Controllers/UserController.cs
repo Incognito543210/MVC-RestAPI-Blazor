@@ -42,6 +42,11 @@ namespace API.Controllers
         [ProducesResponseType(200, Type = typeof(User))]
         public IActionResult Login(string login, string password)
         {
+            if(!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             if (login is null)
                 return BadRequest(ModelState);
 
