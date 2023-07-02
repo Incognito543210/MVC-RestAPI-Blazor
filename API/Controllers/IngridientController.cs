@@ -82,9 +82,8 @@ namespace API.Controllers
                 var ingridientMap = _mapper.Map<Ingridient>(ingridientCreate);
 
                 if (!_ingridientService.CreateIngridient(ingridientMap, recipeName, ingridientCreate.Quantity))
-                {
-                    ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-                    return StatusCode(500, ModelState);
+                {                    
+                    return StatusCode(500, "Coś poszło nie tak podczas zapisywania");
                 }
             }
 
@@ -101,8 +100,8 @@ namespace API.Controllers
         {
             var hasIngridientToDelete = _hasIngridientService.GetHasIngridientsByRecipe(recipeId);
             if (!_hasIngridientService.DeleteIngridientsForRecipe(hasIngridientToDelete.ToList()))
-            {
-                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem składnikami przepisu");
+            {               
+                return BadRequest("Coś poszło nie tak z usówaniem składnikami przepisu");
             }
 
             foreach (IngridientDto ingridientUpdate in ingridientsUpdate)
@@ -118,8 +117,7 @@ namespace API.Controllers
 
                 if(!_ingridientService.UpdateIngridient(ingridientMap,recipeId,ingridientUpdate.Quantity))
                 {
-                    ModelState.AddModelError("", "Coś poszło nie tak przy zmianie składnika");
-                    return BadRequest(ModelState);
+                    return BadRequest("Coś poszło nie tak przy zmianie składnika");
                 }
 
             }
