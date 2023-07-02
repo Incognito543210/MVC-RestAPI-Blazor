@@ -57,9 +57,8 @@ namespace API.Controllers
                 return BadRequest(ModelState);
 
             if(!_hasIngridientService.DelateHasIngridient(HasIngridientToDelate))
-            {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania składnika");
-                return BadRequest(ModelState);
+            {            
+                return BadRequest("Coś poszło nie tak podczas usuwania składnika");
             }
 
             return NoContent();

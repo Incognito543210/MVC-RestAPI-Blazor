@@ -32,7 +32,7 @@ namespace API.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
             }
             return Ok(opinions);
         }
@@ -44,12 +44,12 @@ namespace API.Controllers
         public IActionResult GetOpinionsForRecipe(int recipeID)
         {
             if (!_opinionServices.OpinionExistsOnRecipe(recipeID))
-                return NotFound();
+                return NotFound("Nie znaleziono opinii");
 
             var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForRecipe(recipeID));
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
 
             return Ok(opinion);
         }
@@ -61,12 +61,12 @@ namespace API.Controllers
         public IActionResult GetOpinionsForUser(int userID)
         {
             if (!_opinionServices.OpinionExistsOnUser(userID))
-                return NotFound();
+                return NotFound("Nie znaleziono opinii");
 
             var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForUser(userID));
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
 
             return Ok(opinion);
         }
@@ -77,10 +77,10 @@ namespace API.Controllers
         public IActionResult CreateOpinion( int userID, int recipeID, [FromBody] OpinionDto opinionCreate)
         {
             if (opinionCreate == null)
-                return BadRequest(ModelState);
+                return BadRequest("Opinia nie może być pusta");
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
 
             var opinionMap = _mapper.Map<Opinion>(opinionCreate);
 
@@ -89,8 +89,7 @@ namespace API.Controllers
 
             if (!_opinionServices.CreateOpinion(opinionMap))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak podczas zapisywania");
             }
 
             return Ok("Pomyślnie zapisano opinię");
@@ -103,23 +102,22 @@ namespace API.Controllers
         public IActionResult UpdateOpinion(int opinionID, [FromBody] OpinionDto updatedOpinion)
         {
             if (updatedOpinion == null)
-                return BadRequest(ModelState);
+                return BadRequest("Opinia jest pusta");
 
             if (opinionID != updatedOpinion.OpinionID)
-                return BadRequest(ModelState);
+                return BadRequest("ID Opinii nie zgadza się z ID poprzedniej opinii");
 
             if (!_opinionServices.OpinionExists(opinionID))
-                return NotFound();
+                return NotFound("Nie znaleziono opinii");
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
 
             var opinionMap = _mapper.Map<Opinion>(updatedOpinion);
 
             if (!_opinionServices.UpdateOpinion(opinionMap))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie opinii");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak przy zmianie opinii");
             }
 
             return Ok("Pomyślnie zmodyfikowano opinię");
@@ -132,17 +130,16 @@ namespace API.Controllers
         public IActionResult DeleteOpinion(int opinionID)
         {
             if (!_opinionServices.OpinionExists(opinionID))
-                return NotFound();
+                return NotFound("Nie znaleziono opinii");
 
             var opinionToDelete = _opinionServices.GetOpinion(opinionID);
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
 
             if (!_opinionServices.DeleteOpinion(opinionToDelete))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania opinii");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak podczas usuwania opinii"));
             }
 
             return Ok("Pomyślnie usunięto opinię"); //nie powinno być NoContent ???

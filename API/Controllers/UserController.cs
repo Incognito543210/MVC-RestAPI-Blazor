@@ -61,8 +61,7 @@ namespace API.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "Taki użytkownik nie istnieje");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Taki użytkownik nie istnieje");
             }
 
         }
@@ -83,22 +82,19 @@ namespace API.Controllers
 
             if (_userServices.UsernameExists(userDto.Username))
             {
-                ModelState.AddModelError("", "Nazwa takiego użytkownika już istnieje");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Nazwa takiego użytkownika już istnieje");
             }
 
             if (_userServices.EmailExists(userDto.Email))
             {
-                ModelState.AddModelError("", "Ten email już jest wykorzystany");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Ten email już jest wykorzystany");
             }
 
             var userMap = _mapper.Map<User>(userDto);
 
             if (!_userServices.IsEmailValid(userMap.Email))
             {
-                ModelState.AddModelError("", "Nieprawidłowy adres email");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Nieprawidłowy adres email");
             }
 
             if (!_userServices.IsPasswordStrong(userMap.Password))
@@ -108,15 +104,13 @@ namespace API.Controllers
 
             if (_userServices.IsPasswordPopular(userMap.Password))
             {
-                ModelState.AddModelError("", "Hasło jest zbyt popularne");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Hasło jest zbyt popularne");
 
             }
 
             if (!_userServices.CreateUser(userMap))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Coś poszło nie tak podczas zapisywania");
             }
             return Ok();
         }
@@ -142,8 +136,7 @@ namespace API.Controllers
 
             if (users != null)
             {
-                ModelState.AddModelError("", "Użytkownik już istnieje");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Użytkownik już istnieje");
 
             }
 
@@ -151,26 +144,22 @@ namespace API.Controllers
 
             if (!_userServices.IsEmailValid(userMap.Email))
             {
-                ModelState.AddModelError("", "Nieprawidłowy adres email");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Nieprawidłowy adres email");
             }
 
             if (!_userServices.IsPasswordStrong(userMap.Password))
             {
-                ModelState.AddModelError("", "Hasło jest niewystarczająco mocne");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Hasło jest niewystarczająco mocne");
             }
 
             if (_userServices.IsPasswordPopular(userMap.Password))
             {
-                ModelState.AddModelError("", "Hasło jest zbyt popularne");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Hasło jest zbyt popuarne");
             }
 
             if (!_userServices.UpdateUser(userMap))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak przy zmianie danych użytkownika");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak przy zmianie danych użytkownika");
             }
 
             return Ok("Pomyślnie zmodyfikowano dane użytkownika");
