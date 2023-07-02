@@ -139,7 +139,7 @@ namespace API.Controllers
 
             if (!_opinionServices.DeleteOpinion(opinionToDelete))
             {
-                return BadRequest("Coś poszło nie tak podczas usuwania opinii"));
+                return BadRequest("Coś poszło nie tak podczas usuwania opinii");
             }
 
             return Ok("Pomyślnie usunięto opinię"); //nie powinno być NoContent ???
