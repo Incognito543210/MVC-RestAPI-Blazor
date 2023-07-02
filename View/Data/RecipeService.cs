@@ -86,6 +86,7 @@ namespace View.Data
         public async Task DeleteRecipeById(int id)
         {
             var wynik = await _httpClient.DeleteAsync("api/Recipe/" + id);
+            //var wynik = await _httpClient.DeleteAsync("");
         }
 
         private async Task LogRequest(HttpResponseMessage wynik)
