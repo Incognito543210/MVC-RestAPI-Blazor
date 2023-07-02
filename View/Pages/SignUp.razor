@@ -18,11 +18,10 @@
             <div style="clear: both;"></div>
             <MudTextField @bind-Value="user.Username" Label="Nazwa użytkownika" For="@(() => user.Username)"></MudTextField>
             <MudTextField @bind-Value="user.Password" Label="Hasło" For="@(() => user.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
-            @*<MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{}; color:{Colors.Grey.Lighten5};")">Zarejestruj się</MudButton>*@
+            <div class="modal-footer">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="btn1">Zarejestruj się</MudButton>
+            </div>
         </EditForm>
-        <div class="modal-footer">
-            <button class="btn-signup">Zarejestruj się</button>
-        </div>
     </div>
 </div>
 
@@ -43,16 +42,14 @@
         font-weight: bolder;
     }
 
-    .btn-signup {
-        background-color: rgba( 22, 166, 185 );
-        padding: 10px;
-        border-radius: 8px;
+    .btn1 {
+        background: rgba( 22, 166, 185 );
         font-size: 1.17em;
         color: white;
     }
 
-        .btn-signup:hover {
-            background-color: rgba(227, 225, 222);
+        .btn1:hover {
+            background: rgba(227, 225, 222);
         }
 
     .header {
