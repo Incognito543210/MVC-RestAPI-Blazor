@@ -13,11 +13,13 @@ namespace API.Controllers
     {
         private readonly ITagsService _tagsService;
         private readonly IMapper _mapper;
+        private readonly IHasCategoriesService _hasCategoriesService;
 
-        public TagController(ITagsService tagsService, IMapper mapper)
+        public TagController(ITagsService tagsService, IMapper mapper, IHasCategoriesService hasCategoriesService)
         {
             _tagsService = tagsService;
             _mapper = mapper;
+            _hasCategoriesService = hasCategoriesService;
         }
 
         [HttpGet]
@@ -93,6 +95,12 @@ namespace API.Controllers
 
         public IActionResult UpdateTags(int recipeId, [FromBody] ICollection<TagDto> tagsUpdate)
         {
+            var hasCategoryToDelete = _hasCategoriesService.GetHasCategoriesByRecipe(recipeId);
+            if (!_hasCategoriesService.DeleteTagsForRecipe(hasCategoryToDelete.ToList()))
+            {
+                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem tagami przepisu");
+            }
+
             foreach (TagDto tagUpdate in tagsUpdate)
             {
 

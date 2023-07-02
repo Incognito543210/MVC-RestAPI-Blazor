@@ -218,7 +218,7 @@ namespace API.Controllers
 
         }
 
-        [HttpDelete("recipeId")]
+        [HttpDelete("{recipeId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
