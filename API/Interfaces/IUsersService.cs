@@ -5,13 +5,16 @@ namespace API.Interfaces
     public interface IUsersService
     {
         bool CreateUser(User user);
+        bool EmailExists(string email);
         User GetUser(int id);
         IEnumerable<User> GetUsers();
         bool IsEmailValid(string email);
         bool IsPasswordPopular(string password);
         bool IsPasswordStrong(string password);
+        User Logger(string login, string password);
         bool Save();
         bool UpdateUser(User user);
         bool UserExists(int id);
+        bool UsernameExists(string username);
     }
 }
