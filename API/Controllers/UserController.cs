@@ -136,7 +136,7 @@ namespace API.Controllers
 
             if (users != null)
             {
-                return StatusCode(422, "Użytkownik już istnieje";
+                return StatusCode(422, "Użytkownik już istnieje");
 
             }
 
