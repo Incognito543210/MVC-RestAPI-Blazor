@@ -28,14 +28,14 @@ namespace View.Data
             return (await _httpClient.GetFromJsonAsync<List<TagDto>>("/api/Tag"))!;
         }
 
-        public async Task<RecipeDto> GetRecipeAsync(int id)
+        public async Task<RecipeAdapter> GetRecipeAsync(int id)
         {
-            return (await _httpClient.GetFromJsonAsync<RecipeDto>("/api/Recipe/" + id))!;
+            return (await _httpClient.GetFromJsonAsync<RecipeAdapter>("/api/Recipe/" + id))!;
         }
 
-        public async Task<List<IngridientDto>> GetIngredientsListAsync(int id)
+        public async Task<List<IngredientAdapter>> GetIngredientsListAsync(int id)
         {
-            return (await _httpClient.GetFromJsonAsync<List<IngridientDto>>("/api/Recipe/ingridients/" + id))!;
+            return (await _httpClient.GetFromJsonAsync<List<IngredientAdapter>>("/api/Recipe/ingridients/" + id))!;
         }
 
         public async Task AddRecipeAsync(RecipeDto recipe)
@@ -55,6 +55,29 @@ namespace View.Data
             var wynik = await _httpClient.PostAsJsonAsync<List<TagDto>>("api/Tag/" + recipeTitle, tags);
             await LogRequest(wynik);
         }
+
+        public async Task UpdateRecipeAsync(RecipeDto recipe, int id)
+        {
+            var wynik = await _httpClient.PutAsJsonAsync<RecipeDto>("api/Recipe/" + id, recipe);
+        }
+
+        public async Task UpdateIngredientsInRecipeAsync(List<IngridientDto> ingredients, int id)
+        {
+            var wynik = await _httpClient.PutAsJsonAsync<List<IngridientDto>>("api/Ingridient/" + id, ingredients);
+            await LogRequest(wynik);
+        }
+
+        public async Task UpdateTagsInRecipeAsync(List<TagDto> tags, int id)
+        {
+            var wynik = await _httpClient.PutAsJsonAsync<List<TagDto>>("api/Tag/" + id, tags);
+            await LogRequest(wynik);
+        }
+
+        public async Task DeleteRecipeById(int id)
+        {
+            var wynik = await _httpClient.DeleteAsync("api/Recipe/" + id);
+        }
+
         private async Task LogRequest(HttpResponseMessage wynik)
         {
             var str = await wynik.RequestMessage!.Content!.ReadAsStringAsync();
