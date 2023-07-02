@@ -19,11 +19,14 @@
         await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
         //tags
         await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
+
         NavMan.NavigateTo("/mybook");
+
     }
 
     protected override async Task OnInitializedAsync()
     {
         tags = await RecServ.GetTagListAsync();
     }
+
 }

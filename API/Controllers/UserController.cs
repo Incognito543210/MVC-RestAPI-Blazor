@@ -103,8 +103,7 @@ namespace API.Controllers
 
             if (!_userServices.IsPasswordStrong(userMap.Password))
             {
-                ModelState.AddModelError("", "Hasło jest niewystarczająco mocne");
-                return StatusCode(422, ModelState);
+                return StatusCode(422, "Hasło jest niewystarczająco mocne");
             }
 
             if (_userServices.IsPasswordPopular(userMap.Password))

@@ -52,6 +52,8 @@ namespace View.Data
         {
             var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + _userId, recipe);
             await LogRequest(wynik);
+            var odp = wynik.StatusCode.ToString();
+            var odp2 = wynik.Content.ToString();
         }
 
         public async Task AddIngredientsToRecipeAsync(List<IngridientDto> ingredients, string recipeTitle)
