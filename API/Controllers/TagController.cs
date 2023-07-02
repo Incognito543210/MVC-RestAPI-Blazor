@@ -31,7 +31,7 @@ namespace API.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
             }
            
             return Ok(tags);
@@ -62,23 +62,19 @@ namespace API.Controllers
             {
                 if (tagAdd == null)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest("Tag nie może być pusty");
                 }
-
-
 
                 if (!ModelState.IsValid)
                 {
-                    return BadRequest(ModelState);
+                    return BadRequest("Coś poszło nie tak");
                 }
-
 
                 var tagMap = _mapper.Map<Tag>(tagAdd);
 
                 if (!_tagsService.AddTagsForRecipe(tagMap, recipeName))
                 {
-                    ModelState.AddModelError("", "Coś poszło nie tak podczas zapisywania");
-                    return StatusCode(500, ModelState);
+                    return StatusCode(500, "Coś poszło nie tak podczas zapisywania");
                 }
             }
 
@@ -98,24 +94,23 @@ namespace API.Controllers
             var hasCategoryToDelete = _hasCategoriesService.GetHasCategoriesByRecipe(recipeId);
             if (!_hasCategoriesService.DeleteTagsForRecipe(hasCategoryToDelete.ToList()))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak z usówaniem tagami przepisu");
+                return StatusCode(422, "Coś poszło nie tak z usuwaniem tagów przepisu");
             }
 
             foreach (TagDto tagUpdate in tagsUpdate)
             {
 
                 if (tagUpdate == null)
-                    return BadRequest(ModelState);
+                    return BadRequest("Tag nie może być pusty");
 
                 if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+                    return BadRequest("Coś poszło nie tak");
 
                 var tagMap = _mapper.Map<Tag>(tagUpdate);
 
                 if (!_tagsService.UpdateTagsForRecipe(tagMap, recipeId))
                 {
-                    ModelState.AddModelError("", "Coś poszło nie tak przy zmianie tagu");
-                    return BadRequest(ModelState);
+                    return BadRequest("Coś poszło nie tak przy modyfikacji tagów");
                 }
 
             }

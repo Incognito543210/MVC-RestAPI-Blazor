@@ -26,17 +26,16 @@ namespace API.Controllers
         public IActionResult DeleteHasCategory(int recipeId, int categoryId)
         {
             if (!_hasCategoryService.HasCategorytByRecipeAndTagExists(recipeId, categoryId))
-                return NotFound();
+                return NotFound("Nie znaleziono połączenia");
 
             var HasCategoryToDelate = _hasCategoryService.GetHasCategoryByRecipeAndTag(recipeId, categoryId);
 
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak");
 
             if (!_hasCategoryService.DelateHasCategory(HasCategoryToDelate))
             {
-                ModelState.AddModelError("", "Coś poszło nie tak podczas usuwania kategori");
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak podczas usuwania kategori");
             }
 
             return NoContent();
