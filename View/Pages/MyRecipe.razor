@@ -13,8 +13,8 @@ else
             <h3 style="font-weight: bold">@recipe.Title</h3>
         </div>
         <div id="buttons">
-            <button class="btn1" onclick="@onClick">Edytuj</button>
-            <button class="btn2">Usuń</button>
+            <button class="btn1" @onclick="Update">Edytuj</button>
+            <button class="btn2" @onclick="Delete">Usuń</button>
         </div>
     </div>
 
@@ -167,11 +167,20 @@ else
         ingredientsList = await RecServ.GetIngredientsListAsync(Id);
     }
 
-    void onClick()
+    void Update()
     {
         if(recipe is not null)
         {
-        NavMan.NavigateTo("/updaterecipe/" + recipe.RecipeID);
+            NavMan.NavigateTo("/updaterecipe/" + recipe.RecipeID);
+        }
+    }
+
+    async void Delete()
+    {
+        if (recipe is not null)
+        {
+            await RecServ.DeleteRecipeById(recipe.RecipeID);
+            NavMan.NavigateTo("/mybook");
         }
     }
 }
