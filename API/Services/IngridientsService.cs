@@ -8,13 +8,11 @@ namespace API.Services
     public class IngridientsService : IIngridientsService
     {
         private DataContext _context;
-        private RecipesService _recipesService;
-        private HasIngridientService _hasIngridientService;
+        private IHasIngridientService _hasIngridientService;
        
-        public IngridientsService(DataContext context, RecipesService recipesService, HasIngridientService hasIngridientService)
+        public IngridientsService(DataContext context, IHasIngridientService hasIngridientService)
         {
-            _context = context;
-            _recipesService = recipesService;
+            _context = context;         
             _hasIngridientService = hasIngridientService;
         }
 
