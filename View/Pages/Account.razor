@@ -1,0 +1,48 @@
+﻿@page "/account"
+
+<h3 class="my-4">Nie jesteś zalogowany.</h3>
+
+<MudButton Variant="Variant.Filled" Class="btn1" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
+
+@*@if (!string.IsNullOrEmpty(mainLayout.GetUserName()))
+{
+	<h3 class="my-4">Your Account</h3>
+
+	<p>@mainLayout.GetUserName()</p>
+
+	<button type="button" class="btn btn-danger" @onclick="mainLayout.Logout">Logout</button>
+}
+else
+{
+	<h3 class="my-4">Please Login</h3>
+
+	<button type="button" class="btn btn-success" @onclick="mainLayout.OpenLogin">Login</button>
+}*@
+
+<style>
+	h3 {
+		margin: 0;
+		padding: 0;
+		font-weight: bolder;
+	}
+
+	.btn1 {
+		background: rgba( 22, 166, 185 );
+		font-size: 1.17em;
+		color: white;
+	}
+
+		.btn1:hover {
+			background: rgba(227, 225, 222);
+		}
+</style>
+
+@code {
+	[CascadingParameter]
+	public MainLayout mainLayout { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+	}
+}
