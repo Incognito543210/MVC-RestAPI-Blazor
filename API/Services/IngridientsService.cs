@@ -8,12 +8,12 @@ namespace API.Services
     public class IngridientsService : IIngridientsService
     {
         private DataContext _context;
-        private IHasIngridientService _hasIngridientService;
+
        
-        public IngridientsService(DataContext context, IHasIngridientService hasIngridientService)
+        public IngridientsService(DataContext context)
         {
             _context = context;         
-            _hasIngridientService = hasIngridientService;
+       
         }
 
         public bool CreateIngridient(Ingridient ingridient, string recipeName, string amount)
@@ -75,8 +75,7 @@ namespace API.Services
 
         public bool UpdateIngridient(Ingridient ingridient, int recipeId, string amount)
         {
-            var hasIngridientToDelete = _hasIngridientService.GetHasIngridientsByRecipe(recipeId);
-            _hasIngridientService.DeleteIngridientsForRecipe(hasIngridientToDelete.ToList());
+          
             var ingridientCheckExists = GetIngridients().Where(c => c.Name.Trim().ToUpper() == ingridient.Name.Trim().ToUpper()).FirstOrDefault();
             var recipe = _context.Recipes.Where(u => u.RecipeID == recipeId).FirstOrDefault();
             
