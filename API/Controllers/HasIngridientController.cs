@@ -37,7 +37,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
 
 
-            return Ok(hasIngridient.Amount);
+            return Ok(hasIngridient);
         }
 
 
