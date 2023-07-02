@@ -23,33 +23,40 @@ else
         </div>
     </div>
 
-    @if (ingredientsList == null)
-    {
-        <h3>Brak składników</h3>
-    }
-    else
-    {
-        @if (ingredientsList.Any())
+    <div id="ingridients">
+        <div id="sec-title">
+            <p>SKŁADNIKI</p>
+        </div>
+        @if (ingredientsList == null)
         {
-            <div id="ingridients">
-                <div id="sec-title">
-                    <p>SKŁADNIKI</p>
-                </div>
+            <p>Ten przepis nie ma żadnych składników</p>
+        }
+        else
+        {
+            @if (ingredientsList.Any())
+            {
                 <ul>
                     @foreach (var ingridient in ingredientsList)
                     {
                         <li>@ingridient.Name</li>
                     }
                 </ul>
-            </div>
+            }
         }
-    }
+    </div>
 
     <div id="preparation">
         <div id="sec-title">
             <p>PRZYGOTOWANIE</p>
         </div>
-        <p style="margin-left: 30px; margin-right: 30px;">@recipe.Content</p>
+        @if (recipe.Content == "")
+        {
+            <p>Ten przepis nie ma procesu przygotowania</p>
+        }
+        else
+        {
+            <p style="margin-left: 30px; margin-right: 30px;">@recipe.Content</p>
+        }
     </div>
 }
 

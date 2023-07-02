@@ -6,39 +6,41 @@
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<div class="page">
-    <div id="container">
-        <div id="topbar">
-            <div>
-                <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
-            </div>
-            <div id="buttons">
-                <button class="openlogin_btn" @onclick="OpenLogin"></button>
+<CascadingValue Value="this">
+    <div class="page">
+        <div id="container">
+            <div id="topbar">
+                <div>
+                    <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
+                </div>
+                <div id="buttons">
+                    <button class="openlogin_btn" @onclick="OpenLogin"><i class="oi oi-person" aria-hidden="true"></i></button>
 
-                @*@if (loggedIn)
-                {
+                    @*@if (loggedIn)
+                    {
                     <button class="account_btn" @onclick="onClickAccount"></button>
-                }
-                else
-                {
+                    }
+                    else
+                    {
                     <button class="login_btn" @onclick="onClickLogin"></button>
-                }*@
-            </div>
-        </div>
-
-        <main>
-            <div id="nav">
-                <NavMenu/>
-            </div>
-
-            <div id="content">
-                <div id="article">
-                    @Body
+                    }*@
                 </div>
             </div>
-        </main>
+
+            <main>
+                <div id="nav">
+                    <NavMenu />
+                </div>
+
+                <div id="content">
+                    <div id="article">
+                        @Body
+                    </div>
+                </div>
+            </main>
+        </div>
     </div>
-</div>
+</CascadingValue>
 
 <div class="modal-backdrop fade @(show ? "show" : "") @(display ? "d-block" : "d-none")"></div>
 

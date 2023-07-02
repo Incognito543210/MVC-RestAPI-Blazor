@@ -29,10 +29,11 @@ namespace API.Interfaces
          ICollection<Tag> GetTagsByRecipe(int id);
          bool TagsExistsOnRecipe(int id);
 
-        public bool DeleteRecipe(Recipe recipe);
-       
+         bool DeleteRecipe(Recipe recipe);
 
+        ICollection<Recipe> GetRecipesByTags(ICollection<Tag> tags);
 
+        bool GetRecipesByTagsExists(ICollection<Tag> tags);
 
     }
 }

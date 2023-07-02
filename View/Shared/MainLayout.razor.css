@@ -36,11 +36,11 @@ a {
 }
 
 .openlogin_btn, .account_btn {
-    background-image: url(images/user_image.png);
-    background-size: cover;
+    color: white;
+    font-size: 17px;
     border-radius: 50%;
-    height: 30px;
-    width: 30px;
+    height: 40px;
+    width: 40px;
 }
     .openlogin_btn:hover, .account_btn:hover {
         background-color: rgba(255,255,255,0.1);
