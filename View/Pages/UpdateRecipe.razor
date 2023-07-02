@@ -1,4 +1,4 @@
-﻿@page "/updaterecipe"
+﻿@page "/updaterecipe/{Id:int}"
 @inject RecipeService RecServ
 <h3>Edytuj przepis</h3>
 
@@ -8,18 +8,18 @@
 }
 
 @code {
+    [Parameter]
+    public int Id{ get; init; }
+
     List<TagDto>? tags;
     RecipeAdapter recipe = new();
     //Chcę zgarnąć ten recipe do edycji, wsadzić go do formularza i zmienić treść updaterecipe, żeby się zgadzała :)
 
     async Task Update()
     {
-        //await RecServ.AddRecipeAsync(recipe);
-        ////ingredients
-        //await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
-        ////tags
-        //await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
-        //recipe = new();
+        //przepis będzie mógł być zmieniony i zapisany do bazy
+        //mam sklejony przepis w recipe - jest typu recipeAdapter, po zmianach
+        //chcę zapisać przepis do bazy, wywołując metodę putRecipe, putIngredients, putTags
 
     }
 
@@ -27,4 +27,14 @@
     {
         tags = await RecServ.GetTagListAsync();
     }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        //recipe = await GetRecipe(Id);
+    }
+
+    //async Task<RecipeAdapter> GetRecipe(int id)
+    //{
+    //    //tutaj muszę posklejać recipeAdaptera i go zwrócić
+    //}
 }

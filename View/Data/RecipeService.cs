@@ -33,9 +33,9 @@ namespace View.Data
             return (await _httpClient.GetFromJsonAsync<RecipeAdapter>("/api/Recipe/" + id))!;
         }
 
-        public async Task<List<IngredientAdapter>> GetIngredientsListAsync(int id)
+        public async Task<List<IngridientDto>> GetIngredientsListAsync(int id)
         {
-            return (await _httpClient.GetFromJsonAsync<List<IngredientAdapter>>("/api/Recipe/ingridients/" + id))!;
+            return (await _httpClient.GetFromJsonAsync<List<IngridientDto>>("/api/Recipe/ingridients/" + id))!;
         }
 
         public async Task AddRecipeAsync(RecipeDto recipe)
@@ -52,8 +52,7 @@ namespace View.Data
 
         public async Task AddTagsToRecipeAsync(List<TagDto> tags, string recipeTitle)
         {
-            var wynik = await _httpClient.PostAsJsonAsync<List<TagDto>>("api/Tag/" + recipeTitle, tags);
-            await LogRequest(wynik);
+            await _httpClient.PostAsJsonAsync<List<TagDto>>("api/Tag/" + recipeTitle, tags);
         }
 
         public async Task UpdateRecipeAsync(RecipeDto recipe, int id)
@@ -82,7 +81,9 @@ namespace View.Data
         {
             var str = await wynik.RequestMessage!.Content!.ReadAsStringAsync();
             var url = wynik.RequestMessage.RequestUri;
-            _log.LogWarning(url + " przerwa " + str);
+#pragma warning disable CA2254 // Szablon powinien być wyrażeniem statycznym
+            _log.LogWarning(url + " " + str);
+#pragma warning restore CA2254 // Szablon powinien być wyrażeniem statycznym
         }
 
     }
