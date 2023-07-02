@@ -14,7 +14,7 @@
             </MudSelect>
         </MudStack>
         <p><MudTextField T="string" @bind-Value="Recipe.Content" Label="Opis przygotowania" Text="@Recipe.Content" Lines="10" For="@(() => Recipe.Content)" /></p>
-        <p><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Dodaj przepis</MudButton></p>
+        <p><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Prześlij przepis</MudButton></p>
     </EditForm>
     <MudStack Row="true">
         <EditForm Model="@ingredient" OnValidSubmit="@AddIngredientToList">
