@@ -13,7 +13,7 @@ else
             <h3 style="font-weight: bold">@recipe.Title</h3>
         </div>
         <div id="buttons">
-            <button class="btn1">Edytuj</button>
+            <button class="btn1" onclick="@onClick">Edytuj</button>
             <button class="btn2">Usuń</button>
         </div>
     </div>
@@ -157,7 +157,7 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private RecipeDto? recipe;
+    private RecipeAdapter? recipe;
     private List<IngridientDto>? ingredientsList;
 
     protected override async Task OnInitializedAsync()
@@ -165,5 +165,13 @@ else
         await base.OnInitializedAsync();
         recipe = await RecServ.GetRecipeAsync(Id);
         ingredientsList = await RecServ.GetIngredientsListAsync(Id);
+    }
+
+    void onClick()
+    {
+        if(recipe is not null)
+        {
+        NavMan.NavigateTo("/updaterecipe/" + recipe.RecipeID);
+        }
     }
 }

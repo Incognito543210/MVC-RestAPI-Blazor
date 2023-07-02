@@ -38,6 +38,16 @@ namespace View.Data
             return (await _httpClient.GetFromJsonAsync<List<IngridientDto>>("/api/Recipe/ingridients/" + id))!;
         }
 
+        public async Task<List<TagDto>> GetTagsListAsync(int id)
+        {
+            return (await _httpClient.GetFromJsonAsync<List<TagDto>>("/api/Recipe/tags/" + id))!;
+        }
+        public async Task<HasIngridientDto> GetIngredientAmountAsync(int recipeId, int ingredientId)
+        {
+            var wynik = await _httpClient.GetFromJsonAsync<HasIngridientDto>("/api/HasIngridient/" + recipeId + "," + ingredientId)!;
+            return wynik;
+        }
+
         public async Task AddRecipeAsync(RecipeDto recipe)
         {
             var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + _userId, recipe);

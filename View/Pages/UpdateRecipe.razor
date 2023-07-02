@@ -30,11 +30,23 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        //recipe = await GetRecipe(Id);
+        recipe = await GetRecipe(Id);
     }
 
-    //async Task<RecipeAdapter> GetRecipe(int id)
-    //{
-    //    //tutaj muszę posklejać recipeAdaptera i go zwrócić
-    //}
+    async Task<RecipeAdapter> GetRecipe(int id)
+    {
+        HasIngridientDto hasIngrid = new();
+        recipe = await RecServ.GetRecipeAsync(id);
+        List<IngridientDto> ingredients = await RecServ.GetIngredientsListAsync(id);
+        List<TagDto> tags = await RecServ.GetTagsListAsync(id);
+        recipe.Ingridients = ingredients;
+        recipe.Tags = tags;
+        foreach (var item in recipe.Ingridients)
+        {
+            hasIngrid = await RecServ.GetIngredientAmountAsync(recipe.RecipeID, item.IngridientID);
+            item.Quantity = hasIngrid.Amount;
+        }
+        return recipe;
+        //tutaj muszę posklejać recipeAdaptera i go zwrócić
+    }
 }
