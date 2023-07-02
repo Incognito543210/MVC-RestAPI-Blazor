@@ -51,6 +51,7 @@ namespace API.Controllers
             if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
             {
                 var userMap = _mapper.Map<UserDto>(_userServices.Logger(login, password));
+                userMap.Password = null;
                 return Ok(userMap);
             }
             else
