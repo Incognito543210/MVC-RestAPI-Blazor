@@ -21,6 +21,7 @@ namespace View.Data
         public async Task<List<OpinionDto>> GetOpinionsForRecipeAsync(int recipeId)
         {
             var response = await _httpClient.GetFromJsonAsync<List<OpinionDto>>("/api/Opinion/" + recipeId);
+
             int a = 5;
 
             //if (!response.IsSuccessStatusCode)
