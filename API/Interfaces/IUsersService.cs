@@ -1,4 +1,5 @@
-﻿using Model.MODEL;
+﻿using Model.DTO;
+using Model.MODEL;
 
 namespace API.Interfaces
 {
@@ -11,10 +12,11 @@ namespace API.Interfaces
         bool IsEmailValid(string email);
         bool IsPasswordPopular(string password);
         bool IsPasswordStrong(string password);
-        User Logger(string login, string password);
+        SessionDto Logger(string login, string password);
         bool Save();
         bool UpdateUser(User user);
         bool UserExists(int id);
         bool UsernameExists(string username);
+        SessionDto StartSession(int id);
     }
 }

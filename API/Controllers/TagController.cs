@@ -1,6 +1,7 @@
 ﻿using API.Interfaces;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -21,7 +22,7 @@ namespace API.Controllers
             _mapper = mapper;
             _hasCategoriesService = hasCategoriesService;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Tag>))]
         [ProducesResponseType(400)]
@@ -36,7 +37,7 @@ namespace API.Controllers
            
             return Ok(tags);
         }
-
+        [AllowAnonymous]
         [HttpGet("{tagID}")]
         [ProducesResponseType(200, Type = typeof(Tag))]
         [ProducesResponseType(400)]

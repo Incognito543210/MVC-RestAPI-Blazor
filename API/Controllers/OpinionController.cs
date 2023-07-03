@@ -1,5 +1,6 @@
 ﻿using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -23,6 +24,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
@@ -37,6 +39,7 @@ namespace API.Controllers
             return Ok(opinions);
         }
 
+        [AllowAnonymous]
         [HttpGet("recipeID")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
@@ -54,6 +57,7 @@ namespace API.Controllers
             return Ok(opinion);
         }
 
+        [AllowAnonymous]
         [HttpGet("userID")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]

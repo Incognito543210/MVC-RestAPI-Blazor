@@ -2,6 +2,7 @@
 using API.Repositories;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -23,7 +24,7 @@ namespace API.Controllers
             _hasIngridientService = hasIngridientService;
         }
 
-
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Ingridient>))]
         public IActionResult GetIngridients()
@@ -38,7 +39,7 @@ namespace API.Controllers
         }
 
 
-
+        [AllowAnonymous]
         [HttpGet("{ingridientId}")]
         [ProducesResponseType(200, Type = typeof(Ingridient))]
         [ProducesResponseType(400)]
