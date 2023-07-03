@@ -31,18 +31,10 @@ namespace View.Data
                 return null;
         }
 
-        public async Task LoginAsync(string login, string password)
+        public async Task<UserDto> LoginAsync(string login, string password)
         {
             var response = await _httpClient.GetFromJsonAsync<UserDto>("/api/User/" + login +","+ password);
-            //await LogRequest(response);
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorMessage = await response.Content.ReadAsStringAsync();
-            //    return errorMessage;
-            //}
-            //else
-            //    return null;
+            return response;
         }
 
         private async Task LogRequest(HttpResponseMessage response)

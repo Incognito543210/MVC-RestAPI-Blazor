@@ -5,7 +5,7 @@
 
 @if (recipesList == null || tagsList == null)
 {
-    <h3>Brak przepisów do wyświetlenia</h3>
+    <h3>Ładowanie</h3>
 }
 else
 {
@@ -43,6 +43,10 @@ else
 
                 </div>
             }
+        }
+        else
+        {
+            <p>Brak przepisów do wyświetlenia.</p>
         }
 
     </div>
@@ -164,7 +168,6 @@ else
         else
         {
             recipesList = await RecServ.GetRecipeListAsync();
-            int a = 5;
         }
     }
 }

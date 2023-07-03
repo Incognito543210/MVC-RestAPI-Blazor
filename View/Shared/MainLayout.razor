@@ -175,6 +175,5 @@
     private async Task LogIn()
     {
         await UserServ.LoginAsync(logInData.Login, logInData.Password);
-        user = new();
     }
 }

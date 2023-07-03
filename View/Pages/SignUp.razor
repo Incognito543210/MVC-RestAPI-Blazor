@@ -1,5 +1,6 @@
 ﻿@page "/signup"
 @inject UserService UserServ
+@inject NavigationManager NavMan
 
 <div id="signup-page">
     <div class="content">
@@ -107,7 +108,11 @@
     async Task CreateUser()
     {
         errorMessage = await UserServ.CreateUserAsync(user);
-        user = new();
+        if(errorMessage == null)
+        {
+            user = new();
+            NavMan.NavigateTo("/account/" + 1);
+        }
     }
 
     void ButtonTestClick()
