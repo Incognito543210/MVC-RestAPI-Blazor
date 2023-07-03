@@ -1,19 +1,34 @@
 ﻿@page "/"
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
+@inject TagService TagServ
 
-<div id="title">
-    <h3 style="font-weight: bold">Strona główna</h3>
-</div>
 
-@if (recipesList == null)
+@if (recipesList == null || tagsList == null)
 {
     <h3>Loading...</h3>
 }
 else
 {
-    @if(recipesList.Any())
+    @if(recipesList.Any() && tagsList.Any())
     {
+        <div id="top">
+            <div id="title">
+                <h3 style="font-weight: bold">Strona główna</h3>
+            </div>
+            <div id="filter">
+                <MudSelect T="TagDto" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" Label="Filtruj przepisy" MultiSelection="true" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.FilterList" @bind-Value="filter" @bind-SelectedValues="filters">
+                    @foreach (var item in tagsList)
+                    {
+                        <MudSelectItem Value="@item">@item.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </div>
+            <div id="button">
+                <MudButton OnClick="SelectTags" Variant="Variant.Filled" Class="filter-btn">Zastosuj</MudButton>
+            </div>
+        </div>
+
         <div id="recipes">
         @foreach (var recipe in recipesList)
         {
@@ -40,11 +55,44 @@ else
         padding: 0;
     }
 
-    #title {
+    #top {
         width: auto;
         margin: 10px;
         padding: 5px;
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
     }
+
+    #title {
+        flex: 1;
+    }
+
+    h3 {
+        margin: 0;
+        padding: 0;
+    }
+
+    #filter {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    #button {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .filter-btn {
+        background: rgba( 22, 166, 185 );
+        font-size: 1.17em;
+        color: white;
+        margin-left: 8px;
+    }
+
+        .filter-btn:hover {
+            background: rgba(227, 225, 222);
+        }
 
     #recipe:hover {
         background: rgba( 22, 166, 185 );
@@ -78,17 +126,41 @@ else
 </style>
 
 @code{
+    private bool ifTagsSelected = false;
+
     private List<RecipeDto>? recipesList;
+    private List<TagDto>? tagsList;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        recipesList = await RecServ.GetRecipeListAsync();
+        recipesList = ifTagsSelected ? await RecServ.GetRecipesByTagsAsync(filters.ToList()) : await RecServ.GetRecipeListAsync();
+        tagsList = await TagServ.GetTagsAsync();
     }
 
     void navigateToRecipe(int id)
     {
         NavMan.NavigateTo("/recipe/" + id);
+    }
+
+    private TagDto filter { get; set; }
+    private IEnumerable<TagDto> filters { get; set; } = new HashSet<TagDto>();
+
+    private string GetMultiSelectionText(List<string> selectedValues)
+    {
+        if (selectedValues.Count == 0)
+            return "Wybierz filtry";
+        else
+            return $"Wybrano: {selectedValues.Count}";
+
+    }
+
+    private void SelectTags()
+    {
+        if (filters.Count() > 0)
+            ifTagsSelected = true;
+        else
+            ifTagsSelected = false;
     }
 }
 

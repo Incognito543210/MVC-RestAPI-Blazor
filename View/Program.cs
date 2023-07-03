@@ -23,6 +23,11 @@ builder.Services.AddHttpClient<OpinionService>(client =>
 {
     client.BaseAddress = new Uri("http://localhost:5227/");
 });
+builder.Services.AddSingleton<TagService>();
+builder.Services.AddHttpClient<TagService>(client =>
+{
+    client.BaseAddress = new Uri("http://localhost:5227/");
+});
 builder.Services.AddMudServices();
 
 var app = builder.Build();
