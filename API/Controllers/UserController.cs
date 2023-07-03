@@ -61,7 +61,7 @@ namespace API.Controllers
             }
             else
             {
-                return StatusCode(422, "Taki użytkownik nie istnieje");
+                return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
             }
 
         }
@@ -82,35 +82,35 @@ namespace API.Controllers
 
             if (_userServices.UsernameExists(userDto.Username))
             {
-                return StatusCode(422, "Nazwa takiego użytkownika już istnieje");
+                return StatusCode(422, "Nazwa użytkownika jest już zajęta.");
             }
 
             if (_userServices.EmailExists(userDto.Email))
             {
-                return StatusCode(422, "Ten email już jest wykorzystany");
+                return StatusCode(422, "Adres e-mail jest już zajęty.");
             }
 
             var userMap = _mapper.Map<User>(userDto);
 
             if (!_userServices.IsEmailValid(userMap.Email))
             {
-                return StatusCode(422, "Nieprawidłowy adres email");
+                return StatusCode(422, "Nieprawidłowy adres e-mail.");
             }
 
             if (!_userServices.IsPasswordStrong(userMap.Password))
             {
-                return StatusCode(422, "Hasło jest niewystarczająco mocne");
+                return StatusCode(422, "Hasło jest niewystarczająco mocne.");
             }
 
             if (_userServices.IsPasswordPopular(userMap.Password))
             {
-                return StatusCode(422, "Hasło jest zbyt popularne");
+                return StatusCode(422, "Hasło jest zbyt popularne.");
 
             }
 
             if (!_userServices.CreateUser(userMap))
             {
-                return StatusCode(422, "Coś poszło nie tak podczas zapisywania");
+                return StatusCode(422, "Rejestracja konta nie powiodła się.");
             }
             return Ok();
         }
@@ -119,7 +119,7 @@ namespace API.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateOpinion(int userID, [FromBody] UserDto updatedUser)
+        public IActionResult UpdateUser(int userID, [FromBody] UserDto updatedUser)
         {
             if (updatedUser == null)
                 return BadRequest(ModelState);
@@ -136,7 +136,7 @@ namespace API.Controllers
 
             if (users != null)
             {
-                return StatusCode(422, "Użytkownik już istnieje");
+                return StatusCode(422, "Użytkownik już istnieje.");
 
             }
 
@@ -144,25 +144,25 @@ namespace API.Controllers
 
             if (!_userServices.IsEmailValid(userMap.Email))
             {
-                return StatusCode(422, "Nieprawidłowy adres email");
+                return StatusCode(422, "Nieprawidłowy adres e-mail.");
             }
 
             if (!_userServices.IsPasswordStrong(userMap.Password))
             {
-                return StatusCode(422, "Hasło jest niewystarczająco mocne");
+                return StatusCode(422, "Hasło jest niewystarczająco mocne.");
             }
 
             if (_userServices.IsPasswordPopular(userMap.Password))
             {
-                return StatusCode(422, "Hasło jest zbyt popuarne");
+                return StatusCode(422, "Hasło jest zbyt popuarne.");
             }
 
             if (!_userServices.UpdateUser(userMap))
             {
-                return BadRequest("Coś poszło nie tak przy zmianie danych użytkownika");
+                return BadRequest("Zmiana danych użytkownika nie powiodła się.");
             }
 
-            return Ok("Pomyślnie zmodyfikowano dane użytkownika");
+            return Ok("Zmiana danych użytkownika przebiegła pomyślnie.");
         }
     }
 }
