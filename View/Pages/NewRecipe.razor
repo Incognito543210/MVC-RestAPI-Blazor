@@ -2,26 +2,81 @@
 @inject RecipeService RecServ
 @inject NavigationManager NavMan
 <h3 style="font-weight: bold">Utwórz przepis</h3>
+@if (errorMessageRec != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageRec
+    </div>
+}
+@if (errorMessageIngr != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageIngr
+    </div>
+}
+@if (errorMessageTags != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageTags
+    </div>
+}
+
+@if (errorMessageIngrList != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageIngrList
+    </div>
+}
+@if (errorMessageTagList != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageTagList
+    </div>
+}
 
 @if(tags is not null)
 {
     <RecipeForm Recipe="recipe" OnValidSubmit="AddRecipe" Tags="tags"/>
 }
 
+
 @code {
-    RecipeAdapter recipe = new();
+    string? errorMessageRec;
+    string? errorMessageIngr;
+    string? errorMessageTags;
+    string? errorMessageIngrList;
+    string? errorMessageTagList;
+    static TimeSpan _defaultTime = new(00, 01, 00);
+    RecipeAdapter recipe = new(){Portions=1, Difficulty=1, PrepTimeAsTimeSpan=new TimeSpan(0, 1, 0)};
     List<TagDto>? tags;
 
     async Task AddRecipe()
     {
-        await RecServ.AddRecipeAsync(recipe);
-        //ingredients
-        await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
-        //tags
-        await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
+        //sprawdzenie, czy warto przesyłać
+        if(recipe.Ingridients.Count != 0 && recipe.Tags.Count != 0)
+        {
+            errorMessageRec = await RecServ.AddRecipeAsync(recipe);
+            if (errorMessageRec == null)
+            {
+                //ingredients
+                errorMessageIngr = await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
+                //tags
+                errorMessageTags = await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
+            }           
 
-        NavMan.NavigateTo("/mybook");
-
+            if (errorMessageRec is null && errorMessageIngr is null && errorMessageTags is null)
+            {
+                NavMan.NavigateTo("/mybook");
+            }
+        }
+        else if (recipe.Ingridients.Count == 0)
+        {
+            errorMessageIngrList = "Przepis musi mieć co najmniej jeden składnik!";
+        }
+        else if (recipe.Tags.Count == 0)
+        {
+            errorMessageTagList = "Przepis musi mieć co najmniej jeden tag!";
+        }
     }
 
     protected override async Task OnInitializedAsync()
