@@ -98,24 +98,20 @@ main {
     overflow: auto;
 }
 
-.btn-login {
-    background-color: rgba( 22, 166, 185 );
-    padding: 10px;
-    border-radius: 8px;
+.btn1 {
+    background: rgba( 22, 166, 185 );
     font-size: 1.17em;
     color: white;
 }
 
-.btn-cancel {
-    background-color: gray;
-    padding: 10px;
-    border-radius: 8px;
+.btn2 {
+    background: gray;
     font-size: 1.17em;
     color: white;
 }
 
-    .btn-login:hover, .btn-cancel:hover {
-        background-color: rgba(227, 225, 222);
+    .btn1:hover, .btn2:hover {
+        background: rgba(227, 225, 222);
     }
 
 .btn-link {

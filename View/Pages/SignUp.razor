@@ -24,7 +24,7 @@
             <div style="clear: both;"></div>
             <MudTextField @bind-Value="user.Username" Label="Nazwa użytkownika" For="@(() => user.Username)"></MudTextField>
             <MudTextField @bind-Value="user.Password" Label="Hasło" For="@(() => user.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
-            <div class="modal-footer">
+            <div class="footer">
                 <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="btn1">Zarejestruj się</MudButton>
             </div>
         </EditForm>
@@ -52,6 +52,7 @@
         background: rgba( 22, 166, 185 );
         font-size: 1.17em;
         color: white;
+        margin: 0 !important;
     }
 
         .btn1:hover {
@@ -75,6 +76,16 @@
     #firstname, #lastname {
         float: left;
         width: 50%;
+    }
+
+    .footer {
+        display: flex;
+        flex-wrap: wrap;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: flex-end;
+        border-top: 1px solid #dee2e6;
+        padding-top: 20px;
     }
 
 </style>

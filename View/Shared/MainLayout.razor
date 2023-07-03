@@ -49,51 +49,64 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Logowanie</h5>
-                <button class="btn btn-danger" @onclick="ClickClose">❌</button>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
+                <button class="btn btn-danger" @onclick="Close">❌</button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    @*<label for="loginEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com" autocomplete="off" required @bind-value="user" />*@
-                    <MudTextField @bind-Value="Login" Label="Login"></MudTextField>
-                </div>
-                <div class="mb-3">
-                    @*<label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="loginPassword" required />*@
-                    <MudTextField @bind-Value="Password" Label="Hasło" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
-                </div>
-                <div class="mb-3" id="bottom">
-                    <a>Nie masz konta?</a>
-                    <button class="btn-link" type="button" @onclick="SignUp">Zarejestruj się</button>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-login" @onclick="ClickLogin">Zaloguj się</button>
-                <button class="btn-cancel" data-dismiss="modal" @onclick="ClickClose">Anuluj</button>
+                <EditForm Model="@user" OnValidSubmit="@LogIn">
+                    <DataAnnotationsValidator />
+                    <div class="mb-3">
+                        <MudTextField @bind-Value="user.Email" Label="Adres e-mail" For="@(() => user.Email)"></MudTextField>
+                    </div>
+                    <div class="mb-3">
+                        <MudTextField @bind-Value="user.Password" Label="Hasło" For="@(() => user.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+                    </div>
+                    <div class="mb-3" id="bottom">
+                        <a>Nie masz konta?</a>
+                        <button class="btn-link" type="button" @onclick="SignUp">Zarejestruj się</button>
+                    </div>
+                    <div class="modal-footer">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="btn1">Zaloguj się</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="Close" Class="btn2">Anuluj</MudButton>
+                    </div>
+                </EditForm>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .btn1 {
+        background: rgba( 22, 166, 185 );
+        font-size: 1.17em;
+        color: white;
+        margin-right: 5px;
+    }
+
+    .btn2 {
+        background: gray;
+        font-size: 1.17em;
+        color: white;
+    }
+
+        .btn1:hover, .btn2:hover {
+            background: rgba(227, 225, 222);
+        }
+</style>
+
 
 @code {
     private bool show, display, loggedIn;
-    private string? user;
 
-    public string Login { get; set; }
-    public string Password { get; set; }
+    UserDto user = new();
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    public string? GetUserName()
-    {
-        return loggedIn ? user : null;
-    }
+    //public string? GetUserName()
+    //{
+    //    return loggedIn ? user : null;
+    //}
 
     public async Task OpenLogin()
     {
@@ -102,7 +115,7 @@
         show = true;
     }
 
-    private async Task ClickClose()
+    private async Task Close()
     {
         show = false;
         await Task.Delay(500);
@@ -131,6 +144,14 @@
     }
 
     private async Task SignUp()
+    {
+        show = false;
+        await Task.Delay(500);
+        display = false;
+        NavMan.NavigateTo("/signup");
+    }
+
+    private async Task LogIn()
     {
         show = false;
         await Task.Delay(500);
