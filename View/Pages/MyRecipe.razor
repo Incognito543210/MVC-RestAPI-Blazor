@@ -1,6 +1,7 @@
 ﻿@page "/myrecipe/{Id:int}"
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
+@inject IDialogService DialogService
 
 @if (recipe == null)
 {
@@ -13,8 +14,8 @@ else
             <h3 style="font-weight: bold">@recipe.Title</h3>
         </div>
         <div id="buttons">
-            <button class="btn1" @onclick="Update">Edytuj</button>
-            <button class="btn2" @onclick="ConfirmDeletion">Usuń</button>
+            <MudButton class="btn1" @onclick="Update">Edytuj</MudButton>
+            <MudButton class="btn2" @onclick="ConfirmDeletion">Usuń</MudButton>
         </div>
     </div>
 
@@ -175,7 +176,7 @@ else
         }
     }
 
-    async void Delete()
+    async Task Delete()
     {
         if (recipe is not null)
         {
@@ -184,7 +185,14 @@ else
         }
     }
 
-    private void ConfirmDeletion()
+    async Task ConfirmDeletion()
     {
+        var options = new DialogOptions { CloseOnEscapeKey = true };
+        var okno = await DialogService.ShowAsync<ConfirmDeletion>("Usuń przepis", options);
+        var wynik = await okno.Result;
+        if(!wynik.Canceled)
+        {
+            await Delete(); 
+        }
     }
 }
