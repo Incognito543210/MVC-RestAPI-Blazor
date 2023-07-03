@@ -1,6 +1,15 @@
-﻿@page "/account"
+﻿@page "/account/{Message:int}"
 
-<h3 class="my-4">Nie jesteś zalogowany.</h3>
+@if (Message > 0)
+{
+	<div class="alert alert-success" role="alert">
+		Rejestracja konta przebiegła pomyślnie. Zaloguj się na swoje konto.
+	</div>
+}
+else
+{
+	<p>Nie jesteś zalogowany. Zaloguj się na swoje konto.</p>
+}
 
 <MudButton Variant="Variant.Filled" Class="btn1" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
 
@@ -20,7 +29,7 @@ else
 }*@
 
 <style>
-	h3 {
+	p {
 		margin: 0;
 		padding: 0;
 		font-weight: bolder;
@@ -40,6 +49,9 @@ else
 @code {
 	[CascadingParameter]
 	public MainLayout mainLayout { get; set; }
+
+	[Parameter]
+	public int Message { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
