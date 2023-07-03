@@ -14,7 +14,7 @@ else
         </div>
         <div id="buttons">
             <button class="btn1" @onclick="Update">Edytuj</button>
-            <button class="btn2" @onclick="Delete">Usuń</button>
+            <button class="btn2" @onclick="ConfirmDeletion">Usuń</button>
         </div>
     </div>
 
@@ -182,5 +182,9 @@ else
             await RecServ.DeleteRecipeById(recipe.RecipeID);
             NavMan.NavigateTo("/mybook");
         }
+    }
+
+    private void ConfirmDeletion()
+    {
     }
 }

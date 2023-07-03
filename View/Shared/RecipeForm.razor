@@ -1,10 +1,23 @@
-﻿<div>
+﻿@if (errorMessageIngrList != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageIngrList
+    </div>
+}
+@if (errorMessageTagList != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @errorMessageTagList
+    </div>
+}
+
+<div>
     <EditForm Model="@Recipe" OnValidSubmit="@SubmitRecipe">
         <DataAnnotationsValidator />
         <MudStack Row="true">
             <MudTextField @bind-Value="Recipe.Title" Label="Nazwa" For="@(() => Recipe.Title)"></MudTextField>
-            <MudNumericField @bind-Value="Recipe.Portions" Label="Liczba porcji" Step="1" Min="1" For="@(() => Recipe.Portions)" />
-            <MudTimePicker Label="Czas przygotowania" @bind-Time="Recipe.PrepTimeAsTimeSpan" For="@(() => Recipe.PrepTimeAsTimeSpan)" />
+            <MudNumericField @bind-Value="Recipe.Portions" Label="Liczba porcji" Step="1" Min="1" For="@(() => Recipe.Portions)"/>
+            <MudTimePicker Label="Czas przygotowania" @bind-Time="Recipe.PrepTimeAsTimeSpan" For="@(() => Recipe.PrepTimeAsTimeSpan)"/>
             <MudSelect T="int" Label="Stopień trudności" @bind-Value="Recipe.Difficulty" AnchorOrigin="Origin.BottomCenter" For="@(() => Recipe.Difficulty)">
                 <MudSelectItem T="int" Value="1" />
                 <MudSelectItem T="int" Value="2" />
@@ -122,6 +135,8 @@
     [Parameter]
     public List<TagDto> Tags { get; set; }
 
+    string? errorMessageIngrList;
+    string? errorMessageTagList;
 
     IngridientDto ingredient = new();
     TagDto tag = new();
@@ -173,9 +188,17 @@
 
     async Task SubmitRecipe()
     {
-        if (Recipe.Ingridients.Count != 0)
+        if (Recipe.Ingridients.Count != 0 && Recipe.Tags.Count != 0)
         {      
             await OnValidSubmit.InvokeAsync();
+        }
+        else if (Recipe.Ingridients.Count == 0)
+        {
+            errorMessageIngrList = "Przepis musi mieć co najmniej jeden składnik!";
+        }
+        else if (Recipe.Tags.Count == 0)
+        {
+            errorMessageIngrList = "Przepis musi mieć co najmniej jeden tag!";
         }
     }
    
