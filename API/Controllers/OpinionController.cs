@@ -40,6 +40,7 @@ namespace API.Controllers
             return Ok(opinions);
         }
 
+        [AllowAnonymous]
         [HttpGet("{recipeID}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
