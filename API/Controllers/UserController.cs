@@ -132,7 +132,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
 
             var users = _userServices.GetUsers()
-                .Where(u => u.Username.Trim().ToUpper() == updatedUser.Username.TrimEnd().ToUpper())
+                .Where(u => u.Username.Trim().ToUpper() == updatedUser.Username.Trim().ToUpper())
                 .FirstOrDefault();
 
             if (users != null)
