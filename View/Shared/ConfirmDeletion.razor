@@ -1,0 +1,20 @@
+﻿<MudDialog>
+    <DialogContent>
+        Czy na pewno chcesz usunąć ten przepis? 
+    </DialogContent>
+    <DialogActions>
+        <MudButton Style="@($"color:{Colors.Grey.Lighten5}; background:{Colors.Cyan.Default};")" OnClick="Cancel">Anuluj</MudButton>
+        <MudButton Style="@($"color:{Colors.Grey.Lighten5}; background:{Colors.Red.Default};")" Variant="Variant.Filled" OnClick="Submit">Usuń</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] MudDialogInstance MudDialog { get; set; } = null!;
+
+    void Submit()
+    {
+        MudDialog.Close(DialogResult.Ok("Delete"));
+    }
+    void Cancel() => MudDialog.Cancel();
+}
+
