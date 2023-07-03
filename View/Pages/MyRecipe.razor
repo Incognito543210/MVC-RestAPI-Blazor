@@ -185,13 +185,14 @@ else
         }
     }
 
-    async private void ConfirmDeletion()
+    private void ConfirmDeletion()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        var wynik = await DialogService.ShowAsync<ConfirmDeletion>("Usuń przepis");
-        if(!wynik.Result.IsCanceled)
-        {
-            Delete(); 
-        }
+        var okno = DialogService.ShowAsync<ConfirmDeletion>("Usuń przepis", options);
+        var wynik = okno.Result;
+        //if(!wynik.Canceled)
+        //{
+        //    Delete(); 
+        //}
     }
 }
