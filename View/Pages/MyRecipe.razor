@@ -176,7 +176,7 @@ else
         }
     }
 
-    async void Delete()
+    async Task Delete()
     {
         if (recipe is not null)
         {
@@ -185,14 +185,14 @@ else
         }
     }
 
-    private void ConfirmDeletion()
+    async Task ConfirmDeletion()
     {
         var options = new DialogOptions { CloseOnEscapeKey = true };
-        var okno = DialogService.ShowAsync<ConfirmDeletion>("Usuń przepis", options);
-        var wynik = okno.Result;
-        //if(!wynik.Canceled)
-        //{
-        //    Delete(); 
-        //}
+        var okno = await DialogService.ShowAsync<ConfirmDeletion>("Usuń przepis", options);
+        var wynik = await okno.Result;
+        if(!wynik.Canceled)
+        {
+            await Delete(); 
+        }
     }
 }
