@@ -49,7 +49,7 @@ namespace API.Controllers
         {
             if (!_opinionServices.OpinionExistsOnRecipe(recipeID))
             {
-                return StatusCode(404, "Nie znaleziono opinii");
+                return NotFound("Nie znaleziono opinii");
             }
 
             var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForRecipe(recipeID));

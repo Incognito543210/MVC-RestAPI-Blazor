@@ -53,26 +53,52 @@ namespace View.Data
         public async Task<HasIngridientDto> GetIngredientAmountAsync(int recipeId, int ingredientId)
         {
             var wynik = await _httpClient.GetFromJsonAsync<HasIngridientDto>("/api/HasIngridient/" + recipeId + "," + ingredientId)!;
-            return wynik;
+            return wynik!;
         }
 
-        public async Task AddRecipeAsync(RecipeDto recipe)
+        public async Task<string> AddRecipeAsync(RecipeDto recipe)
         {
             var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + _userId, recipe);
             await LogRequest(wynik);
-            var odp = wynik.StatusCode.ToString();
-            var odp2 = wynik.Content.ToString();
+
+            if (!wynik.IsSuccessStatusCode)
+            {
+                var errorMessage = await wynik.Content.ReadAsStringAsync();
+                return errorMessage;
+            }
+            else
+                return null!;
+            //await LogRequest(wynik);
+            //var odp = wynik.StatusCode.ToString();
+            //var odp2 = wynik.Content.ToString();
         }
 
-        public async Task AddIngredientsToRecipeAsync(List<IngridientDto> ingredients, string recipeTitle)
+        public async Task<string> AddIngredientsToRecipeAsync(List<IngridientDto> ingredients, string recipeTitle)
         {
             var wynik = await _httpClient.PostAsJsonAsync<List<IngridientDto>>("api/Ingridient/" + recipeTitle, ingredients);
             await LogRequest(wynik);
+
+            if (!wynik.IsSuccessStatusCode)
+            {
+                var errorMessage = await wynik.Content.ReadAsStringAsync();
+                return errorMessage;
+            }
+            else
+                return null!;
         }
 
-        public async Task AddTagsToRecipeAsync(List<TagDto> tags, string recipeTitle)
+        public async Task<string> AddTagsToRecipeAsync(List<TagDto> tags, string recipeTitle)
         {
-            await _httpClient.PostAsJsonAsync<List<TagDto>>("api/Tag/" + recipeTitle, tags);
+            var wynik = await _httpClient.PostAsJsonAsync<List<TagDto>>("api/Tag/" + recipeTitle, tags);
+            await LogRequest(wynik);
+
+            if (!wynik.IsSuccessStatusCode)
+            {
+                var errorMessage = await wynik.Content.ReadAsStringAsync();
+                return errorMessage;
+            }
+            else
+                return null!;
         }
 
         public async Task UpdateRecipeAsync(RecipeDto recipe, int id)
@@ -99,13 +125,29 @@ namespace View.Data
             //var wynik = await _httpClient.DeleteAsync("");
         }
 
-        private async Task LogRequest(HttpResponseMessage wynik)
+//        private async Task LogRequest(HttpResponseMessage wynik)
+//        {
+//            var str = await wynik.RequestMessage!.Content!.ReadAsStringAsync();
+//            var url = wynik.RequestMessage.RequestUri;
+//#pragma warning disable CA2254 // Szablon powinien być wyrażeniem statycznym
+//            _log.LogWarning(url + " " + str);
+//#pragma warning restore CA2254 // Szablon powinien być wyrażeniem statycznym
+//        }
+
+        private async Task LogRequest(HttpResponseMessage response)
         {
-            var str = await wynik.RequestMessage!.Content!.ReadAsStringAsync();
-            var url = wynik.RequestMessage.RequestUri;
-#pragma warning disable CA2254 // Szablon powinien być wyrażeniem statycznym
-            _log.LogWarning(url + " " + str);
-#pragma warning restore CA2254 // Szablon powinien być wyrażeniem statycznym
+            var url = response.RequestMessage!.RequestUri;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var errorMessage = await response.Content.ReadAsStringAsync();
+                _log.LogWarning(url + " Error: " + errorMessage);
+            }
+            else
+            {
+                var str = await response.RequestMessage!.Content!.ReadAsStringAsync();
+                _log.LogWarning(url + " " + str);
+            }
         }
 
     }
