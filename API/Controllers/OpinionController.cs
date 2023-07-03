@@ -49,12 +49,7 @@ namespace API.Controllers
         {
             if (!_opinionServices.OpinionExistsOnRecipe(recipeID))
             {
-                var errorMessage = "Nie znaleziono opinii";
-                var response = new HttpResponseMessage(HttpStatusCode.NotFound);
-                response.Content = new StringContent(errorMessage);
-                response.Headers.Add("Error-Message", errorMessage);
-
-                return NotFound(response);
+                return NotFound("Nie znaleziono opinii");
             }
 
             var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForRecipe(recipeID));

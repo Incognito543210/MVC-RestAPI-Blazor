@@ -2,6 +2,7 @@
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -33,7 +34,7 @@ namespace API.Controllers
         }
 
 
-        
+        [AllowAnonymous]
         [HttpGet("AllRecipes")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Recipe>))]
         public IActionResult GetRecipes()
@@ -67,7 +68,7 @@ namespace API.Controllers
 
 
         }
-
+        [AllowAnonymous]
         [HttpGet("ingridients/{recipeId}")]
         [ProducesResponseType(200, Type = typeof(Ingridient))]
         [ProducesResponseType(400)]
@@ -85,7 +86,7 @@ namespace API.Controllers
             return Ok(ingridients);
 
         }
-
+        [AllowAnonymous]
         [HttpGet("tags/{recipeId}")]
         [ProducesResponseType(200, Type = typeof(Tag))]
         [ProducesResponseType(400)]
@@ -123,7 +124,7 @@ namespace API.Controllers
             return Ok(recipes);
 
         }
-
+        [AllowAnonymous]
         [HttpPost("ByTags")]
         [ProducesResponseType(200, Type = typeof(Recipe))]
         [ProducesResponseType(400)]
