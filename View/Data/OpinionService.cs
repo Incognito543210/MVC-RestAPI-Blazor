@@ -20,19 +20,14 @@ namespace View.Data
 
         public async Task<List<OpinionDto>> GetOpinionsForRecipeAsync(int recipeId)
         {
-            var response = await _httpClient.GetFromJsonAsync<List<OpinionDto>>("/api/Opinion/" + recipeId);
-
-            int a = 5;
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorMessage = await response.Content.ReadAsStringAsync();
-            //    return errorMessage;
-            //}
-            //else
-            //    return null;
-
-            return response;
+            try
+            {
+                return (await _httpClient.GetFromJsonAsync<List<OpinionDto>>("/api/Opinion/" + recipeId))!;
+            }
+            catch (Exception ex) 
+            {
+                return null;
+            }
         }
 
         public async Task<string> AddOpinionToRecipeAsync(UserDto user)

@@ -7,7 +7,7 @@
         <h3 style="font-weight: bold">Moje przepisy</h3>
     </div>
     <div id="buttons">
-        <button class="btn1" @onclick="onClick">Nowy przepis</button>
+        <MudButton class="btn1" @onclick="onClick">Nowy przepis</MudButton>
     </div>
 </div>
 
@@ -29,7 +29,7 @@ else
                     <div id="description">
                         <h5 style="font-weight: bold">@recipe.Title</h5>
                         <p>
-                            <b>Data dodania: </b>@recipe.PrepareTime<br />
+                            <b>Czas przygotowania: </b>@recipe.PrepareTime.TimeOfDay<br />
                             <b>Porcje: </b>@recipe.Portions<br />
                             <b>Trudność: </b>@recipe.Difficulty/5<br />
                         </p>

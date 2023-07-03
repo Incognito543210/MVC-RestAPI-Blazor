@@ -27,15 +27,16 @@
             </MudSelect>
         </MudStack>
         <p><MudTextField T="string" @bind-Value="Recipe.Content" Label="Opis przygotowania" Text="@Recipe.Content" Lines="10" For="@(() => Recipe.Content)" /></p>
-        <p><MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Prześlij przepis</MudButton></p>
+        <p><MudButton class="btn1" ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Prześlij przepis</MudButton></p>
     </EditForm>
+    <br /><br /><br />
     <MudStack Row="true">
         <EditForm Model="@ingredient" OnValidSubmit="@AddIngredientToList">
             <DataAnnotationsValidator />
             <MudStack Row="true">
                 <MudTextField @bind-Value="ingredient.Name" Label="Składnik" For="@(() => ingredient.Name)"></MudTextField>
                 <MudTextField @bind-Value="ingredient.Quantity" Label="Ilość" For="@(() => ingredient.Quantity)"></MudTextField>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
+                <MudButton class="btn1" ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj składnik</MudButton>
             </MudStack>
         </EditForm>
         <EditForm Model="@tag" OnValidSubmit="@AddTagToList">
@@ -47,7 +48,7 @@
                         <MudSelectItem Value="@item.Name">@item.Name</MudSelectItem>
                     }
                 </MudSelect>
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Style="@($"background:{Colors.Cyan.Default}; color:{Colors.Grey.Lighten5};")" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
+                <MudButton class="btn1" ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward">Dodaj tag</MudButton>
             </MudStack>
         </EditForm><br />
     </MudStack><br />
@@ -124,6 +125,20 @@
     }
 </div>
 
+<style>
+    .btn1 {
+        background: rgba( 22, 166, 185 );
+        padding: 8px;
+        float: right;
+        border-radius: 8px;
+        font-size: 1.17em;
+        color: white;
+    }
+
+        .btn1:hover {
+            background-color: rgba(227, 225, 222);
+        }
+</style>
 
 @code {
     [Parameter]
