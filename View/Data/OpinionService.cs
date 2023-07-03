@@ -1,23 +1,40 @@
 ﻿using Model;
 using Model.DTO;
 using Model.MODEL;
-using System;
 using System.Diagnostics;
+using View.Pages;
 
 namespace View.Data
 {
-    public class UserService
+    public class OpinionService
     {
         private readonly HttpClient _httpClient;
-        private readonly ILogger<UserService> _log;
+        private readonly ILogger<OpinionService> _log;
+        private const int _userId = 1;
 
-        public UserService(HttpClient httpClient, ILogger<UserService> log)
+        public OpinionService(HttpClient httpClient, ILogger<OpinionService> log)
         {
             _httpClient = httpClient;
             _log = log;
         }
 
-        public async Task<string> CreateUserAsync(UserDto user)
+        public async Task<List<OpinionDto>> GetOpinionsForRecipeAsync(int recipeId)
+        {
+            var response = await _httpClient.GetFromJsonAsync<List<OpinionDto>>("/api/Opinion/" + recipeId);
+            int a = 5;
+
+            //if (!response.IsSuccessStatusCode)
+            //{
+            //    var errorMessage = await response.Content.ReadAsStringAsync();
+            //    return errorMessage;
+            //}
+            //else
+            //    return null;
+
+            return response;
+        }
+
+        public async Task<string> AddOpinionToRecipeAsync(UserDto user)
         {
             var response = await _httpClient.PostAsJsonAsync<UserDto>("/api/User", user);
             await LogRequest(response);
@@ -31,25 +48,11 @@ namespace View.Data
                 return null;
         }
 
-        public async Task LoginAsync(string login, string password)
-        {
-            var response = await _httpClient.GetFromJsonAsync<UserDto>("/api/User/" + login +","+ password);
-            //await LogRequest(response);
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    var errorMessage = await response.Content.ReadAsStringAsync();
-            //    return errorMessage;
-            //}
-            //else
-            //    return null;
-        }
-
         private async Task LogRequest(HttpResponseMessage response)
         {
             var url = response.RequestMessage.RequestUri;
 
-            if(!response.IsSuccessStatusCode)
+            if (!response.IsSuccessStatusCode)
             {
                 var errorMessage = await response.Content.ReadAsStringAsync();
                 _log.LogWarning(url + " Error: " + errorMessage);

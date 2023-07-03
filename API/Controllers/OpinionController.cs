@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -37,14 +38,21 @@ namespace API.Controllers
             return Ok(opinions);
         }
 
-        [HttpGet("recipeID")]
+        [HttpGet("{recipeID}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public IActionResult GetOpinionsForRecipe(int recipeID)
         {
             if (!_opinionServices.OpinionExistsOnRecipe(recipeID))
-                return NotFound("Nie znaleziono opinii");
+            {
+                var errorMessage = "Nie znaleziono opinii";
+                var response = new HttpResponseMessage(HttpStatusCode.NotFound);
+                response.Content = new StringContent(errorMessage);
+                response.Headers.Add("Error-Message", errorMessage);
+
+                return NotFound(response);
+            }
 
             var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForRecipe(recipeID));
 
