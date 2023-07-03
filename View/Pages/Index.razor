@@ -3,99 +3,49 @@
 @inject RecipeService RecServ
 @inject TagService TagServ
 
-@if(!ifTagsSelected)
+@if (recipesList == null || tagsList == null)
 {
-    @if (recipesList == null || tagsList == null)
-    {
-        <h3>Loading...</h3>
-    }
-    else
-    {
-        @if (recipesList.Any() && tagsList.Any())
-        {
-            <div id="top">
-                <div id="title">
-                    <h3 style="font-weight: bold">Strona główna</h3>
-                </div>
-                <div id="filter">
-                    <MudSelect T="TagDto" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" Label="Filtruj przepisy" MultiSelection="true" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.FilterList" @bind-Value="filter" @bind-SelectedValues="filters">
-                        @foreach (var item in tagsList)
-                        {
-                            <MudSelectItem Value="@item">@item.Name</MudSelectItem>
-                        }
-                    </MudSelect>
-                </div>
-                <div id="button">
-                    <MudButton OnClick="SelectTags" Variant="Variant.Filled" Class="filter-btn">Zastosuj</MudButton>
-                </div>
-            </div>
-            <div id="recipes">
-                @foreach (var recipe in recipesList)
-                {
-                    <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
-                        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
-                        <div id="description">
-                            <h5 style="font-weight: bold">@recipe.Title</h5>
-                            <p>
-                                <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
-                                <b>Porcje: </b>@recipe.Portions<br />
-                                <b>Trudność: </b>@recipe.Difficulty/5<br />
-                            </p>
-                        </div>
-
-                    </div>
-                }
-
-            </div>
-        }
-    }
+    <h3>Brak przepisów do wyświetlenia</h3>
 }
 else
 {
-    @if (recipesListByTags == null || tagsList == null)
-    {
-        <h3>Loading...</h3>
-    }
-    else
-    {
-        @if (recipesListByTags.Any() && tagsList.Any())
-        {
-            <div id="top">
-                <div id="title">
-                    <h3 style="font-weight: bold">Strona główna</h3>
-                </div>
-                <div id="filter">
-                    <MudSelect T="TagDto" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" Label="Filtruj przepisy" MultiSelection="true" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.FilterList" @bind-Value="filter" @bind-SelectedValues="filters">
-                        @foreach (var item in tagsList)
-                        {
-                            <MudSelectItem Value="@item">@item.Name</MudSelectItem>
-                        }
-                    </MudSelect>
-                </div>
-                <div id="button">
-                    <MudButton OnClick="SelectTags" Variant="Variant.Filled" Class="filter-btn">Zastosuj</MudButton>
-                </div>
-            </div>
-            <div id="recipes">
-                @foreach (var recipe in recipesListByTags)
+    <div id="top">
+        <div id="title">
+            <h3 style="font-weight: bold">Strona główna</h3>
+        </div>
+        <div id="filter">
+            <MudSelect T="TagDto" MultiSelectionTextFunc="@(new Func<List<string>, string>(GetMultiSelectionText))" Label="Filtruj przepisy" MultiSelection="true" AnchorOrigin="Origin.BottomCenter" OpenIcon="@Icons.Material.Filled.FilterList" @bind-Value="filter" @bind-SelectedValues="filters">
+                @foreach (var item in tagsList)
                 {
-                    <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
-                        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
-                        <div id="description">
-                            <h5 style="font-weight: bold">@recipe.Title</h5>
-                            <p>
-                                <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
-                                <b>Porcje: </b>@recipe.Portions<br />
-                                <b>Trudność: </b>@recipe.Difficulty/5<br />
-                            </p>
-                        </div>
-
-                    </div>
+                    <MudSelectItem Value="@item">@item.Name</MudSelectItem>
                 }
+            </MudSelect>
+        </div>
+        <div id="button">
+            <MudButton OnClick="ApplyFilters" Variant="Variant.Filled" Class="filter-btn">Zastosuj</MudButton>
+        </div>
+    </div>
+    <div id="recipes">
+        @if (recipesList.Any())
+        {
+            @foreach (var recipe in recipesList)
+            {
+                <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
+                    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
+                    <div id="description">
+                        <h5 style="font-weight: bold">@recipe.Title</h5>
+                        <p>
+                            <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
+                            <b>Porcje: </b>@recipe.Portions<br />
+                            <b>Trudność: </b>@recipe.Difficulty/5<br />
+                        </p>
+                    </div>
 
-            </div>
+                </div>
+            }
         }
-    }
+
+    </div>
 }
 
 <style>
@@ -178,23 +128,13 @@ else
     private bool ifTagsSelected = false;
 
     private List<RecipeDto>? recipesList;
-    private List<RecipeDto>? recipesListByTags;
     private List<TagDto>? tagsList;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
 
-        if(filters.Count() > 0)
-        {
-            ifTagsSelected = true;
-            recipesListByTags = await RecServ.GetRecipesByTagsAsync(filters.ToList());
-        }
-
         recipesList = await RecServ.GetRecipeListAsync();
-        int a = 5;
-
-        //recipesList = ifTagsSelected ? await RecServ.GetRecipesByTagsAsync(filters.ToList()) : await RecServ.GetRecipeListAsync();
         tagsList = await TagServ.GetTagsAsync();
     }
 
@@ -215,13 +155,17 @@ else
 
     }
 
-    private void SelectTags()
+    private async Task ApplyFilters()
     {
-        if (filters.Count() > 0)
-            ifTagsSelected = true;
+        if (filters.Any())
+        {
+            recipesList = await RecServ.GetRecipesByTagsAsync(filters.ToList());
+            int a = 5;
+        }
         else
-            ifTagsSelected = false;
+        {
+            recipesList = await RecServ.GetRecipeListAsync();
+            int a = 5;
+        }
     }
 }
-
-
