@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavMan
+@inject UserService UserServ
 
 <PageTitle>View</PageTitle>
 <MudThemeProvider />
@@ -14,16 +15,14 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    <button class="openlogin_btn" @onclick="OpenLogin"><i class="oi oi-person" aria-hidden="true"></i></button>
-
-                    @*@if (loggedIn)
+                    @if (loggedIn)
                     {
-                    <button class="account_btn" @onclick="onClickAccount"></button>
+                        <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
                     else
                     {
-                    <button class="login_btn" @onclick="onClickLogin"></button>
-                    }*@
+                        <button class="openlogin_btn" @onclick="OpenLogin"><i class="oi oi-person" aria-hidden="true"></i></button>
+                    }
                 </div>
             </div>
 
@@ -49,50 +48,82 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Logowanie</h5>
-                <button class="btn btn-danger" @onclick="ClickClose">❌</button>
-                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close" @onclick="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>*@
+                <button class="btn btn-danger" @onclick="Close">❌</button>
             </div>
             <div class="modal-body">
-                <div class="mb-3">
-                    @*<label for="loginEmail" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="loginEmail" placeholder="name@example.com" autocomplete="off" required @bind-value="user" />*@
-                    <MudTextField @bind-Value="Login" Label="Login"></MudTextField>
-                </div>
-                <div class="mb-3">
-                    @*<label for="loginPassword" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="loginPassword" required />*@
-                    <MudTextField @bind-Value="Password" Label="Hasło" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
-                </div>
-                <div class="mb-3" id="bottom">
-                    <a>Nie masz konta?</a>
-                    <button class="btn-link" type="button" @onclick="SignUp">Zarejestruj się</button>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-login" @onclick="ClickLogin">Zaloguj się</button>
-                <button class="btn-cancel" data-dismiss="modal" @onclick="ClickClose">Anuluj</button>
+                <EditForm Model="@logInData" OnValidSubmit="@LogIn">
+                    <DataAnnotationsValidator />
+                    <div class="mb-3">
+                        <MudTextField @bind-Value="logInData.Login" Label="Nazwa użytkownika lub adres e-mail" For="@(() => logInData.Login)"></MudTextField>
+                    </div>
+                    <div class="mb-3">
+                        <MudTextField @bind-Value="logInData.Password" Label="Hasło" For="@(() => logInData.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+                    </div>
+                    <div class="mb-3" id="bottom">
+                        <a>Nie masz konta?</a>
+                        <button class="btn-link" type="button" @onclick="SignUp">Zarejestruj się</button>
+                    </div>
+                    <div class="modal-footer">
+                        <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Class="btn1">Zaloguj się</MudButton>
+                        <MudButton Variant="Variant.Filled" OnClick="Close" Class="btn2">Anuluj</MudButton>
+                    </div>
+                </EditForm>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .btn1 {
+        background: rgba( 22, 166, 185 );
+        font-size: 1.17em;
+        color: white;
+        margin-right: 5px;
+    }
+
+    .btn2 {
+        background: gray;
+        font-size: 1.17em;
+        color: white;
+    }
+
+        .btn1:hover, .btn2:hover {
+            background: rgba(227, 225, 222);
+        }
+</style>
+
 
 @code {
-    private bool show, display, loggedIn;
-    private string? user;
+    UserDto user = new();
 
-    public string Login { get; set; }
-    public string Password { get; set; }
+    LogInDataDto logInData = new();
+
+    private bool show, display, loggedIn = false;
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    public string? GetUserName()
+    private string authMessage = "The user is NOT authenticated.";
+
+    string errorMessage;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        return loggedIn ? user : null;
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var userAuth = authState?.User;
+
+            if (userAuth?.Identity is not null && userAuth.Identity.IsAuthenticated)
+            {
+                authMessage = $"{userAuth.Identity.Name} is authenticated.";
+                loggedIn = true;
+            }
+        }
     }
 
     public async Task OpenLogin()
@@ -102,16 +133,19 @@
         show = true;
     }
 
-    private async Task ClickClose()
+    private async Task OpenAccount()
     {
         show = false;
         await Task.Delay(500);
         display = false;
+        NavMan.NavigateTo("/account");
     }
 
-    private async Task ClickLogin()
+    private async Task Close()
     {
-        
+        show = false;
+        await Task.Delay(500);
+        display = false;
     }
 
     void ButtonTestClick()
@@ -136,5 +170,11 @@
         await Task.Delay(500);
         display = false;
         NavMan.NavigateTo("/signup");
+    }
+
+    private async Task LogIn()
+    {
+        await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        user = new();
     }
 }
