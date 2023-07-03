@@ -2,6 +2,7 @@
 using Model.DTO;
 using Model.MODEL;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http.Json;
 using View.Pages;
 
@@ -26,9 +27,8 @@ namespace View.Data
 
         public async Task<List<RecipeDto>> GetRecipesByTagsAsync(ICollection<TagDto> tags)
         {
-            //return (await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/ByTags", tags))!;
-            //return (await _httpClient.PostAsJsonAsync("/api/Recipe/ByTag", tags))!;
-            return (await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/AllRecipes"))!;
+            var response = await _httpClient.PostAsJsonAsync("/api/Recipe/ByTag", tags);
+            return (await response.Content.ReadFromJsonAsync<List<RecipeDto>>())!;
         }
 
         public async Task<List<TagDto>> GetTagListAsync()
