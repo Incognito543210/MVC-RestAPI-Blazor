@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavMan
+@inject UserService UserServ
 
 <PageTitle>View</PageTitle>
 <MudThemeProvider />
@@ -14,16 +15,14 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    <button class="openlogin_btn" @onclick="OpenLogin"><i class="oi oi-person" aria-hidden="true"></i></button>
-
-                    @*@if (loggedIn)
+                    @if (loggedIn)
                     {
-                    <button class="account_btn" @onclick="onClickAccount"></button>
+                        <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
                     else
                     {
-                    <button class="login_btn" @onclick="onClickLogin"></button>
-                    }*@
+                        <button class="openlogin_btn" @onclick="OpenLogin"><i class="oi oi-person" aria-hidden="true"></i></button>
+                    }
                 </div>
             </div>
 
@@ -52,13 +51,13 @@
                 <button class="btn btn-danger" @onclick="Close">❌</button>
             </div>
             <div class="modal-body">
-                <EditForm Model="@user" OnValidSubmit="@LogIn">
+                <EditForm Model="@logInData" OnValidSubmit="@LogIn">
                     <DataAnnotationsValidator />
                     <div class="mb-3">
-                        <MudTextField @bind-Value="user.Email" Label="Adres e-mail" For="@(() => user.Email)"></MudTextField>
+                        <MudTextField @bind-Value="logInData.Login" Label="Nazwa użytkownika lub adres e-mail" For="@(() => logInData.Login)"></MudTextField>
                     </div>
                     <div class="mb-3">
-                        <MudTextField @bind-Value="user.Password" Label="Hasło" For="@(() => user.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
+                        <MudTextField @bind-Value="logInData.Password" Label="Hasło" For="@(() => logInData.Password)" Variant="Variant.Text" InputType="@PasswordInput" Adornment="Adornment.End" AdornmentIcon="@PasswordInputIcon" OnAdornmentClick="ButtonTestClick" AdornmentAriaLabel="Show Password" />
                     </div>
                     <div class="mb-3" id="bottom">
                         <a>Nie masz konta?</a>
@@ -95,18 +94,37 @@
 
 
 @code {
-    private bool show, display, loggedIn;
-
     UserDto user = new();
+
+    LogInDataDto logInData = new();
+
+    private bool show, display, loggedIn = false;
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    //public string? GetUserName()
-    //{
-    //    return loggedIn ? user : null;
-    //}
+    private string authMessage = "The user is NOT authenticated.";
+
+    string errorMessage;
+
+    [CascadingParameter]
+    private Task<AuthenticationState>? authenticationState { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (authenticationState is not null)
+        {
+            var authState = await authenticationState;
+            var userAuth = authState?.User;
+
+            if (userAuth?.Identity is not null && userAuth.Identity.IsAuthenticated)
+            {
+                authMessage = $"{userAuth.Identity.Name} is authenticated.";
+                loggedIn = true;
+            }
+        }
+    }
 
     public async Task OpenLogin()
     {
@@ -115,16 +133,19 @@
         show = true;
     }
 
+    private async Task OpenAccount()
+    {
+        show = false;
+        await Task.Delay(500);
+        display = false;
+        NavMan.NavigateTo("/account");
+    }
+
     private async Task Close()
     {
         show = false;
         await Task.Delay(500);
         display = false;
-    }
-
-    private async Task ClickLogin()
-    {
-        
     }
 
     void ButtonTestClick()
@@ -153,9 +174,7 @@
 
     private async Task LogIn()
     {
-        show = false;
-        await Task.Delay(500);
-        display = false;
-        NavMan.NavigateTo("/signup");
+        await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        user = new();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using API.Interfaces;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -17,7 +18,7 @@ namespace API.Controllers
             _mapper = mapper;
             _hasCategoryService = hasCategoryService;
         }
-
+        
         [HttpDelete("{recipeId},{ingridientId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]

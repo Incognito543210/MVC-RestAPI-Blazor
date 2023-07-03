@@ -1,6 +1,7 @@
 ﻿using API.Interfaces;
 using API.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -32,32 +33,32 @@ namespace API.Controllers
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Coś poszło nie tak podczas zapisywania");
             }
 
             return Ok(recipes);
         }
 
+        [AllowAnonymous]
         [HttpGet("{login},{password}")]
-        [ProducesResponseType(200, Type = typeof(User))]
+        [ProducesResponseType(200, Type = typeof(SessionDto))]
         public IActionResult Login(string login, string password)
         {
             if(!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Wystąpił jakiś błąd");
             }
 
             if (login is null)
-                return BadRequest(ModelState);
+                return BadRequest("Login nie może być pusty");
 
             if (password is null)
-                return BadRequest(ModelState);
+                return BadRequest("Hasło nie może być puste");
 
             if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
             {
-                var userMap = _mapper.Map<UserDto>(_userServices.Logger(login, password));
-                userMap.Password = null;
-                return Ok(userMap);
+                var session = _userServices.Logger(login, password);
+                return Ok(session);
             }
             else
             {
@@ -66,7 +67,7 @@ namespace API.Controllers
 
         }
 
-
+        [AllowAnonymous]
         [HttpPost]
         [ProducesResponseType(201)]
         [ProducesResponseType(400)]

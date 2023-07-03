@@ -1,6 +1,11 @@
 ﻿using API.Interfaces;
 using DAL;
+using Microsoft.IdentityModel.Tokens;
+using Model.DTO;
 using Model.MODEL;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace API.Services
@@ -60,20 +65,24 @@ namespace API.Services
 
         public bool EmailExists(string email)
         {
-            return _context.Users.Where(u=>u.Email == email).Any();
+            return _context.Users.Where(u => u.Email == email).Any();
         }
 
-        public User Logger(string login, string password)
+        public SessionDto Logger(string login, string password)
         {
             string pass = _encryptor.EncryptPassword(password);
+            User user;
+
             if (UsernameExists(login))
             {
-                return _context.Users.Where(u =>u.Username == login).Where(p=>p.Password==pass).FirstOrDefault();
+                 user = _context.Users.Where(u => u.Username == login).Where(p => p.Password == pass).FirstOrDefault();
             }
             else
             {
-                return _context.Users.Where(u => u.Email == login).Where(p => p.Password == pass).FirstOrDefault();
+                user =  _context.Users.Where(u => u.Email == login).Where(p => p.Password == pass).FirstOrDefault();
             }
+            SessionDto session = StartSession(user.UserID);
+            return session;
         }
 
         public User GetUser(int id)
@@ -119,6 +128,67 @@ namespace API.Services
                     return true;
 
             return false;
+        }
+
+        public SessionDto StartSession(int id)
+        {
+            var session = new SessionDto();
+
+            session.AccessToken = GenerateBearerToken(id);
+            session.RefreshToken = GenerateRefreshToken(id);
+
+            return session;
+        }
+
+        private string GenerateBearerToken(int id)
+        {
+            DateTimeOffset expiry = DateTimeOffset.Now.AddHours(1);
+            IEnumerable<Claim> userClaims = GetClaimsForUser(GetUser(id));
+            string token = CreateToken(expiry, userClaims);
+
+            return token;
+        }
+
+        private string GenerateRefreshToken(int id)
+        {
+            DateTimeOffset expiry = DateTimeOffset.Now.AddDays(30);
+            IEnumerable<Claim> userClaims = GetClaimsForUser(GetUser(id));
+            string token = CreateToken(expiry, userClaims);
+
+            return token;
+        }
+
+        private string CreateToken(DateTimeOffset expiryDate, IEnumerable<Claim> claims)
+        {
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("SecretKeySecretKey"));
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            JwtSecurityToken securityToken = new JwtSecurityToken(
+                issuer: "Przepisy.Api",
+                audience: "Przepisy.View",
+                claims: claims,
+                notBefore: DateTime.Now,
+                expires: expiryDate.DateTime,
+                signingCredentials: credentials);
+            string token = tokenHandler.WriteToken(securityToken);
+
+            return token;
+        }
+
+        private IEnumerable<Claim> GetClaimsForUser(User user)
+        {
+            List<Claim> claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserID.ToString()),
+                new Claim(ClaimTypes.GivenName, user.Username),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Surname, user.LastName),
+                new Claim("WWWServiceID", user.UserID.ToString()),
+                new Claim("LastSynced", DateTime.Now.AddDays(-30).ToString("yyyy-MM-dd HH:mm:ss")),
+            };
+
+            return claims;
         }
     }
 }

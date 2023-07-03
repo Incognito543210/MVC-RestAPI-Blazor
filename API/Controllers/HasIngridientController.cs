@@ -1,5 +1,6 @@
 ﻿using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
@@ -20,7 +21,7 @@ namespace API.Controllers
             _mapper = mapper;
             _hasIngridientService = hasIngridientService;   
         }
-
+        [AllowAnonymous]
         [HttpGet("{recipeId},{ingridentId}")]
         [ProducesResponseType(200, Type = typeof(String))]
         [ProducesResponseType(400)]

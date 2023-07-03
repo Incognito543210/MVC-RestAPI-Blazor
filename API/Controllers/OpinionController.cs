@@ -1,8 +1,10 @@
 ﻿using API.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Model.DTO;
 using Model.MODEL;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -23,6 +25,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
@@ -37,14 +40,17 @@ namespace API.Controllers
             return Ok(opinions);
         }
 
-        [HttpGet("recipeID")]
+        [AllowAnonymous]
+        [HttpGet("{recipeID}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         public IActionResult GetOpinionsForRecipe(int recipeID)
         {
             if (!_opinionServices.OpinionExistsOnRecipe(recipeID))
-                return NotFound("Nie znaleziono opinii");
+            {
+                return StatusCode(404, "Nie znaleziono opinii");
+            }
 
             var opinion = _mapper.Map<List<OpinionDto>>(_opinionServices.GetOpinionsForRecipe(recipeID));
 
@@ -54,6 +60,7 @@ namespace API.Controllers
             return Ok(opinion);
         }
 
+        [AllowAnonymous]
         [HttpGet("userID")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Opinion>))]
         [ProducesResponseType(400)]
