@@ -12,16 +12,7 @@ else
     <div id="top">
         <div id="title">
             <h3 style="text-align: center; font-weight: bolder">@recipe.Title</h3>
-        </div>
-        <div>
-            @if (tagsList.Any())
-            {
-                foreach (var item in tagsList)
-                {
-                    <MudButton Variant="Variant.Filled" Class="btn-tag">@item.Name</MudButton>
-                }
-            }
-        </div>
+        </div>        
     </div>
     
 
@@ -33,6 +24,16 @@ else
                 <b>Trudność: </b>@recipe.Difficulty/5<br />
             </p>
         </div>
+    </div>
+
+    <div id="buttons">
+        @if (tagsList.Any())
+        {
+            foreach (var item in tagsList)
+            {
+                <MudButton Variant="Variant.Filled" Class="btn-tag">@item.Name</MudButton>
+            }
+        }
     </div>
 
     <div id="ingridients">
@@ -179,7 +180,7 @@ else
 
     .btn-tag {
         background: rgba(227, 225, 222);
-        margin-right: 5px;
+        margin-right: 10px;
         font-size: 1.17em;
     }
 </style>
