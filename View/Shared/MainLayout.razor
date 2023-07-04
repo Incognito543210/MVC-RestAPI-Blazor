@@ -15,7 +15,7 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    @if (UserServ.IsLoggedIn)
+                    @if (userInfo.IsLoggedIn)
                     {
                         <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
@@ -33,7 +33,9 @@
 
                 <div id="content">
                     <div id="article">
-                        @Body
+                        <CascadingValue Value="@userInfo">
+                            @Body
+                        </CascadingValue>
                     </div>
                 </div>
             </main>
@@ -50,6 +52,12 @@
                 <h5 class="modal-title">Logowanie</h5>
                 <button class="btn btn-danger" @onclick="Close">❌</button>
             </div>
+            @if (errorMessage != null)
+            {
+                <div class="alert alert-danger" style="margin-top: 1rem; margin-left: 1rem; margin-right: 1rem" role="alert">
+                @errorMessage
+            </div>
+            }
             <div class="modal-body">
                 <EditForm Model="@logInData" OnValidSubmit="@LogIn">
                     <DataAnnotationsValidator />
@@ -99,36 +107,54 @@
 
     private bool show, display;
 
+    private string errorMessage;
+
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    private UserInfo userInfo = new UserInfo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+    }
 
     public async Task OpenLogin()
     {
         display = true;
         await Task.Delay(100);
         show = true;
+        errorMessage = null;
     }
 
     private async Task LogIn()
     {
         int loggedUserId = await UserServ.LoginAsync(logInData.Login, logInData.Password);
 
+        logInData.Login = string.Empty;
+        logInData.Password = string.Empty;
+
         if (loggedUserId > 0)
         {
-            UserServ.LoggedUserId = loggedUserId;
-            UserServ.IsLoggedIn = true;
+            userInfo.LoggedUserId = loggedUserId;
+            userInfo.IsLoggedIn = true;
             show = false;
             await Task.Delay(500);
             display = false;
             NavMan.NavigateTo("/account/2");
         }
+        else
+        {
+            errorMessage = "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.";
+        }
     }
 
-    private async Task LogOut()
+    public async Task LogOut()
     {
-        UserServ.LoggedUserId = -1;
-        UserServ.IsLoggedIn = false;
+        userInfo.LoggedUserId = -1;
+        userInfo.IsLoggedIn = false;
+        NavMan.NavigateTo("/");
     }
 
     private async Task SignUp()

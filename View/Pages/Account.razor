@@ -2,15 +2,15 @@
 @inject UserService UserServ
 @inject NavigationManager NavMan
 
-@if(UserServ.IsLoggedIn)
+@if (userInfo.IsLoggedIn)
 {
-	if(user == null)
+	@if(user == null)
 	{
 		<h3>Ładowanie</h3>
 	}
 	else
 	{
-		if (Message == 2)
+		@if (Message == 2)
 		{
 			<div class="alert alert-success" role="alert">
 				Zalogowałeś się na swoje konto.
@@ -36,7 +36,7 @@
 			</p>
 		</div>
 
-		<MudButton Variant="Variant.Filled" Class="btn-logout" EndIcon="@Icons.Material.Filled.Logout">Wyloguj się</MudButton>
+		<MudButton Variant="Variant.Filled" Class="btn-logout" OnClick="mainLayout.LogOut" EndIcon="@Icons.Material.Filled.Logout">Wyloguj się</MudButton>
 	}	
 }
 else
@@ -126,6 +126,9 @@ else
 	[CascadingParameter]
 	public MainLayout mainLayout { get; set; }
 
+	[CascadingParameter]
+	public UserInfo? userInfo { get; set; }
+
 	[Parameter]
 	public int Message { get; set; }
 
@@ -135,9 +138,9 @@ else
 	{
 		await base.OnInitializedAsync();
 
-		if (UserServ.IsLoggedIn)
+		if (userInfo.IsLoggedIn)
 		{
-			user = await UserServ.GetUserAsync(UserServ.LoggedUserId);
+			user = await UserServ.GetUserAsync(userInfo.LoggedUserId);
 		}
 	}
 

@@ -1,4 +1,5 @@
-﻿using Model;
+﻿using Microsoft.AspNetCore.Mvc;
+using Model;
 using Model.DTO;
 using Model.MODEL;
 using System.Diagnostics;
@@ -23,6 +24,11 @@ namespace View.Data
         public async Task<List<RecipeDto>> GetRecipeListAsync()
         {
             return (await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/AllRecipes"))!;
+        }
+
+        public async Task<List<RecipeDto>> GetRecipesByUserAsync(int id)
+        {
+            return (await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/ByUser/" + id))!;
         }
 
         public async Task<List<RecipeDto>> GetRecipesByTagsAsync(ICollection<TagDto> tags)
