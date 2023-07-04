@@ -113,7 +113,7 @@ namespace API.Controllers
 
         public IActionResult GetRecipesByUser(int userId)
         {
-            if (_recipeService.RecipeExistsOnUser(userId))
+            if (!_recipeService.RecipeExistsOnUser(userId))
                 return NotFound();
 
             var recipes = _mapper.Map<List<RecipeDto>>(_recipeService.GetRecipesbyUser(userId));
