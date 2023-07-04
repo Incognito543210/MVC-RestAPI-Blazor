@@ -52,12 +52,15 @@
     RecipeAdapter recipe = new(){Portions=1, Difficulty=1, PrepTimeAsTimeSpan=new TimeSpan(0, 1, 0)};
     List<TagDto>? tags;
 
+    [CascadingParameter]
+    public UserInfo? userInfo { get; set; }
+
     async Task AddRecipe()
     {
         //sprawdzenie, czy warto przesyłać
         if(recipe.Ingridients.Count != 0 && recipe.Tags.Count != 0)
         {
-            errorMessageRec = await RecServ.AddRecipeAsync(recipe);
+            errorMessageRec = await RecServ.AddRecipeAsync(userInfo.LoggedUserId, recipe);
             if (errorMessageRec == null)
             {
                 //ingredients
