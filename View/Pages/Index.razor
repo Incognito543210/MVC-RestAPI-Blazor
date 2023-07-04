@@ -31,7 +31,6 @@ else
             @foreach (var recipe in recipesList)
             {
                 <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
-                    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
                     <div id="description">
                         <h5 style="font-weight: bold">@recipe.Title</h5>
                         <p>
@@ -71,11 +70,6 @@ else
         flex: 1;
     }
 
-    h3 {
-        margin: 0;
-        padding: 0;
-    }
-
     #filter {
         display: flex;
         justify-content: flex-end;
@@ -106,16 +100,6 @@ else
     #recipe {
         display: flex;
         flex-direction: row;
-    }
-
-    img {
-        margin-bottom: 20px;
-        margin-top: 20px;
-        margin-left: 20px;
-        margin-right: 20px;
-        border-radius: 8px;
-        height: 100px;
-        float: left;
     }
 
     #description {

@@ -17,6 +17,11 @@ namespace View.Data
             _log = log;
         }
 
+        public async Task<UserDto> GetUserAsync(int id)
+        {
+            return (await _httpClient.GetFromJsonAsync<UserDto>("/api/User/" + id))!;
+        }
+
         public async Task<string> CreateUserAsync(UserDto user)
         {
             var response = await _httpClient.PostAsJsonAsync<UserDto>("/api/User", user);

@@ -14,7 +14,6 @@ else
     </div>
 
     <div id="info">
-        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp" >
         <div id="description">
             <p>
                 <b>Czas przygotowania: </b>@recipe.PrepareTime.TimeOfDay<br />
@@ -66,7 +65,7 @@ else
         </div>
         @if (opinionsList == null)
         {
-            <p>Ten przepis nie ma opinii.</p>
+            <p style="margin-left: 30px;">Ten przepis nie ma opinii.</p>
         }
         else
         {
@@ -109,20 +108,12 @@ else
 
     #description {
         float: left;
+        margin-left: 10px;
     }
 
     p {
         margin: 0;
         padding: 0;
-    }
-
-    img {
-        float: left;
-        margin-bottom: 20px;
-        margin-left: 10px;
-        margin-right: 20px;
-        border-radius: 8px;
-        height: 100px;
     }
 
     ul {

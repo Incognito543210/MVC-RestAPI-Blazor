@@ -7,7 +7,7 @@
         <h3 style="font-weight: bold">Moje przepisy</h3>
     </div>
     <div id="buttons">
-        <MudButton class="btn1" @onclick="onClick">Nowy przepis</MudButton>
+        <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-addrecipe">Nowy przepis</MudButton>
     </div>
 </div>
 
@@ -25,7 +25,6 @@ else
              @foreach (var recipe in recipesList)
             {
                 <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
-                    <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
                     <div id="description">
                         <h5 style="font-weight: bold">@recipe.Title</h5>
                         <p>
@@ -46,7 +45,7 @@ else
         width: auto;
         margin: 10px;
         padding: 5px;
-        align-content: center;
+        align-items: center;
         display: flex;
         justify-content: space-between;
     }
@@ -70,15 +69,14 @@ else
         justify-content: flex-end;
     }
 
-    .btn1 {
+    .btn-addrecipe {
+        
         background: rgba( 22, 166, 185 );
-        padding: 10px;
-        float: right;
-        border-radius: 8px;
         font-size: 1.17em;
         color: white;
+        margin-left: 8px;
     }
-        .btn1:hover {
+        .btn-addrecipe:hover {
             background-color: rgba(227, 225, 222);
         }
 
@@ -86,16 +84,6 @@ else
         background: rgba( 22, 166, 185 );
         cursor: pointer;
         border-radius: 8px;
-    }
-
-    img {
-        margin-bottom: 20px;
-        margin-top: 20px;
-        margin-left: 20px;
-        margin-right: 20px;
-        border-radius: 8px;
-        height: 100px;
-        float: left;
     }
 
     #description {
@@ -126,5 +114,5 @@ else
         NavMan.NavigateTo("/myrecipe/" + id);
     }
 
-    void onClick() => NavMan.NavigateTo("/newrecipe");
+    void newRecipe() => NavMan.NavigateTo("/newrecipe");
 }

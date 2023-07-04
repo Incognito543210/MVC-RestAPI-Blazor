@@ -14,13 +14,12 @@ else
             <h3 style="font-weight: bold">@recipe.Title</h3>
         </div>
         <div id="buttons">
-            <MudButton class="btn1" @onclick="Update">Edytuj</MudButton>
-            <MudButton class="btn2" @onclick="ConfirmDeletion">Usuń</MudButton>
+            <MudButton OnClick="Update" Variant="Variant.Filled" Class="btn-update">Edytuj</MudButton>
+            <MudButton OnClick="ConfirmDeletion" Variant="Variant.Filled" Class="btn-delete">Usuń</MudButton>
         </div>
     </div>
 
     <div id="info">
-        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
         <div id="description">
             <p>
                 <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
@@ -96,20 +95,23 @@ else
         justify-content: flex-end;
     }
 
-    .btn1, .btn2 {
-        background: rgba( 22, 166, 185 );
-        padding: 10px;
-        float: right;
-        border-radius: 8px;
+    .btn-update, .btn-delete {
         font-size: 1.17em;
         color: white;
+        margin-left: 8px;
     }
 
-    .btn1 {
+    .btn-update {
+        background: rgba( 22, 166, 185 );
         margin-right: 5px;
     }
 
-        .btn1:hover, .btn2:hover {
+    .btn-delete {
+        background: red;
+        margin-right: 5px;
+    }
+
+        .btn-update:hover, .btn-delete:hover {
             background-color: rgba(227, 225, 222);
         }
 
@@ -132,20 +134,12 @@ else
 
     #description {
         float: left;
+        margin-left: 10px;
     }
 
     p {
         margin: 0;
         padding: 0;
-    }
-
-    img {
-        float: left;
-        margin-bottom: 20px;
-        margin-left: 10px;
-        margin-right: 20px;
-        border-radius: 8px;
-        height: 100px;
     }
 
     ul {

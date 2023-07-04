@@ -15,7 +15,7 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    @if (loggedIn)
+                    @if (isLogged)
                     {
                         <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
@@ -94,37 +94,40 @@
 
 
 @code {
+    private bool isLogged = true;
+    private int loggedUserId = 1;
+
     UserDto user = new();
 
     LogInDataDto logInData = new();
 
-    private bool show, display, loggedIn = false;
+    private bool show, display;
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    private string authMessage = "The user is NOT authenticated.";
-
     string errorMessage;
 
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    //private string authMessage = "The user is NOT authenticated.";
 
-    protected override async Task OnInitializedAsync()
-    {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            var userAuth = authState?.User;
+    //[CascadingParameter]
+    //private Task<AuthenticationState>? authenticationState { get; set; }
 
-            if (userAuth?.Identity is not null && userAuth.Identity.IsAuthenticated)
-            {
-                authMessage = $"{userAuth.Identity.Name} is authenticated.";
-                loggedIn = true;
-            }
-        }
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    if (authenticationState is not null)
+    //    {
+    //        var authState = await authenticationState;
+    //        var userAuth = authState?.User;
+
+    //        if (userAuth?.Identity is not null && userAuth.Identity.IsAuthenticated)
+    //        {
+    //            authMessage = $"{userAuth.Identity.Name} is authenticated.";
+    //            loggedIn = true;
+    //        }
+    //    }
+    //}
 
     public async Task OpenLogin()
     {
@@ -138,7 +141,7 @@
         show = false;
         await Task.Delay(500);
         display = false;
-        NavMan.NavigateTo("/account");
+        NavMan.NavigateTo("/account/0");
     }
 
     private async Task Close()
@@ -174,6 +177,6 @@
 
     private async Task LogIn()
     {
-        await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        user = await UserServ.LoginAsync(logInData.Login, logInData.Password);
     }
 }
