@@ -57,12 +57,11 @@ namespace View.Data
             }
         }
 
-        public async Task<int> LoginAsync(string login, string password)
+        public async Task<int> LoginAsync(LogInDataDto logInData)
         {
             try
             {
-                string str = "/api/User/" + login + "," + password;
-                var response = await _httpClient.GetFromJsonAsync<int>("/api/User/" + login + "," + password);
+                var response = await _httpClient.GetFromJsonAsync<int>("/api/User/" + logInData);
 
                 return response;
             }
