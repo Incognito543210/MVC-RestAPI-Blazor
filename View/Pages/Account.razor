@@ -6,7 +6,9 @@
 {
 	@if(user == null)
 	{
-		<h3>Ładowanie</h3>
+		<h3>Ładowanie...</h3>
+		Task.Delay(500);
+		NavMan.NavigateTo("/account/2");
 	}
 	else
 	{
@@ -19,10 +21,6 @@
 		<div id="top">
 			<div id="title">
 				<h3 style="font-weight: bold">Moje konto</h3>
-			</div>
-			<div id="buttons">
-				<MudButton Variant="Variant.Filled" Class="btn-edit">Edytuj dane</MudButton>
-				<MudButton Variant="Variant.Filled" Class="btn-delete">Usuń konto</MudButton>
 			</div>
 		</div>
 
@@ -70,7 +68,7 @@ else
 		margin-top: 10px;
 	}
 
-		.btn-login:hover {
+		.btn-login:hover, .btn-logout:hover{
 			background: rgba(227, 225, 222);
 		}
 
