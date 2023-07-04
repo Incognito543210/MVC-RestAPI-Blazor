@@ -105,6 +105,11 @@ namespace API.Controllers
                 return StatusCode(422, "Hasło jest niewystarczająco mocne.");
             }
 
+            if (_userServices.DoesPasswordHasSpecialCharacters(userMap.Password))
+            {
+                return StatusCode(422, "Hasło nie może posiadać znaków specjalnych");
+            }
+
             if (_userServices.IsPasswordPopular(userMap.Password))
             {
                 return StatusCode(422, "Hasło jest zbyt popularne.");

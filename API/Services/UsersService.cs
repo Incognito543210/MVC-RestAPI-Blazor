@@ -127,6 +127,16 @@ namespace API.Services
                 return false;
         }
 
+        public bool DoesPasswordHasSpecialCharacters(string password)
+        {
+            Regex invalidPassword = new Regex("^(?=.*?[`~;:'\"\\/,.<>?!@#$%^&*()_+=_-])");
+            Match match1 = invalidPassword.Match(password);
+            if (match1.Success)
+                return true;
+            else
+                return false;
+        }
+
         public bool IsPasswordPopular(string password)
         {
             ICollection<string> popularPasswords = _passwordGetter.GetPopularPasswords();

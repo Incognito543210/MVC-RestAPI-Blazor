@@ -18,5 +18,6 @@ namespace API.Interfaces
         bool UserExists(int id);
         bool UsernameExists(string username);
         SessionDto StartSession(int id);
+        bool DoesPasswordHasSpecialCharacters(string password);
     }
 }
