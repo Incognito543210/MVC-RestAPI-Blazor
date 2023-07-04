@@ -4,6 +4,25 @@
 
 @if(userInfo.IsLoggedIn)
 {
+    @if (Message == 2)
+		{
+			<div class="alert alert-success" role="alert">
+				Przepis został dodany pomyślnie.
+			</div>
+		}
+    @if (Message == 3)
+    {
+        <div class="alert alert-success" role="alert">
+            Przepis został usunięty.
+        </div>
+    }
+    @if (Message == 4)
+    {
+        <div class="alert alert-success" role="alert">
+            Przepis został zaktualizowany.
+        </div>
+    }
+
     <div id="top">
         <div id="title">
             <h3 style="font-weight: bold">Moje przepisy</h3>
@@ -116,6 +135,9 @@ else
 
     [CascadingParameter]
     public UserInfo? userInfo { get; set; }
+
+    [Parameter]
+    public int Message { get; set; }
 
     private List<RecipeDto>? recipesList;
 
