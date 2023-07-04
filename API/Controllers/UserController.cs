@@ -42,22 +42,22 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpGet("{login},{password}")]
         [ProducesResponseType(200, Type = typeof(int))]
-        public IActionResult Login(string login, string password)
+        public IActionResult Login(LogInDataDto login)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest("Wystąpił jakiś błąd");
             }
 
-            if (login is null)
+            if (login.Login is null)
                 return BadRequest("Login nie może być pusty");
 
-            if (password is null)
+            if (login.Password is null)
                 return BadRequest("Hasło nie może być puste");
 
-            if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
+            if (_userServices.EmailExists(login.Login) || _userServices.UsernameExists(login.Login))
             {
-                var session = _userServices.Logger(login, password);
+                var session = _userServices.Logger(login.Login, login.Password);
                 if (session < 0)
                     return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
                 return Ok(session);
