@@ -58,11 +58,13 @@ namespace API.Controllers
             if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
             {
                 var session = _userServices.Logger(login, password);
+                if (session is null)
+                    return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
                 return Ok(session);
             }
             else
             {
-                return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
+                return StatusCode(422, "Nieprawidłowa nazwa użytkownika lub adresu e-mail");
             }
 
         }

@@ -81,6 +81,8 @@ namespace API.Services
             {
                 user =  _context.Users.Where(u => u.Email == login).Where(p => p.Password == pass).FirstOrDefault();
             }
+            if (user is null)
+                return null;
             SessionDto session = StartSession(user.UserID);
             return session;
         }
