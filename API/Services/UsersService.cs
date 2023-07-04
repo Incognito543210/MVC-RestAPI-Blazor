@@ -71,7 +71,7 @@ namespace API.Services
         public SessionDto Logger(string login, string password)
         {
             string pass = _encryptor.EncryptPassword(password);
-            User user;
+            User user = new User();
 
             if (UsernameExists(login))
             {
