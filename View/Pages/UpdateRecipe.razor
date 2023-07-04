@@ -25,7 +25,7 @@
         await RecServ.UpdateRecipeAsync(recipe, recipe.RecipeID);
         await RecServ.UpdateIngredientsInRecipeAsync(recipe.Ingridients, recipe.RecipeID);
         await RecServ.UpdateTagsInRecipeAsync(recipe.Tags, recipe.RecipeID);
-        NavMan.NavigateTo("/mybook");
+        NavMan.NavigateTo("/mybook/" + 4);
     }
 
     protected override async Task OnInitializedAsync()
