@@ -13,8 +13,8 @@ namespace View.Data
         private readonly HttpClient _httpClient;
         private readonly ILogger<UserService> _log;
 
-        public bool IsLoggedIn { get; set; } = false;
-        public int LoggedUserId { get; set; }
+        //public bool IsLoggedIn { get; set; }
+        //public int LoggedUserId { get; set; }
 
         public UserService(HttpClient httpClient, ILogger<UserService> log)
         {

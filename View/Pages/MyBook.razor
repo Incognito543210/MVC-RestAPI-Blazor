@@ -2,6 +2,7 @@
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 
+<<<<<<< HEAD
 <div id="top">
     <div id="title">
         <h3 style="font-weight: bold">Moje przepisy</h3>
@@ -35,11 +36,55 @@
 <div style="clear: both;"></div>
 
 @if (recipesList == null)
+=======
+@if(userInfo.IsLoggedIn)
+>>>>>>> 4fad8a26265c685efe55ec3296029cf67c472a31
 {
-    <h3>Loading...</h3>
+    <div id="top">
+        <div id="title">
+            <h3 style="font-weight: bold">Moje przepisy</h3>
+        </div>
+        <div id="buttons">
+            <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-login">Nowy przepis</MudButton>
+        </div>
+    </div>
+
+    <div style="clear: both;"></div>
+
+    @if (recipesList == null)
+    {
+        <h3>Loading...</h3>
+    }
+    else
+    {
+        @if (recipesList.Any())
+        {
+            <div id="recipes">
+                @foreach (var recipe in recipesList)
+                {
+                    <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
+                        <div id="description">
+                            <h5 style="font-weight: bold">@recipe.Title</h5>
+                            <p>
+                                <b>Czas przygotowania: </b>@recipe.PrepareTime.TimeOfDay<br />
+                                <b>Porcje: </b>@recipe.Portions<br />
+                                <b>Trudność: </b>@recipe.Difficulty/5<br />
+                            </p>
+                        </div>
+
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p>Brak przepisów do wyświetlenia.</p>
+        }
+    }
 }
 else
 {
+<<<<<<< HEAD
     @if (recipesList.Any())
     {
         <div id="recipes">
@@ -54,11 +99,11 @@ else
                             <b>Trudność: </b>@recipe.Difficulty/5<br />
                         </p>
                     </div>
+=======
+    <p>Nie jesteś zalogowany. Zaloguj się na swoje konto.</p>
+>>>>>>> 4fad8a26265c685efe55ec3296029cf67c472a31
 
-                </div>
-            }
-        </div>
-    }
+    <MudButton Variant="Variant.Filled" Class="btn-login" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
 }
 
 <style>
@@ -119,18 +164,26 @@ else
 
 
 @code {
-    private List<RecipeDto>? recipesList;
+    [CascadingParameter]
+    public MainLayout mainLayout { get; set; }
 
+<<<<<<< HEAD
     [Parameter]
     public int Message { get; set; }
+=======
+    [CascadingParameter]
+    public UserInfo? userInfo { get; set; }
+
+    private List<RecipeDto>? recipesList;
+>>>>>>> 4fad8a26265c685efe55ec3296029cf67c472a31
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        recipesList = await RecServ.GetRecipeListAsync();
+        recipesList = await RecServ.GetRecipesByUserAsync(userInfo.LoggedUserId);
     }
 
-    List<RecipeDto> recipes = new();
+    //List<RecipeDto> recipes = new();
 
     void navigateToRecipe(int id)
     {
