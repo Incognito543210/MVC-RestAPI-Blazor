@@ -97,7 +97,7 @@
     //private bool loggedIn = true;
     //private int loggedUserId = 1;
 
-    SessionDto session = new();
+    string token;
     UserDto user = new();
     LogInDataDto logInData = new();
 
@@ -116,7 +116,7 @@
 
     private async Task LogIn()
     {
-        session = await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        token = await UserServ.LoginAsync(logInData.Login, logInData.Password);
         int a = 5;
     }
 
