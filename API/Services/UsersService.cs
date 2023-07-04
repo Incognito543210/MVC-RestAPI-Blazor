@@ -114,12 +114,12 @@ namespace API.Services
             //Musi mieć co najmniej jedną małą literę
             //Musi mieć co najmniej jedną cyfrę
             //Żadnych znaków specjalnych
-            Regex invalidPassword = new Regex("^(?=.*?[#%^&*()])");
+            Regex invalidPassword = new Regex("^(?=.*?[`~;:'\"\\/,.<>?!@#$%^&*()_+=_-])");
             Match match1 = invalidPassword.Match(password);
             if (match1.Success)
                 return false;
 
-            Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+            Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
             Match match = regex.Match(password);
             if (match.Success)
                 return true;
