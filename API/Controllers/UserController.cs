@@ -42,22 +42,22 @@ namespace API.Controllers
         [AllowAnonymous]
         [HttpGet("{login},{password}")]
         [ProducesResponseType(200, Type = typeof(int))]
-        public IActionResult Login(LogInDataDto login)
+        public IActionResult Login(string login, string password)
         {
             if(!ModelState.IsValid)
             {
                 return BadRequest("Wystąpił jakiś błąd");
             }
 
-            if (login.Login is null)
+            if (login is null)
                 return BadRequest("Login nie może być pusty");
 
-            if (login.Password is null)
+            if (password is null)
                 return BadRequest("Hasło nie może być puste");
 
-            if (_userServices.EmailExists(login.Login) || _userServices.UsernameExists(login.Login))
+            if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
             {
-                var session = _userServices.Logger(login.Login, login.Password);
+                var session = _userServices.Logger(login, password);
                 if (session < 0)
                     return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
                 return Ok(session);
@@ -132,16 +132,6 @@ namespace API.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var users = _userServices.GetUsers()
-                .Where(u => u.Username.Trim().ToUpper() == updatedUser.Username.TrimEnd().ToUpper())
-                .FirstOrDefault();
-
-            if (users != null)
-            {
-                return StatusCode(422, "Użytkownik już istnieje.");
-
-            }
 
             var userMap = _mapper.Map<User>(updatedUser);
 
