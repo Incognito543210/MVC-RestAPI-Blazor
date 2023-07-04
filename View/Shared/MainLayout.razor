@@ -135,7 +135,7 @@
         logInData.Login = string.Empty;
         logInData.Password = string.Empty;
 
-        if (loggedUserId > 0)
+        if (loggedUserId >= 0)
         {
             userInfo.LoggedUserId = loggedUserId;
             userInfo.IsLoggedIn = true;

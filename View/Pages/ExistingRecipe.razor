@@ -92,15 +92,18 @@ else
     <br />
     <br />
 
-    <div id="sec-title">
-        <p>DODAJ OPINIĘ</p>
-    </div>    
+    @if(userInfo.IsLoggedIn)
+    {
+        <div id="sec-title">
+            <p>DODAJ OPINIĘ</p>
+        </div>
 
-    <AddOpinionForm Opinion="opinion" OnValidSubmit="AddOpinion"></AddOpinionForm>
+        <AddOpinionForm Opinion="opinion" OnValidSubmit="AddOpinion"></AddOpinionForm>
 
-    <br />
-    <br />
-    <br />
+        <br />
+        <br />
+        <br />
+    }
 
     <div id="opinions">
         <div id="sec-title">
@@ -189,6 +192,9 @@ else
     [Parameter]
     public int Id { get; set; }
 
+    [CascadingParameter]
+    public UserInfo? userInfo { get; set; }
+
     private RecipeAdapter? recipe;
     private List<IngridientDto>? ingredientsList;
     private List<TagDto>? tagsList;
@@ -206,7 +212,7 @@ else
 
     async Task AddOpinion()
     {
-        var wynik = await OpsServ.AddOpinionToRecipeAsync(1, recipe.RecipeID, opinion);
+        var wynik = await OpsServ.AddOpinionToRecipeAsync(userInfo.LoggedUserId, recipe.RecipeID, opinion);
         opinion = new() { Rate = 1 };
         await OnInitializedAsync();
     }
