@@ -2,7 +2,7 @@
 @inject UserService UserServ
 @inject NavigationManager NavMan
 
-@if(false) //tutaj sprawdzaj czy zalogowany
+@if(UserServ.IsLoggedIn)
 {
 	if(user == null)
 	{
@@ -10,6 +10,12 @@
 	}
 	else
 	{
+		if (Message == 2)
+		{
+			<div class="alert alert-success" role="alert">
+				Zalogowałeś się na swoje konto.
+			</div>
+		}
 		<div id="top">
 			<div id="title">
 				<h3 style="font-weight: bold">Moje konto</h3>
@@ -35,7 +41,7 @@
 }
 else
 {
-	@if (Message > 0)
+	@if (Message == 1)
 	{
 		<div class="alert alert-success" role="alert">
 			Rejestracja konta przebiegła pomyślnie. Zaloguj się na swoje konto.
@@ -48,21 +54,6 @@ else
 
 	<MudButton Variant="Variant.Filled" Class="btn-login" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
 }
-
-@*@if (!string.IsNullOrEmpty(mainLayout.GetUserName()))
-{
-	<h3 class="my-4">Your Account</h3>
-
-	<p>@mainLayout.GetUserName()</p>
-
-	<button type="button" class="btn btn-danger" @onclick="mainLayout.Logout">Logout</button>
-}
-else
-{
-	<h3 class="my-4">Please Login</h3>
-
-	<button type="button" class="btn btn-success" @onclick="mainLayout.OpenLogin">Login</button>
-}*@
 
 <style>
 	.btn-login {
@@ -132,9 +123,6 @@ else
 </style>
 
 @code {
-	//private bool isLogged = true;
-	//private int loggedUserId = 1;
-
 	[CascadingParameter]
 	public MainLayout mainLayout { get; set; }
 
@@ -147,10 +135,10 @@ else
 	{
 		await base.OnInitializedAsync();
 
-		//if (isLogged)
-		//{
-		//	user = await UserServ.GetUserAsync(loggedUserId);
-		//}
+		if (UserServ.IsLoggedIn)
+		{
+			user = await UserServ.GetUserAsync(UserServ.LoggedUserId);
+		}
 	}
 
 	void Update()

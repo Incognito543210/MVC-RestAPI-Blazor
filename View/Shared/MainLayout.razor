@@ -15,7 +15,7 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    @if (UserServ.IsLoggedIn) //tutaj sprawdzaj czy zalogowany
+                    @if (UserServ.IsLoggedIn)
                     {
                         <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
@@ -94,9 +94,6 @@
 
 
 @code {
-    private bool loggedIn = false;
-    private int loggedUserId;
-
     UserDto user = new();
     LogInDataDto logInData = new();
 
@@ -115,19 +112,23 @@
 
     private async Task LogIn()
     {
-        loggedUserId = await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        int loggedUserId = await UserServ.LoginAsync(logInData.Login, logInData.Password);
 
         if (loggedUserId > 0)
         {
             UserServ.LoggedUserId = loggedUserId;
             UserServ.IsLoggedIn = true;
+            show = false;
+            await Task.Delay(500);
+            display = false;
+            NavMan.NavigateTo("/account/2");
         }
     }
 
     private async Task LogOut()
     {
-        user = null;
-        loggedIn = false;
+        UserServ.LoggedUserId = -1;
+        UserServ.IsLoggedIn = false;
     }
 
     private async Task SignUp()
