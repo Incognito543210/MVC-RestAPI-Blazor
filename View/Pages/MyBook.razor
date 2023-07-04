@@ -2,14 +2,14 @@
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 
-@if(userInfo.IsLoggedIn)
+@if (userInfo.IsLoggedIn)
 {
     @if (Message == 2)
-		{
-			<div class="alert alert-success" role="alert">
-				Przepis został dodany pomyślnie.
-			</div>
-		}
+    {
+        <div class="alert alert-success" role="alert">
+            Przepis został dodany pomyślnie.
+        </div>
+    }
     @if (Message == 3)
     {
         <div class="alert alert-success" role="alert">
@@ -28,7 +28,7 @@
             <h3 style="font-weight: bold">Moje przepisy</h3>
         </div>
         <div id="buttons">
-            <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-login">Nowy przepis</MudButton>
+            <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-addrecipe">Nowy przepis</MudButton>
         </div>
     </div>
 
@@ -37,6 +37,7 @@
     @if (recipesList == null)
     {
         <h3>Loading...</h3>
+        NavMan.NavigateTo("/mybook/" + 1);
     }
     else
     {
@@ -62,6 +63,7 @@
         else
         {
             <p>Brak przepisów do wyświetlenia.</p>
+
         }
     }
 }

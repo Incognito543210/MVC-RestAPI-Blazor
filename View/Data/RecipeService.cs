@@ -69,9 +69,9 @@ namespace View.Data
             return wynik!;
         }
 
-        public async Task<string> AddRecipeAsync(RecipeDto recipe)
+        public async Task<string> AddRecipeAsync(int userId, RecipeDto recipe)
         {
-            var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + _userId, recipe);
+            var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + userId, recipe);
             await LogRequest(wynik);
 
             if (!wynik.IsSuccessStatusCode)
