@@ -68,7 +68,7 @@ namespace API.Services
             return _context.Users.Where(u => u.Email == email).Any();
         }
 
-        public SessionDto Logger(string login, string password)
+        public int Logger(string login, string password)
         {
             string pass = _encryptor.EncryptPassword(password);
             User user = new User();
@@ -81,7 +81,10 @@ namespace API.Services
             {
                 user =  _context.Users.Where(u => u.Email == login).Where(p => p.Password == pass).FirstOrDefault();
             }
-            SessionDto session = StartSession(user.UserID);
+            if (user is null)
+                return -1;
+            //SessionDto session = StartSession(user.UserID);
+            int session = user.UserID;
             return session;
         }
 

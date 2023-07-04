@@ -15,7 +15,7 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    @if (isLogged)
+                    @if (false) //tutaj sprawdzaj czy zalogowany
                     {
                         <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
@@ -94,11 +94,11 @@
 
 
 @code {
-    private bool isLogged = true;
-    private int loggedUserId = 1;
+    //private bool loggedIn = true;
+    //private int loggedUserId = 1;
 
+    string token;
     UserDto user = new();
-
     LogInDataDto logInData = new();
 
     private bool show, display;
@@ -107,33 +107,31 @@
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    string errorMessage;
-
-    //private string authMessage = "The user is NOT authenticated.";
-
-    //[CascadingParameter]
-    //private Task<AuthenticationState>? authenticationState { get; set; }
-
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    if (authenticationState is not null)
-    //    {
-    //        var authState = await authenticationState;
-    //        var userAuth = authState?.User;
-
-    //        if (userAuth?.Identity is not null && userAuth.Identity.IsAuthenticated)
-    //        {
-    //            authMessage = $"{userAuth.Identity.Name} is authenticated.";
-    //            loggedIn = true;
-    //        }
-    //    }
-    //}
-
     public async Task OpenLogin()
     {
         display = true;
         await Task.Delay(100);
         show = true;
+    }
+
+    private async Task LogIn()
+    {
+        token = await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        int a = 5;
+    }
+
+    //private async Task LogOut()
+    //{
+    //    user = null;
+    //    loggedIn = false;
+    //}
+
+    private async Task SignUp()
+    {
+        show = false;
+        await Task.Delay(500);
+        display = false;
+        NavMan.NavigateTo("/signup");
     }
 
     private async Task OpenAccount()
@@ -165,18 +163,5 @@
             PasswordInputIcon = Icons.Material.Filled.Visibility;
             PasswordInput = InputType.Text;
         }
-    }
-
-    private async Task SignUp()
-    {
-        show = false;
-        await Task.Delay(500);
-        display = false;
-        NavMan.NavigateTo("/signup");
-    }
-
-    private async Task LogIn()
-    {
-        user = await UserServ.LoginAsync(logInData.Login, logInData.Password);
     }
 }

@@ -12,7 +12,7 @@ namespace API.Interfaces
         ICollection<Opinion> GetOpinionsForRecipe(int id);
         ICollection<Opinion> GetOpinionsForUser(int id);
         bool CreateOpinion(Opinion opinion);
-        bool UpdateOpinion(Opinion opinion);
+        bool UpdateOpinion(Opinion opinion);//Do usunięcia
         bool DeleteOpinion(Opinion opinion);
 
         bool DeleteOpinionsForRecipe(List<Opinion> opinions);
