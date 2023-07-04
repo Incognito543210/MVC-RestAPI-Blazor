@@ -12,7 +12,7 @@ namespace API.Interfaces
         bool IsEmailValid(string email);
         bool IsPasswordPopular(string password);
         bool IsPasswordStrong(string password);
-        SessionDto Logger(string login, string password);
+        int Logger(string login, string password);
         bool Save();
         bool UpdateUser(User user);
         bool UserExists(int id);
