@@ -1,4 +1,4 @@
-﻿@page "/mybook"
+﻿@page "/mybook/{Message:int}"
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 
@@ -11,6 +11,27 @@
     </div>
 </div>
 
+@if (Message == 2)
+{
+    <div class="alert alert-success" role="alert">
+        Przepis został dodany pomyślnie.
+    </div>
+}
+
+@if (Message == 3)
+{
+    <div class="alert alert-success" role="alert">
+        Przepis został usunięty.
+    </div>
+}
+
+@if (Message == 4)
+{
+    <div class="alert alert-success" role="alert">
+        Przepis został zaktualizowany.
+    </div>
+}
+
 <div style="clear: both;"></div>
 
 @if (recipesList == null)
@@ -22,7 +43,7 @@ else
     @if (recipesList.Any())
     {
         <div id="recipes">
-             @foreach (var recipe in recipesList)
+            @foreach (var recipe in recipesList)
             {
                 <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
                     <div id="description">
@@ -70,12 +91,12 @@ else
     }
 
     .btn-addrecipe {
-        
         background: rgba( 22, 166, 185 );
         font-size: 1.17em;
         color: white;
         margin-left: 8px;
     }
+
         .btn-addrecipe:hover {
             background-color: rgba(227, 225, 222);
         }
@@ -100,6 +121,8 @@ else
 @code {
     private List<RecipeDto>? recipesList;
 
+    [Parameter]
+    public int Message { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
