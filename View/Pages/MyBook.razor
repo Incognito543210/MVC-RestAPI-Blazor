@@ -147,12 +147,16 @@ else
     [Parameter]
     public int Message { get; set; }
 
-    private List<RecipeDto>? recipesList;
+    private List<RecipeDto>? recipesList = new();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        recipesList = await RecServ.GetRecipesByUserAsync(userInfo.LoggedUserId);
+        if(userInfo.LoggedUserId > 0)
+        {
+            recipesList = await RecServ.GetRecipesByUserAsync(userInfo.LoggedUserId);            
+        }
+        int a = 5;
     }
 
     //List<RecipeDto> recipes = new();
