@@ -71,7 +71,7 @@ namespace API.Services
         public int Logger(string login, string password)
         {
             string pass = _encryptor.EncryptPassword(password);
-            User user = new User();
+            User user;
 
             if (UsernameExists(login))
             {
@@ -122,6 +122,16 @@ namespace API.Services
             Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
             Match match = regex.Match(password);
             if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+        public bool DoesPasswordHasSpecialCharacters(string password)
+        {
+            Regex invalidPassword = new Regex("^(?=.*?[`~;:'\"\\/,.<>?!@#$%^&*()_+=_-])");
+            Match match1 = invalidPassword.Match(password);
+            if (match1.Success)
                 return true;
             else
                 return false;
