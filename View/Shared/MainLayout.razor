@@ -130,12 +130,12 @@
 
     private async Task LogIn()
     {
-        int loggedUserId = await UserServ.LoginAsync(logInData.Login, logInData.Password);
+        int loggedUserId = await UserServ.LoginAsync(logInData);
 
         logInData.Login = string.Empty;
         logInData.Password = string.Empty;
 
-        if (loggedUserId > 0)
+        if (loggedUserId >= 0)
         {
             userInfo.LoggedUserId = loggedUserId;
             userInfo.IsLoggedIn = true;

@@ -1,8 +1,44 @@
-﻿@page "/mybook"
+﻿@page "/mybook/{Message:int}"
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 
+<<<<<<< HEAD
+<div id="top">
+    <div id="title">
+        <h3 style="font-weight: bold">Moje przepisy</h3>
+    </div>
+    <div id="buttons">
+        <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-addrecipe">Nowy przepis</MudButton>
+    </div>
+</div>
+
+@if (Message == 2)
+{
+    <div class="alert alert-success" role="alert">
+        Przepis został dodany pomyślnie.
+    </div>
+}
+
+@if (Message == 3)
+{
+    <div class="alert alert-success" role="alert">
+        Przepis został usunięty.
+    </div>
+}
+
+@if (Message == 4)
+{
+    <div class="alert alert-success" role="alert">
+        Przepis został zaktualizowany.
+    </div>
+}
+
+<div style="clear: both;"></div>
+
+@if (recipesList == null)
+=======
 @if(userInfo.IsLoggedIn)
+>>>>>>> 4fad8a26265c685efe55ec3296029cf67c472a31
 {
     <div id="top">
         <div id="title">
@@ -48,7 +84,24 @@
 }
 else
 {
+<<<<<<< HEAD
+    @if (recipesList.Any())
+    {
+        <div id="recipes">
+            @foreach (var recipe in recipesList)
+            {
+                <div id="recipe" @onclick="() => navigateToRecipe(recipe.RecipeID)">
+                    <div id="description">
+                        <h5 style="font-weight: bold">@recipe.Title</h5>
+                        <p>
+                            <b>Czas przygotowania: </b>@recipe.PrepareTime.TimeOfDay<br />
+                            <b>Porcje: </b>@recipe.Portions<br />
+                            <b>Trudność: </b>@recipe.Difficulty/5<br />
+                        </p>
+                    </div>
+=======
     <p>Nie jesteś zalogowany. Zaloguj się na swoje konto.</p>
+>>>>>>> 4fad8a26265c685efe55ec3296029cf67c472a31
 
     <MudButton Variant="Variant.Filled" Class="btn-login" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
 }
@@ -83,12 +136,12 @@ else
     }
 
     .btn-addrecipe {
-        
         background: rgba( 22, 166, 185 );
         font-size: 1.17em;
         color: white;
         margin-left: 8px;
     }
+
         .btn-addrecipe:hover {
             background-color: rgba(227, 225, 222);
         }
@@ -114,10 +167,15 @@ else
     [CascadingParameter]
     public MainLayout mainLayout { get; set; }
 
+<<<<<<< HEAD
+    [Parameter]
+    public int Message { get; set; }
+=======
     [CascadingParameter]
     public UserInfo? userInfo { get; set; }
 
     private List<RecipeDto>? recipesList;
+>>>>>>> 4fad8a26265c685efe55ec3296029cf67c472a31
 
     protected override async Task OnInitializedAsync()
     {

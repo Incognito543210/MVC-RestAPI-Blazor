@@ -220,7 +220,7 @@ else
         if (recipe is not null)
         {
             await RecServ.DeleteRecipeById(recipe.RecipeID);
-            NavMan.NavigateTo("/mybook");
+            NavMan.NavigateTo("/mybook/" + 3);
         }
     }
 
