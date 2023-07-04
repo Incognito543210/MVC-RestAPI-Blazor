@@ -9,7 +9,7 @@
             <h3 style="font-weight: bold">Moje przepisy</h3>
         </div>
         <div id="buttons">
-            <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-addrecipe">Nowy przepis</MudButton>
+            <MudButton OnClick="newRecipe" Variant="Variant.Filled" Class="btn-login">Nowy przepis</MudButton>
         </div>
     </div>
 
@@ -39,6 +39,10 @@
                     </div>
                 }
             </div>
+        }
+        else
+        {
+            <p>Brak przepisów do wyświetlenia.</p>
         }
     }
 }
