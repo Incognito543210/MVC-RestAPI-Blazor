@@ -41,7 +41,7 @@ namespace API.Controllers
 
         [AllowAnonymous]
         [HttpGet("{login},{password}")]
-        [ProducesResponseType(200, Type = typeof(SessionDto))]
+        [ProducesResponseType(200, Type = typeof(int))]
         public IActionResult Login(string login, string password)
         {
             if(!ModelState.IsValid)
@@ -58,11 +58,13 @@ namespace API.Controllers
             if (_userServices.EmailExists(login) || _userServices.UsernameExists(login))
             {
                 var session = _userServices.Logger(login, password);
+                if (session < 0)
+                    return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
                 return Ok(session);
             }
             else
             {
-                return StatusCode(422, "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.");
+                return StatusCode(422, "Nieprawidłowa nazwa użytkownika lub adresu e-mail");
             }
 
         }
@@ -103,6 +105,11 @@ namespace API.Controllers
                 return StatusCode(422, "Hasło jest niewystarczająco mocne.");
             }
 
+            if (_userServices.DoesPasswordHasSpecialCharacters(userMap.Password))
+            {
+                return StatusCode(422, "Hasło nie może posiadać znaków specjalnych");
+            }
+
             if (_userServices.IsPasswordPopular(userMap.Password))
             {
                 return StatusCode(422, "Hasło jest zbyt popularne.");
@@ -130,16 +137,6 @@ namespace API.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var users = _userServices.GetUsers()
-                .Where(u => u.Username.Trim().ToUpper() == updatedUser.Username.TrimEnd().ToUpper())
-                .FirstOrDefault();
-
-            if (users != null)
-            {
-                return StatusCode(422, "Użytkownik już istnieje.");
-
-            }
 
             var userMap = _mapper.Map<User>(updatedUser);
 

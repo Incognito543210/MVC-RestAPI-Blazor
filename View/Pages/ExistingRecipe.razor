@@ -9,12 +9,14 @@
 }
 else
 {
-    <div id="title">
-        <h3 style="text-align: center; font-weight: bolder">@recipe.Title</h3>
+    <div id="top">
+        <div id="title">
+            <h3 style="text-align: center; font-weight: bolder">@recipe.Title</h3>
+        </div>        
     </div>
+    
 
     <div id="info">
-        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp" >
         <div id="description">
             <p>
                 <b>Czas przygotowania: </b>@recipe.PrepareTime.TimeOfDay<br />
@@ -22,6 +24,16 @@ else
                 <b>Trudność: </b>@recipe.Difficulty/5<br />
             </p>
         </div>
+    </div>
+
+    <div id="buttons">
+        @if (tagsList.Any())
+        {
+            foreach (var item in tagsList)
+            {
+                <MudButton Variant="Variant.Filled" Class="btn-tag">@item.Name</MudButton>
+            }
+        }
     </div>
 
     <div id="ingridients">
@@ -36,12 +48,29 @@ else
         {
             @if (ingredientsList.Any())
             {
-                <ul>
-                    @foreach (var ingridient in ingredientsList)
-                    {
-                        <li>@ingridient.Name</li>
-                    }
-                </ul>
+                <table class="table table-striped table-hover" style="margin-left: 20px; margin-right: 40px">
+                    <thead>
+                        <tr>
+                            <th>Składnik</th>
+                            <th>Ilość</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ingredientsList)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Quantity
+                                </td>                                
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
         }
     </div>
@@ -56,9 +85,25 @@ else
         }
         else
         {
-            <p style="margin-left: 30px; margin-right: 30px;">@recipe.Content</p>
+            <p style="margin-left: 30px; margin-right: 30px; font-size: 1.17em;"><MudList>@recipe.Content</MudList></p>
         }
     </div>
+    <br />
+    <br />
+    <br />
+
+    @if(userInfo.IsLoggedIn)
+    {
+        <div id="sec-title">
+            <p>DODAJ OPINIĘ</p>
+        </div>
+
+        <AddOpinionForm Opinion="opinion" OnValidSubmit="AddOpinion"></AddOpinionForm>
+
+        <br />
+        <br />
+        <br />
+    }
 
     <div id="opinions">
         <div id="sec-title">
@@ -66,24 +111,33 @@ else
         </div>
         @if (opinionsList == null)
         {
-            <p>Ten przepis nie ma opinii.</p>
+            <p style="margin-left: 30px;">Ten przepis nie ma opinii.</p>
         }
         else
         {
             @if (opinionsList.Any())
             {
-                <ul>
+                <MudList>
                     @foreach (var opinion in opinionsList)
                     {
-                        <li>@opinion.Content</li>
+                        <MudListItem><MudRating @bind-SelectedValue="opinion.Rate" ReadOnly="true"></MudRating>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @opinion.Content</MudListItem>
                     }
-                </ul>
+                </MudList>
             }
         }
     </div>
 }
 
 <style>
+    #top {
+        width: auto;
+        margin: 10px;
+        padding: 5px;
+        align-content: center;
+        display: flex;
+        justify-content: space-between;
+    }
+
     #title {
         width: auto;
         margin: 10px;
@@ -109,6 +163,7 @@ else
 
     #description {
         float: left;
+        margin-left: 10px;
     }
 
     p {
@@ -116,18 +171,20 @@ else
         padding: 0;
     }
 
-    img {
-        float: left;
-        margin-bottom: 20px;
-        margin-left: 10px;
-        margin-right: 20px;
-        border-radius: 8px;
-        height: 100px;
-    }
-
     ul {
         list-style-type: disc;
         margin-left: 40px;
+    }
+
+    #buttons {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .btn-tag {
+        background: rgba(227, 225, 222);
+        margin-right: 10px;
+        font-size: 1.17em;
     }
 </style>
 
@@ -135,15 +192,44 @@ else
     [Parameter]
     public int Id { get; set; }
 
+    [CascadingParameter]
+    public UserInfo? userInfo { get; set; }
+
     private RecipeAdapter? recipe;
     private List<IngridientDto>? ingredientsList;
+    private List<TagDto>? tagsList;
     private List<OpinionDto>? opinionsList;
+    OpinionDto opinion = new() { Rate = 1 };
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        recipe = await RecServ.GetRecipeAsync(Id);
-        ingredientsList = await RecServ.GetIngredientsListAsync(Id);
+        await GetRecipe(Id);
+        //recipe = await RecServ.GetRecipeAsync(Id);
+        //ingredientsList = await RecServ.GetIngredientsListAsync(Id);
         opinionsList = await OpsServ.GetOpinionsForRecipeAsync(Id);
+    }
+
+    async Task AddOpinion()
+    {
+        var wynik = await OpsServ.AddOpinionToRecipeAsync(userInfo.LoggedUserId, recipe.RecipeID, opinion);
+        opinion = new() { Rate = 1 };
+        await OnInitializedAsync();
+    }
+
+    async Task<RecipeAdapter> GetRecipe(int id)
+    {
+        HasIngridientDto hasIngrid = new();
+        recipe = await RecServ.GetRecipeAsync(id);
+        List<IngridientDto> ingredients = await RecServ.GetIngredientsListAsync(id);
+        List<TagDto> tags = await RecServ.GetTagsListAsync(id);
+        ingredientsList = ingredients;
+        tagsList = tags;
+        foreach (var item in ingredientsList)
+        {
+            hasIngrid = await RecServ.GetIngredientAmountAsync(recipe.RecipeID, item.IngridientID);
+            item.Quantity = hasIngrid.Amount;
+        }
+        return recipe;
     }
 }

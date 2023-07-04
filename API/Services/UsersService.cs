@@ -68,7 +68,7 @@ namespace API.Services
             return _context.Users.Where(u => u.Email == email).Any();
         }
 
-        public SessionDto Logger(string login, string password)
+        public int Logger(string login, string password)
         {
             string pass = _encryptor.EncryptPassword(password);
             User user;
@@ -81,7 +81,10 @@ namespace API.Services
             {
                 user =  _context.Users.Where(u => u.Email == login).Where(p => p.Password == pass).FirstOrDefault();
             }
-            SessionDto session = StartSession(user.UserID);
+            if (user is null)
+                return -1;
+            //SessionDto session = StartSession(user.UserID);
+            int session = user.UserID;
             return session;
         }
 
@@ -110,10 +113,25 @@ namespace API.Services
             //Musi mieć co najmniej jedną dużą literę
             //Musi mieć co najmniej jedną małą literę
             //Musi mieć co najmniej jedną cyfrę
-            //Musi mieć co najmniej jeden znak specjalny
-            Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+            //Żadnych znaków specjalnych
+            Regex invalidPassword = new Regex("^(?=.*?[`~;:'\"\\/,.<>?!@#$%^&*()_+=_-])");
+            Match match1 = invalidPassword.Match(password);
+            if (match1.Success)
+                return false;
+
+            Regex regex = new Regex("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$");
             Match match = regex.Match(password);
             if (match.Success)
+                return true;
+            else
+                return false;
+        }
+
+        public bool DoesPasswordHasSpecialCharacters(string password)
+        {
+            Regex invalidPassword = new Regex("^(?=.*?[`~;:'\"\\/,.<>?!@#$%^&*()_+=_-])");
+            Match match1 = invalidPassword.Match(password);
+            if (match1.Success)
                 return true;
             else
                 return false;

@@ -4,15 +4,15 @@
 
 <div id="signup-page">
     <div class="content">
-        @if(errorMessage != null)
-        {
-            <div class="alert alert-danger" role="alert">
-                @errorMessage
-            </div>
-        }
         <div class="header">
             <h3 class="title">Rejestracja konta</h3>
         </div>
+        @if (errorMessage != null)
+        {
+            <div class="alert alert-danger" style="margin-top: 1rem" role="alert">
+                @errorMessage
+            </div>
+        }
         <EditForm Model="@user" OnValidSubmit="@CreateUser">
             <DataAnnotationsValidator />
             <MudTextField @bind-Value="user.Email" Label="Adres e-mail" For="@(() => user.Email)"></MudTextField>

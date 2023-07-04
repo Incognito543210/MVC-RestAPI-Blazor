@@ -1,60 +1,174 @@
 ﻿@page "/account/{Message:int}"
+@inject UserService UserServ
+@inject NavigationManager NavMan
 
-@if (Message > 0)
+@if (userInfo.IsLoggedIn)
 {
-	<div class="alert alert-success" role="alert">
-		Rejestracja konta przebiegła pomyślnie. Zaloguj się na swoje konto.
-	</div>
+	@if(user == null)
+	{
+		<h3>Ładowanie</h3>
+	}
+	else
+	{
+		@if (Message == 2)
+		{
+			<div class="alert alert-success" role="alert">
+				Zalogowałeś się na swoje konto.
+			</div>
+		}
+		<div id="top">
+			<div id="title">
+				<h3 style="font-weight: bold">Moje konto</h3>
+			</div>
+			<div id="buttons">
+				<MudButton Variant="Variant.Filled" Class="btn-edit">Edytuj dane</MudButton>
+				<MudButton Variant="Variant.Filled" Class="btn-delete">Usuń konto</MudButton>
+			</div>
+		</div>
+
+		<div style="clear: both;"></div>
+
+		<div id="description">
+			<p>
+				<b>Nazwa użytkownika: </b>@user.Username<br />
+				<b>Imię i nazwisko: </b>@user.FirstName @user.LastName<br />
+				<b>Adres e-mail: </b>@user.Email<br />
+			</p>
+		</div>
+
+		<MudButton Variant="Variant.Filled" Class="btn-logout" OnClick="mainLayout.LogOut" EndIcon="@Icons.Material.Filled.Logout">Wyloguj się</MudButton>
+	}	
 }
 else
 {
-	<p>Nie jesteś zalogowany. Zaloguj się na swoje konto.</p>
-}
-
-<MudButton Variant="Variant.Filled" Class="btn1" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
-
-@*@if (!string.IsNullOrEmpty(mainLayout.GetUserName()))
-{
-	<h3 class="my-4">Your Account</h3>
-
-	<p>@mainLayout.GetUserName()</p>
-
-	<button type="button" class="btn btn-danger" @onclick="mainLayout.Logout">Logout</button>
-}
-else
-{
-	<h3 class="my-4">Please Login</h3>
-
-	<button type="button" class="btn btn-success" @onclick="mainLayout.OpenLogin">Login</button>
-}*@
-
-<style>
-	p {
-		margin: 0;
-		padding: 0;
-		font-weight: bolder;
+	@if (Message == 1)
+	{
+		<div class="alert alert-success" role="alert">
+			Rejestracja konta przebiegła pomyślnie. Zaloguj się na swoje konto.
+		</div>
+	}
+	else
+	{
+		<p>Nie jesteś zalogowany. Zaloguj się na swoje konto.</p>
 	}
 
-	.btn1 {
+	<MudButton Variant="Variant.Filled" Class="btn-login" OnClick="mainLayout.OpenLogin">Zaloguj się</MudButton>
+}
+
+<style>
+	.btn-login {
 		background: rgba( 22, 166, 185 );
 		font-size: 1.17em;
 		color: white;
+		margin-top: 10px;
 	}
 
-		.btn1:hover {
+	.btn-logout {
+		background: red;
+		font-size: 1.17em;
+		color: white;
+		margin-top: 10px;
+	}
+
+		.btn-login:hover {
 			background: rgba(227, 225, 222);
 		}
+
+	#top {
+		width: auto;
+		margin: 10px;
+		padding: 5px;
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	#title {
+		flex: 1;
+	}
+
+	#filter {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	#buttons {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.btn-edit, .btn-delete {
+		font-size: 1.17em;
+		color: white;
+		margin-left: 8px;
+	}
+
+	.btn-edit {
+		background: rgba( 22, 166, 185 );
+		margin-right: 5px;
+	}
+
+	.btn-delete {
+		background: red;
+		margin-right: 5px;
+	}
+
+		.btn-edit:hover, .btn-delete:hover {
+			background-color: rgba(227, 225, 222);
+		}
+
+	#description {
+		margin-left: 10px;
+	}
 </style>
 
 @code {
 	[CascadingParameter]
 	public MainLayout mainLayout { get; set; }
 
+	[CascadingParameter]
+	public UserInfo? userInfo { get; set; }
+
 	[Parameter]
 	public int Message { get; set; }
+
+	private UserDto? user;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
+
+		if (userInfo.IsLoggedIn)
+		{
+			user = await UserServ.GetUserAsync(userInfo.LoggedUserId);
+		}
 	}
+
+	void Update()
+	{
+		if (user is not null)
+		{
+			NavMan.NavigateTo("/edituser/" + user);
+		}
+	}
+
+	//async Task Delete()
+	//{
+	//	if (user is not null)
+	//	{
+	//		await UserServ.DeleteUserById(user);
+	//		NavMan.NavigateTo("/mybook");
+	//	}
+	//}
+
+	//async Task ConfirmDeletion()
+	//{
+	//	var options = new DialogOptions { CloseOnEscapeKey = true };
+	//	var okno = await DialogService.ShowAsync<ConfirmUserDeletion>("Usuń konto", options);
+	//	var wynik = await okno.Result;
+	//	if (!wynik.Canceled)
+	//	{
+	//		await Delete();
+	//	}
+	//}
 }

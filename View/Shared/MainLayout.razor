@@ -15,7 +15,7 @@
                     <b style="font-size: 1.17rem; font-weight: bolder; color: white">Książka kucharska</b>
                 </div>
                 <div id="buttons">
-                    @if (loggedIn)
+                    @if (userInfo.IsLoggedIn)
                     {
                         <button class="account_btn" @onclick="OpenAccount"><i class="oi oi-person" aria-hidden="true"></i></button>
                     }
@@ -33,7 +33,9 @@
 
                 <div id="content">
                     <div id="article">
-                        @Body
+                        <CascadingValue Value="@userInfo">
+                            @Body
+                        </CascadingValue>
                     </div>
                 </div>
             </main>
@@ -50,6 +52,12 @@
                 <h5 class="modal-title">Logowanie</h5>
                 <button class="btn btn-danger" @onclick="Close">❌</button>
             </div>
+            @if (errorMessage != null)
+            {
+                <div class="alert alert-danger" style="margin-top: 1rem; margin-left: 1rem; margin-right: 1rem" role="alert">
+                @errorMessage
+            </div>
+            }
             <div class="modal-body">
                 <EditForm Model="@logInData" OnValidSubmit="@LogIn">
                     <DataAnnotationsValidator />
@@ -95,35 +103,21 @@
 
 @code {
     UserDto user = new();
-
     LogInDataDto logInData = new();
 
-    private bool show, display, loggedIn = false;
+    private bool show, display;
+
+    private string errorMessage;
 
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
-    private string authMessage = "The user is NOT authenticated.";
-
-    string errorMessage;
-
-    [CascadingParameter]
-    private Task<AuthenticationState>? authenticationState { get; set; }
+    private UserInfo userInfo = new UserInfo();
 
     protected override async Task OnInitializedAsync()
     {
-        if (authenticationState is not null)
-        {
-            var authState = await authenticationState;
-            var userAuth = authState?.User;
-
-            if (userAuth?.Identity is not null && userAuth.Identity.IsAuthenticated)
-            {
-                authMessage = $"{userAuth.Identity.Name} is authenticated.";
-                loggedIn = true;
-            }
-        }
+        await base.OnInitializedAsync();
     }
 
     public async Task OpenLogin()
@@ -131,6 +125,44 @@
         display = true;
         await Task.Delay(100);
         show = true;
+        errorMessage = null;
+    }
+
+    private async Task LogIn()
+    {
+        int loggedUserId = await UserServ.LoginAsync(logInData.Login, logInData.Password);
+
+        logInData.Login = string.Empty;
+        logInData.Password = string.Empty;
+
+        if (loggedUserId >= 0)
+        {
+            userInfo.LoggedUserId = loggedUserId;
+            userInfo.IsLoggedIn = true;
+            show = false;
+            await Task.Delay(500);
+            display = false;
+            NavMan.NavigateTo("/account/2");
+        }
+        else
+        {
+            errorMessage = "Nieprawidłowa nazwa użytkownika, adres e-mail lub hasło.";
+        }
+    }
+
+    public async Task LogOut()
+    {
+        userInfo.LoggedUserId = -1;
+        userInfo.IsLoggedIn = false;
+        NavMan.NavigateTo("/");
+    }
+
+    private async Task SignUp()
+    {
+        show = false;
+        await Task.Delay(500);
+        display = false;
+        NavMan.NavigateTo("/signup");
     }
 
     private async Task OpenAccount()
@@ -138,7 +170,7 @@
         show = false;
         await Task.Delay(500);
         display = false;
-        NavMan.NavigateTo("/account");
+        NavMan.NavigateTo("/account/0");
     }
 
     private async Task Close()
@@ -162,18 +194,5 @@
             PasswordInputIcon = Icons.Material.Filled.Visibility;
             PasswordInput = InputType.Text;
         }
-    }
-
-    private async Task SignUp()
-    {
-        show = false;
-        await Task.Delay(500);
-        display = false;
-        NavMan.NavigateTo("/signup");
-    }
-
-    private async Task LogIn()
-    {
-        await UserServ.LoginAsync(logInData.Login, logInData.Password);
     }
 }

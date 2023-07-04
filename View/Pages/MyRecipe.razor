@@ -2,6 +2,7 @@
 @inject NavigationManager NavMan
 @inject RecipeService RecServ
 @inject IDialogService DialogService
+@inject OpinionService OpsServ
 
 @if (recipe == null)
 {
@@ -12,22 +13,34 @@ else
     <div id="top">
         <div id="title">
             <h3 style="font-weight: bold">@recipe.Title</h3>
-        </div>
+        </div>        
         <div id="buttons">
-            <MudButton class="btn1" @onclick="Update">Edytuj</MudButton>
-            <MudButton class="btn2" @onclick="ConfirmDeletion">Usuń</MudButton>
+            <MudButton OnClick="Update" Variant="Variant.Filled" Class="btn-update">Edytuj</MudButton>
+            <MudButton OnClick="ConfirmDeletion" Variant="Variant.Filled" Class="btn-delete">Usuń</MudButton>
         </div>
     </div>
 
     <div id="info">
-        <img src="https://wszystkiegoslodkiego.pl/storage/images/201922/letni-tort-bezowy.webp">
         <div id="description">
             <p>
-                <b>Czas przygotowania: </b>@recipe.PrepareTime<br />
+                <b>Czas przygotowania: </b>@recipe.PrepareTime.TimeOfDay<br />
                 <b>Porcje: </b>@recipe.Portions<br />
                 <b>Trudność: </b>@recipe.Difficulty/5<br />
             </p>
         </div>
+    </div>
+
+    <div id="buttons" >
+        @if (tagsList.Any())
+        {
+            foreach (var item in tagsList)
+            {
+                <MudButton Variant="Variant.Filled" Class="btn-tag">@item.Name</MudButton>
+                <p>
+                    &nbsp;&nbsp;
+                </p>
+            }
+        }
     </div>
 
     <div id="ingridients">
@@ -42,12 +55,29 @@ else
         {
             @if (ingredientsList.Any())
             {
-                <ul>
-                    @foreach (var ingridient in ingredientsList)
-                    {
-                        <li>@ingridient.Name</li>
-                    }
-                </ul>
+                <table class="table table-striped table-hover" style="margin-left: 20px; margin-right: 40px">
+                    <thead>
+                        <tr>
+                            <th>Składnik</th>
+                            <th>Ilość</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ingredientsList)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Name
+                                </td>
+                                <td>
+                                    @item.Quantity
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
         }
     </div>
@@ -62,7 +92,7 @@ else
         }
         else
         {
-            <p style="margin-left: 30px; margin-right: 30px;">@recipe.Content</p>
+            <p style="margin-left: 30px; margin-right: 30px; font-size: 1.17em;"><MudList>@recipe.Content</MudList></p>
         }
     </div>
 }
@@ -96,20 +126,29 @@ else
         justify-content: flex-end;
     }
 
-    .btn1, .btn2 {
-        background: rgba( 22, 166, 185 );
-        padding: 10px;
-        float: right;
-        border-radius: 8px;
+    .btn-update, .btn-delete {
         font-size: 1.17em;
         color: white;
+        margin-left: 8px;
     }
 
-    .btn1 {
+    .btn-tag {
+        background: rgba(227, 225, 222);
+        margin-right: 5px;
+        font-size: 1.17em;
+    }
+
+    .btn-update {
+        background: rgba( 22, 166, 185 );
         margin-right: 5px;
     }
 
-        .btn1:hover, .btn2:hover {
+    .btn-delete {
+        background: red;
+        margin-right: 5px;
+    }
+
+        .btn-update:hover, .btn-delete:hover {
             background-color: rgba(227, 225, 222);
         }
 
@@ -132,20 +171,12 @@ else
 
     #description {
         float: left;
+        margin-left: 10px;
     }
 
     p {
         margin: 0;
         padding: 0;
-    }
-
-    img {
-        float: left;
-        margin-bottom: 20px;
-        margin-left: 10px;
-        margin-right: 20px;
-        border-radius: 8px;
-        height: 100px;
     }
 
     ul {
@@ -160,12 +191,20 @@ else
 
     private RecipeAdapter? recipe;
     private List<IngridientDto>? ingredientsList;
+    private List<TagDto>? tagsList;
+    private List<OpinionDto>? opinionsList;
+    OpinionDto opinion = new() { Rate = 1 };
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
-        recipe = await RecServ.GetRecipeAsync(Id);
-        ingredientsList = await RecServ.GetIngredientsListAsync(Id);
+        //recipe = await RecServ.GetRecipeAsync(Id);
+        //ingredientsList = await RecServ.GetIngredientsListAsync(Id);
+        //await base.OnInitializedAsync();
+        await GetRecipe(Id);
+        //recipe = await RecServ.GetRecipeAsync(Id);
+        //ingredientsList = await RecServ.GetIngredientsListAsync(Id);
+        opinionsList = await OpsServ.GetOpinionsForRecipeAsync(Id);
     }
 
     void Update()
@@ -181,7 +220,7 @@ else
         if (recipe is not null)
         {
             await RecServ.DeleteRecipeById(recipe.RecipeID);
-            NavMan.NavigateTo("/mybook");
+            NavMan.NavigateTo("/mybook/" + 3);
         }
     }
 
@@ -195,4 +234,20 @@ else
             await Delete(); 
         }
     }
+
+    async Task<RecipeAdapter> GetRecipe(int id)
+    {
+        HasIngridientDto hasIngrid = new();
+        recipe = await RecServ.GetRecipeAsync(id);
+        List<IngridientDto> ingredients = await RecServ.GetIngredientsListAsync(id);
+        List<TagDto> tags = await RecServ.GetTagsListAsync(id);
+        ingredientsList = ingredients;
+        tagsList = tags;
+        foreach (var item in ingredientsList)
+        {
+            hasIngrid = await RecServ.GetIngredientAmountAsync(recipe.RecipeID, item.IngridientID);
+            item.Quantity = hasIngrid.Amount;
+        }
+        return recipe;
+}
 }
