@@ -36,9 +36,9 @@ namespace View.Data
                 return null;
         }
 
-        public async Task<UserDto> LoginAsync(string login, string password)
+        public async Task<SessionDto> LoginAsync(string login, string password)
         {
-            var response = await _httpClient.GetFromJsonAsync<UserDto>("/api/User/" + login +","+ password);
+            var response = await _httpClient.GetFromJsonAsync<SessionDto>("/api/User/" + login +","+ password);
             return response;
         }
 

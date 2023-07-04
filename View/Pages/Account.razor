@@ -1,7 +1,8 @@
 ﻿@page "/account/{Message:int}"
 @inject UserService UserServ
+@inject NavigationManager NavMan
 
-@if(isLogged)
+@if(false) //tutaj sprawdzaj czy zalogowany
 {
 	if(user == null)
 	{
@@ -29,7 +30,7 @@
 			</p>
 		</div>
 
-		<MudButton Variant="Variant.Filled" Class="btn-logout">Wyloguj się <span style="margin-left: 10px" class="oi oi-account-login" aria-hidden="true"></span></MudButton>
+		<MudButton Variant="Variant.Filled" Class="btn-logout" EndIcon="@Icons.Material.Filled.Logout">Wyloguj się</MudButton>
 	}	
 }
 else
@@ -131,8 +132,8 @@ else
 </style>
 
 @code {
-	private bool isLogged = true;
-	private int loggedUserId = 1;
+	//private bool isLogged = true;
+	//private int loggedUserId = 1;
 
 	[CascadingParameter]
 	public MainLayout mainLayout { get; set; }
@@ -140,15 +141,43 @@ else
 	[Parameter]
 	public int Message { get; set; }
 
-	private UserDto user;
+	private UserDto? user;
 
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
 
-		if (isLogged)
+		//if (isLogged)
+		//{
+		//	user = await UserServ.GetUserAsync(loggedUserId);
+		//}
+	}
+
+	void Update()
+	{
+		if (user is not null)
 		{
-			user = await UserServ.GetUserAsync(loggedUserId);
+			NavMan.NavigateTo("/edituser/" + user);
 		}
 	}
+
+	//async Task Delete()
+	//{
+	//	if (user is not null)
+	//	{
+	//		await UserServ.DeleteUserById(user);
+	//		NavMan.NavigateTo("/mybook");
+	//	}
+	//}
+
+	//async Task ConfirmDeletion()
+	//{
+	//	var options = new DialogOptions { CloseOnEscapeKey = true };
+	//	var okno = await DialogService.ShowAsync<ConfirmUserDeletion>("Usuń konto", options);
+	//	var wynik = await okno.Result;
+	//	if (!wynik.Canceled)
+	//	{
+	//		await Delete();
+	//	}
+	//}
 }
