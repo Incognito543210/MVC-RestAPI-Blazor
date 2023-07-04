@@ -30,9 +30,9 @@ namespace View.Data
             }
         }
 
-        public async Task<string> AddOpinionToRecipeAsync(UserDto user)
+        public async Task<string> AddOpinionToRecipeAsync(int userId, int recipeId, OpinionDto opinion)
         {
-            var response = await _httpClient.PostAsJsonAsync<UserDto>("/api/User", user);
+            var response = await _httpClient.PostAsJsonAsync<OpinionDto>("/api/Opinion/" + userId + "," + recipeId, opinion);
             await LogRequest(response);
 
             if (!response.IsSuccessStatusCode)

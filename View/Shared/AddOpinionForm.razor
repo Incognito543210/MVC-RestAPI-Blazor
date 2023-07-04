@@ -1,0 +1,23 @@
+﻿<div style="margin-left: 20px; margin-right: 30px">
+    <EditForm Model="@Opinion" OnValidSubmit="@SubmitOpinion">
+        <DataAnnotationsValidator />       
+        <p><MudTextField T="string" @bind-Value="Opinion.Content" Label="Co sądzisz o tym przepisie?" Text="@Opinion.Content" Lines="3" For="@(() => Opinion.Content)" /></p>
+        <MudStack Row="true" Class="d-flex align-center">
+            <MudRating @bind-SelectedValue="Opinion.Rate" Size="Size.Large" />
+            <p><MudButton class="btn1" ButtonType="ButtonType.Submit" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowForward" FullWidth="true">Prześlij opinię</MudButton></p>
+        </MudStack>        
+    </EditForm>
+</div>
+
+    @code {
+        [Parameter]
+        public EventCallback OnValidSubmit { get; set; }
+
+        [Parameter]
+        public OpinionDto Opinion { get; set; }
+
+        async Task SubmitOpinion()
+        {
+            await OnValidSubmit.InvokeAsync();
+        }
+    }
