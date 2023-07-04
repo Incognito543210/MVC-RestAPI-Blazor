@@ -61,7 +61,6 @@ namespace View.Data
         {
             try
             {
-                string str = "/api/User/" + login + "," + password;
                 var response = await _httpClient.GetFromJsonAsync<int>("/api/User/" + login + "," + password);
 
                 return response;
