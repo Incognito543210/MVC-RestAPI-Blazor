@@ -59,20 +59,18 @@ else
                     <table class="table table-striped table-hover" style="margin-left: 20px; margin-right: 40px">
                         <thead>
                             <tr>
-                                <th>Składnik</th>
-                                <th>Ilość</th>
-                                <th></th>
-                                <th></th>
+                                <th colspan="1" style="text-align: left;">Składnik</th>
+                                <th colspan="1" style="text-align: right;">Ilość</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in ingredientsList)
                             {
                                 <tr>
-                                    <td>
+                                    <td colspan="1" style="text-align: left;">
                                         @item.Name
                                     </td>
-                                    <td>
+                                    <td colspan="1" style="text-align: right;">
                                         @item.Quantity
                                     </td>
                                 </tr>
@@ -103,7 +101,6 @@ else
     #top {
         width: auto;
         margin: 10px;
-        padding: 5px;
         align-content: center;
         display: flex;
         justify-content: space-between;
