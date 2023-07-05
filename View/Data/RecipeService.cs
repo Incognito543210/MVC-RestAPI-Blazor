@@ -78,16 +78,36 @@ namespace View.Data
 
         public async Task<string> AddRecipeAsync(int userId, RecipeDto recipe)
         {
-            var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + userId, recipe);
-            await LogRequest(wynik);
-
-            if (!wynik.IsSuccessStatusCode)
+            try
             {
-                var errorMessage = await wynik.Content.ReadAsStringAsync();
-                return errorMessage;
+                var wynik = await _httpClient.PostAsJsonAsync<RecipeDto>("/api/Recipe/" + userId, recipe);
+                await LogRequest(wynik);
+                if(wynik.StatusCode == HttpStatusCode.InternalServerError)
+                {
+                    var errorMessage = "Wystąpił błąd serwera.";
+                    return errorMessage;
+                }
+                if (!wynik.IsSuccessStatusCode)
+                {
+                    var errorMessage = await wynik.Content.ReadAsStringAsync();
+                    return errorMessage;
+                }
+                else
+                    return null!;
             }
-            else
-                return null!;
+            catch (Exception ex)
+            {
+                return "";
+            }
+            
+
+            //if (!wynik.IsSuccessStatusCode)
+            //{
+            //    var errorMessage = await wynik.Content.ReadAsStringAsync();
+            //    return errorMessage;
+            //}
+            //else
+            //    return null!;
             //await LogRequest(wynik);
             //var odp = wynik.StatusCode.ToString();
             //var odp2 = wynik.Content.ToString();

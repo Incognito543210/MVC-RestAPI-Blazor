@@ -22,6 +22,12 @@
             Przepis został zaktualizowany.
         </div>
     }
+    @if (Message == 5)
+    {
+        <div class="alert alert-danger" role="alert">
+            Wystąpił błąd serwera. Spróbuj jeszcze raz.
+        </div>
+    }
 
     <div id="top">
         <div id="title">

@@ -65,9 +65,20 @@
             {
                 //ingredients
                 errorMessageIngr = await RecServ.AddIngredientsToRecipeAsync(recipe.Ingridients, recipe.Title);
-                //tags
-                errorMessageTags = await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
-            }           
+                if(errorMessageIngr != null)
+                {
+                    await Delete();
+                }
+                else
+                {
+                    //tags
+                    errorMessageTags = await RecServ.AddTagsToRecipeAsync(recipe.Tags, recipe.Title);
+                    if (errorMessageTags != null)
+                    {
+                        await Delete();
+                    }
+                }                
+            }            
 
             if (errorMessageRec is null && errorMessageIngr is null && errorMessageTags is null)
             {
@@ -87,6 +98,15 @@
     protected override async Task OnInitializedAsync()
     {
         tags = await RecServ.GetTagListAsync();
+    }
+
+    async Task Delete()
+    {
+        if (recipe is not null)
+        {
+            await RecServ.DeleteRecipeById(recipe.RecipeID);
+            NavMan.NavigateTo("/mybook/" + 5);
+        }
     }
 
 }
