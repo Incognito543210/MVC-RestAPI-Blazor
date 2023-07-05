@@ -4,6 +4,6 @@
 	{
 		public bool IsLoggedIn { get; set; } = false;
 		public int LoggedUserId { get; set; }
-		public int Message { get; set; } = 0;
+		public int Message { get; set; }
 	}
 }
