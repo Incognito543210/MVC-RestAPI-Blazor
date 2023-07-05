@@ -96,6 +96,9 @@
 
     string errorMessage;
 
+    [CascadingParameter]
+    public UserInfo? userInfo { get; set; }
+
     bool isShow;
     InputType PasswordInput = InputType.Password;
     string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -111,7 +114,8 @@
         if(errorMessage == null)
         {
             user = new();
-            NavMan.NavigateTo("/account/" + 1);
+            userInfo.Message = 1;
+            NavMan.NavigateTo("/account");
         }
     }
 

@@ -1,4 +1,4 @@
-﻿ @page "/account/{Message:int}"
+﻿ @page "/account"
 @inject UserService UserServ
 @inject NavigationManager NavMan
 
@@ -7,17 +7,9 @@
 	@if(user == null)
 	{
 		<h3>Ładowanie...</h3>
-		@*Task.Delay(500);
-		NavMan.NavigateTo("/account/0");*@
 	}
 	else
 	{
-		@if (Message == 2)
-		{
-			<div class="alert alert-success" role="alert">
-				Zalogowałeś się na swoje konto.
-			</div>
-		}
 		<div id="top">
 			<div id="title">
 				<h3 style="font-weight: bold">Moje konto</h3>
@@ -39,11 +31,12 @@
 }
 else
 {
-	@if (Message == 1)
+	@if (userInfo.Message == 1)
 	{
 		<div class="alert alert-success" role="alert">
 			Rejestracja konta przebiegła pomyślnie. Zaloguj się na swoje konto.
 		</div>
+		userInfo.Message = 0;
 	}
 	else
 	{
@@ -148,24 +141,4 @@ else
 			NavMan.NavigateTo("/edituser/" + user);
 		}
 	}
-
-	//async Task Delete()
-	//{
-	//	if (user is not null)
-	//	{
-	//		await UserServ.DeleteUserById(user);
-	//		NavMan.NavigateTo("/mybook");
-	//	}
-	//}
-
-	//async Task ConfirmDeletion()
-	//{
-	//	var options = new DialogOptions { CloseOnEscapeKey = true };
-	//	var okno = await DialogService.ShowAsync<ConfirmUserDeletion>("Usuń konto", options);
-	//	var wynik = await okno.Result;
-	//	if (!wynik.Canceled)
-	//	{
-	//		await Delete();
-	//	}
-	//}
 }

@@ -9,6 +9,22 @@
 }
 else
 {
+    @if(userInfo.Message == 1)
+    {
+        <div class="alert alert-success" role="alert">
+            Pomyślnie zalogowano na konto.
+        </div>
+        userInfo.Message = 0;
+    }
+
+    @if(userInfo.Message == 2)
+    {
+        <div class="alert alert-danger" role="alert">
+            Pomyślnie wylogowano z konta.
+        </div>
+        userInfo.Message = 0;
+    }
+
     <div id="top">
         <div id="title">
             <h3 style="font-weight: bold">Strona główna</h3>
@@ -116,6 +132,9 @@ else
 
     private List<RecipeDto>? recipesList;
     private List<TagDto>? tagsList;
+
+    [CascadingParameter]
+    public UserInfo? userInfo { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
