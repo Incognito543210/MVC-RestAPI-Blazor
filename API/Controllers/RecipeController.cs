@@ -159,9 +159,9 @@ namespace API.Controllers
                 return BadRequest(ModelState);
 
 
-            var recipe = _recipeService.GetRecipes().Where(u=>u.Title.Trim().ToLower()==recipeCreate.Title.TrimEnd().ToLower()).FirstOrDefault();
+            var recipe = _recipeService.GetRecipes().Where(u => string.Equals(u.Title.TrimEnd(), recipeCreate.Title.TrimEnd(), StringComparison.OrdinalIgnoreCase)).FirstOrDefault();
 
-            if(recipe!=null)
+            if (recipe!=null)
             {
                 {
                     return StatusCode(422, "Przepis już istnieje");
