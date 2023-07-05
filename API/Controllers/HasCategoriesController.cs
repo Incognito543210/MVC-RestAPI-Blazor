@@ -19,7 +19,7 @@ namespace API.Controllers
             _hasCategoryService = hasCategoryService;
         }
         
-        [HttpDelete("{recipeId},{ingridientId}")]
+        [HttpDelete("{recipeId},{categoryId}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
