@@ -99,6 +99,28 @@ else
             <p style="margin-left: 30px; margin-right: 30px; font-size: 1.17em;"><MudList>@recipe.Content</MudList></p>
         }
     </div>
+
+    <div id="opinions">
+        <div id="sec-title">
+            <p>OPINIE</p>
+        </div>
+        @if (opinionsList == null)
+        {
+            <p style="margin-left: 30px;">Ten przepis nie ma opinii.</p>
+        }
+        else
+        {
+            @if (opinionsList.Any())
+            {
+                <MudList>
+                    @foreach (var opinion in opinionsList)
+                    {
+                        <MudListItem><MudRating @bind-SelectedValue="opinion.Rate" ReadOnly="true"></MudRating>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp @opinion.Content</MudListItem>
+                    }
+                </MudList>
+            }
+        }
+    </div>
 }
 
 <style>
