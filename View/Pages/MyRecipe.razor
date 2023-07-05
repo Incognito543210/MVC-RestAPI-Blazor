@@ -57,20 +57,24 @@ else
             {
                 <div id="div-table">
                     <table class="table table-striped table-hover" style="margin-left: 20px; margin-right: 40px">
+                        <colgroup>
+                            <col style="width: 50%;">
+                            <col style="width: 50%;">
+                        </colgroup>
                         <thead>
                             <tr>
-                                <th colspan="1" style="text-align: left;">Składnik</th>
-                                <th colspan="1" style="text-align: right;">Ilość</th>
+                                <th>Składnik</th>
+                                <th>Ilość</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in ingredientsList)
                             {
                                 <tr>
-                                    <td colspan="1" style="text-align: left;">
+                                    <td>
                                         @item.Name
                                     </td>
-                                    <td colspan="1" style="text-align: right;">
+                                    <td>
                                         @item.Quantity
                                     </td>
                                 </tr>
@@ -182,6 +186,7 @@ else
     table {
         width: 100%;
         max-width: 100%;
+        table-layout: fixed;
     }
 
     p {
