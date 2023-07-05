@@ -28,7 +28,14 @@ namespace View.Data
 
         public async Task<List<RecipeDto>> GetRecipesByUserAsync(int id)
         {
-            return (await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/ByUser/" + id))!;
+            try
+            {
+                return (await _httpClient.GetFromJsonAsync<List<RecipeDto>>("/api/Recipe/ByUser/" + id))!;
+            }
+            catch (Exception ex)
+            {
+                return new();
+            }            
         }
 
         public async Task<List<RecipeDto>> GetRecipesByTagsAsync(ICollection<TagDto> tags)
