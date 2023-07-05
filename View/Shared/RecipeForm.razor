@@ -176,8 +176,19 @@
 
     void AddIngredientToList()
     {
-        Recipe.Ingridients.Add(ingredient);
-        ingredient = new();
+        bool IsInList = false;
+        foreach(var ingr in Recipe.Ingridients)
+        {
+            if(ingr.Name == ingredient.Name)
+            {
+                IsInList = true;
+            }
+        }
+        if(!IsInList)
+        {
+            Recipe.Ingridients.Add(ingredient);
+            ingredient = new();
+        }
     }
 
     void AddTagToList()
